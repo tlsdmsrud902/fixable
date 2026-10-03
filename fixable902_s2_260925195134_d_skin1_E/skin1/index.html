@@ -226,25 +226,17 @@
     </div>
   </section>
 
-  <!-- 6. 기능 : 스킨 공통 강점 8가지를 "움직이는 시연"으로 — 왼쪽 목록을 누르거나 가만히 두면 오른쪽 시연이 차례로 재생된다 (fixable-agency.js initShowcase)
+  <!-- 6. 기능 : 스킨 공통 강점 8가지를 01~08 각각 펼쳐서 — 기능마다 설명 + 움직이는 시연. 화면에 들어올 때마다 시연이 처음부터 재생된다 (fixable-agency.js 기능 시연)
        시연은 그림이 아니라 HTML 로 만든 움직이는 화면이라 가볍다. 04 는 첫 화면 영상(루프) -->
   <section class="fx-sec fx-features" id="fx-features" aria-labelledby="fx-feat-title" data-cms="기능">
     <div class="fx-wrap">
-      <header class="fx-head"><div class="fx-label"><span>04</span><p data-cms-text="작은 제목">What's inside</p></div><h2 id="fx-feat-title" data-cms-text="제목">스킨 하나에 다 들어 있어요.</h2><p class="fx-head__sub" data-cms-text="설명">말로 설명하는 대신 직접 보여 드릴게요. 기능 이름을 눌러 하나씩 확인해 보세요.</p></header>
-      <div class="fx-show" data-fx-show>
-        <ol class="fx-show__list" role="tablist" aria-label="스킨 기능 8가지">
-          <li data-cms-item><button type="button" role="tab" data-fx-feat="0" aria-selected="true"><span>01</span><b data-cms-text="이름">편집 모드</b><small data-cms-text="설명">관리자 편집 모드로 사진 · 문구 · 배너를 직접. 코드는 몰라도 돼요.</small><i class="fx-show__bar"><i></i></i></button></li>
-          <li data-cms-item><button type="button" role="tab" data-fx-feat="1" aria-selected="false"><span>02</span><b data-cms-text="이름">쿠폰 뽑기</b><small data-cms-text="설명">손님이 직접 카드를 뒤집어 쿠폰을 뽑아요. 최대 50%.</small><i class="fx-show__bar"><i></i></i></button></li>
-          <li data-cms-item><button type="button" role="tab" data-fx-feat="2" aria-selected="false"><span>03</span><b data-cms-text="이름">타임세일</b><small data-cms-text="설명">상품에 날짜만 적으면 남은 시간 띠와 스티커가 붙어요.</small><i class="fx-show__bar"><i></i></i></button></li>
-          <li data-cms-item><button type="button" role="tab" data-fx-feat="3" aria-selected="false"><span>04</span><b data-cms-text="이름">마감 카운트다운</b><small data-cms-text="설명">세일 마감까지 남은 시간을 큰 시계로. 「지금 사야 할 이유」를 만들어요.</small><i class="fx-show__bar"><i></i></i></button></li>
-          <li data-cms-item><button type="button" role="tab" data-fx-feat="4" aria-selected="false"><span>05</span><b data-cms-text="이름">장면 속 상품</b><small data-cms-text="설명">사진 속 + 를 누르면 그 상품 구매 창이 바로 열려요.</small><i class="fx-show__bar"><i></i></i></button></li>
-          <li data-cms-item><button type="button" role="tab" data-fx-feat="5" aria-selected="false"><span>06</span><b data-cms-text="이름">포토리뷰 자동 진열</b><small data-cms-text="설명">사진 후기가 올라오면 메인과 상품 카드에 별점이 자동으로.</small><i class="fx-show__bar"><i></i></i></button></li>
-          <li data-cms-item><button type="button" role="tab" data-fx-feat="6" aria-selected="false"><span>07</span><b data-cms-text="이름">반응형 · 휴대폰 우선</b><small data-cms-text="설명">PC · 태블릿 · 휴대폰 어디서든 같은 쇼핑몰.</small><i class="fx-show__bar"><i></i></i></button></li>
-          <li data-cms-item><button type="button" role="tab" data-fx-feat="7" aria-selected="false"><span>08</span><b data-cms-text="이름">쇼핑 도우미 챗봇</b><small data-cms-text="설명">자주 묻는 질문에 먼저 답하고 카카오톡 상담으로 이어 줘요. <em>이벤트 특전</em></small><i class="fx-show__bar"><i></i></i></button></li>
-        </ol>
-        <div class="fx-show__stage" aria-live="polite">
+      <header class="fx-head"><div class="fx-label"><span>04</span><p data-cms-text="작은 제목">What's inside</p></div><h2 id="fx-feat-title" data-cms-text="제목">스킨 하나에 다 들어 있어요.</h2><p class="fx-head__sub" data-cms-text="설명">말로 설명하는 대신 직접 보여 드릴게요. 내려가면서 01부터 08까지 하나씩 확인해 보세요.</p></header>
+      <div class="fx-feats">
+        <article class="fx-feat2" data-cms-item>
+          <div class="fx-feat2__copy"><p class="fx-feat2__no">01<span data-cms-text="분류">운영 편의</span></p><h3 data-cms-text="이름">편집 모드</h3><p class="fx-feat2__desc" data-cms-text="설명">관리자 편집 모드로 사진 · 문구 · 배너를 직접. 코드는 몰라도 돼요.</p></div>
+          <div class="fx-feat2__stage" data-fx-stage-demo title="누르면 다시 재생">
           <!-- 01 편집 모드 : [고치기] 버튼 → 문구가 새로 써진다 -->
-          <div class="fx-demo fx-demo--edit is-on" data-fx-demo="0">
+          <div class="fx-demo fx-demo--edit" data-fx-demo="0">
             <div class="fx-mini"><p class="fx-mini__bar"><i></i><i></i><i></i><span>내쇼핑몰.com <b>· 편집 모드</b></span></p>
               <div class="fx-mini__hero"><img src="/SkinImg/fixable/sq-wear.webp" alt="" width="480" height="480" loading="lazy">
                 <div><small>NEW SEASON</small><strong class="fx-type"><span class="a">매일 손이 가는 옷</span><span class="b">가을 신상 20% 할인</span></strong><p>출근길 셔츠부터 주말 원피스까지.</p><span class="fx-mini__btn">스타일 보기</span></div>
@@ -254,6 +246,11 @@
               <p class="fx-mini__toast">✓ 저장했어요 · 새로고침하면 바로 보여요</p>
             </div>
           </div>
+          </div>
+        </article>
+        <article class="fx-feat2" data-cms-item>
+          <div class="fx-feat2__copy"><p class="fx-feat2__no">02<span data-cms-text="분류">매출 장치</span></p><h3 data-cms-text="이름">쿠폰 뽑기</h3><p class="fx-feat2__desc" data-cms-text="설명">손님이 직접 카드를 뒤집어 쿠폰을 뽑아요. 최대 50%.</p></div>
+          <div class="fx-feat2__stage" data-fx-stage-demo title="누르면 다시 재생">
           <!-- 02 쿠폰 뽑기 : 카드 세 장 중 하나가 뒤집혀 당첨 -->
           <div class="fx-demo fx-demo--coupon" data-fx-demo="1">
             <p class="fx-demo__k">RANDOM COUPON · 뽑으면 무조건 당첨</p>
@@ -261,6 +258,11 @@
             <p class="fx-demo__msg">🎉 50% 쿠폰이 쿠폰함에 들어갔어요</p>
             <span class="fx-confetti" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
           </div>
+          </div>
+        </article>
+        <article class="fx-feat2" data-cms-item>
+          <div class="fx-feat2__copy"><p class="fx-feat2__no">03<span data-cms-text="분류">매출 장치</span></p><h3 data-cms-text="이름">타임세일</h3><p class="fx-feat2__desc" data-cms-text="설명">상품에 날짜만 적으면 남은 시간 띠와 스티커가 붙어요.</p></div>
+          <div class="fx-feat2__stage" data-fx-stage-demo title="누르면 다시 재생">
           <!-- 03 타임세일 : 실제로 줄어드는 시계 -->
           <div class="fx-demo fx-demo--sale" data-fx-demo="2">
             <div class="fx-prd"><div class="fx-prd__img"><img src="/SkinImg/fixable/sq-eppum.webp" alt="" width="480" height="480" loading="lazy"><span class="fx-prd__sticker">TIME<br>SALE</span><span class="fx-prd__band">⏱ 마감까지 <b data-fx-clock>02:14:09</b></span></div>
@@ -269,6 +271,11 @@
               <p class="fx-prd__name">브런치 베이커리 세트</p><p class="fx-prd__price"><b>25%</b> 29,250원 <s>39,000원</s></p></div>
             <p class="fx-demo__code">상품 요약설명에 <b>#타임세일 2026-10-31 23:59</b> 한 줄이면 끝</p>
           </div>
+          </div>
+        </article>
+        <article class="fx-feat2" data-cms-item>
+          <div class="fx-feat2__copy"><p class="fx-feat2__no">04<span data-cms-text="분류">매출 장치</span></p><h3 data-cms-text="이름">마감 카운트다운</h3><p class="fx-feat2__desc" data-cms-text="설명">세일 마감까지 남은 시간을 큰 시계로. 「지금 사야 할 이유」를 만들어요.</p></div>
+          <div class="fx-feat2__stage" data-fx-stage-demo title="누르면 다시 재생">
           <!-- 04 마감 카운트다운 : 실제 이벤트 마감(data-fx-countdown)까지 1초씩 흐르는 넘김 시계 -->
           <div class="fx-demo fx-demo--count" data-fx-demo="3">
             <p class="fx-demo__k">AUTUMN SALE · 이벤트 마감까지</p>
@@ -281,6 +288,11 @@
             <div class="fx-count__bar"><span>최대 50% 쿠폰</span><span>쿠폰 받으러 가기 →</span></div>
             <p class="fx-demo__code">세일 화면 · 팝업 · 상품 카드에 <b>마감일 하나만 적으면</b> 같은 시계가 붙어요</p>
           </div>
+          </div>
+        </article>
+        <article class="fx-feat2" data-cms-item>
+          <div class="fx-feat2__copy"><p class="fx-feat2__no">05<span data-cms-text="분류">구매 전환</span></p><h3 data-cms-text="이름">장면 속 상품</h3><p class="fx-feat2__desc" data-cms-text="설명">사진 속 + 를 누르면 그 상품 구매 창이 바로 열려요.</p></div>
+          <div class="fx-feat2__stage" data-fx-stage-demo title="누르면 다시 재생">
           <!-- 05 장면 속 상품 : + 를 누르면 상품 창 -->
           <div class="fx-demo fx-demo--look" data-fx-demo="4">
             <div class="fx-look"><img src="/SkinImg/fixable/demo-scene.webp" alt="" width="1280" height="720" loading="lazy">
@@ -289,25 +301,40 @@
               <div class="fx-qv"><img src="/SkinImg/fixable/sq-inter.webp" alt="" width="480" height="480" loading="lazy"><div><small>LIVING · 수납</small><b>원목 수납 박스</b><p>39,000원</p><span>구매하러 가기 →</span></div></div>
             </div>
           </div>
+          </div>
+        </article>
+        <article class="fx-feat2" data-cms-item>
+          <div class="fx-feat2__copy"><p class="fx-feat2__no">06<span data-cms-text="분류">신뢰</span></p><h3 data-cms-text="이름">포토리뷰 자동 진열</h3><p class="fx-feat2__desc" data-cms-text="설명">사진 후기가 올라오면 메인과 상품 카드에 별점이 자동으로.</p></div>
+          <div class="fx-feat2__stage" data-fx-stage-demo title="누르면 다시 재생">
           <!-- 06 포토리뷰 : 후기가 쌓이며 별점 · 리뷰 수 증가 -->
           <div class="fx-demo fx-demo--review" data-fx-demo="5">
             <div class="fx-rv-head"><b>★ <span data-fx-count-to="4.9" data-fx-dec="1">0.0</span></b><span>리뷰 <span data-fx-count-to="128">0</span>개</span></div>
             <ul class="fx-rv"><li><img src="/SkinImg/fixable/demo-rv1.webp" alt="" width="480" height="480" loading="lazy"><p>★★★★★<br>핏이 정말 예뻐요</p></li><li><img src="/SkinImg/fixable/demo-rv2.webp" alt="" width="480" height="480" loading="lazy"><p>★★★★★<br>촉촉함이 오래가요</p></li><li><img src="/SkinImg/fixable/demo-rv3.webp" alt="" width="480" height="480" loading="lazy"><p>★★★★★<br>아이가 좋아해요</p></li><li><img src="/SkinImg/fixable/demo-rv4.webp" alt="" width="480" height="480" loading="lazy"><p>★★★★☆<br>갓 구운 맛 그대로</p></li></ul>
             <p class="fx-demo__code">게시판에 사진 후기가 올라오면 <b>메인 · 상품 카드에 자동으로</b></p>
           </div>
+          </div>
+        </article>
+        <article class="fx-feat2" data-cms-item>
+          <div class="fx-feat2__copy"><p class="fx-feat2__no">07<span data-cms-text="분류">기본</span></p><h3 data-cms-text="이름">반응형 · 휴대폰 우선</h3><p class="fx-feat2__desc" data-cms-text="설명">PC · 태블릿 · 휴대폰 어디서든 같은 쇼핑몰.</p></div>
+          <div class="fx-feat2__stage" data-fx-stage-demo title="누르면 다시 재생">
           <!-- 07 반응형 : PC → 태블릿 → 휴대폰으로 화면이 줄어든다 -->
           <div class="fx-demo fx-demo--resp" data-fx-demo="6">
             <div class="fx-resp"><div class="fx-resp__frame"><img class="fx-resp__d" src="/SkinImg/fixable/work-baby.webp" alt="" width="1440" height="900" loading="lazy"><img class="fx-resp__m" src="/SkinImg/fixable/mobile-baby.webp" alt="" width="600" height="1298" loading="lazy"></div></div>
             <p class="fx-resp__label"><span class="is-d">PC 1440</span><span class="is-t">태블릿 768</span><span class="is-m">휴대폰 390</span></p>
           </div>
+          </div>
+        </article>
+        <article class="fx-feat2 fx-feat2--event" data-cms-item>
+          <div class="fx-feat2__copy"><p class="fx-feat2__no">08<span data-cms-text="분류">이벤트 특전</span></p><h3 data-cms-text="이름">쇼핑 도우미 챗봇</h3><p class="fx-feat2__desc" data-cms-text="설명">자주 묻는 질문에 먼저 답하고 카카오톡 상담으로 이어 줘요. 10월 31일까지 구매하시면 무료로 넣어 드려요.</p></div>
+          <div class="fx-feat2__stage" data-fx-stage-demo title="누르면 다시 재생">
           <!-- 08 쇼핑 도우미 챗봇 -->
           <div class="fx-demo fx-demo--bot" data-fx-demo="7">
             <div class="fx-chatmini"><p class="fx-chatmini__head"><small>CONCIERGE</small><b>쇼핑 도우미</b><span><i></i>지금 상담 가능</span></p>
               <div class="fx-chatmini__body"><p class="fx-cm fx-cm--bot">안녕하세요! 궁금한 내용을 골라 주세요.</p><p class="fx-cm fx-cm--me">교환은 어떻게 해요?</p><p class="fx-cm fx-cm--typing"><i></i><i></i><i></i></p><p class="fx-cm fx-cm--bot fx-cm--ans">받으신 날부터 7일 안에 마이페이지에서 신청하세요. 기사님이 찾아가요.</p><p class="fx-cm fx-cm--btns"><span>주문 조회</span><span>상담원 연결</span></p></div></div>
             <div class="fx-demo__side"><span class="fx-bot__badge"><span>Event only</span><b data-fx-dday="2026-10-31T23:59:59+09:00">D-28</b></span><p>10월 31일까지 구매하시면 무료로 넣어 드려요.</p><button type="button" class="fx-btn fx-btn--sm" data-fx-open-helper>지금 직접 써 보기<svg><use href="#fx-arrow"/></svg></button></div>
           </div>
-          <div class="fx-show__nav"><button type="button" data-fx-step="-1" aria-label="이전 기능"><svg><use href="#fx-arrow"/></svg></button><span data-fx-show-count>01 / 08</span><button type="button" data-fx-step="1" aria-label="다음 기능"><svg><use href="#fx-arrow"/></svg></button></div>
-        </div>
+          </div>
+        </article>
       </div>
     </div>
   </section>

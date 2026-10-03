@@ -126,7 +126,7 @@
     // ── 3) 등장 ─────────────────────────────────────
     if (!still && !editing && 'IntersectionObserver' in window) {
       document.documentElement.classList.add('fx-js');
-      ['.fx-head', '.fx-about__sub', '.fx-why__list li', '.fx-work__info', '.fx-feat li', '.fx-mobile__head', '.fx-steps li', '.fx-plan', '.fx-faq details', '.fx-contact__row', '.fx-shop .prdList > li', '.fx-hero__meta li'].forEach(function (sel) {
+      ['.fx-head', '.fx-about__sub', '.fx-why__list li', '.fx-work__info', '.fx-feat2__copy', '.fx-feat li', '.fx-mobile__head', '.fx-steps li', '.fx-plan', '.fx-faq details', '.fx-contact__row', '.fx-shop .prdList > li', '.fx-hero__meta li'].forEach(function (sel) {
         Q(sel).forEach(function (el, i) { el.setAttribute('data-fx-in', ''); el.style.setProperty('--d', (i % 4) * 0.08 + 's'); });
       });
       var io = new IntersectionObserver(function (list) {
@@ -143,57 +143,26 @@
     }
     var wordEls = words ? words.querySelectorAll('.w') : [];
 
-    // ── 기능 쇼케이스 : 목록 8개 ↔ 시연. 화면에 보이는 동안 6.5초마다 다음 기능, 시연 위에 마우스를 올리면 멈춤 ──
-    var show = home.querySelector('[data-fx-show]');
-    if (show) {
-      var fbtn = [].slice.call(show.querySelectorAll('[data-fx-feat]')), demos = [].slice.call(show.querySelectorAll('[data-fx-demo]'));
-      var stageEl = show.querySelector('.fx-show__stage'), countEl = show.querySelector('[data-fx-show-count]');
-      var desc = document.createElement('p'); desc.className = 'fx-show__desc'; show.querySelector('.fx-show__list').after(desc);
-      var fcur = -1, timer = 0, inView = false, hover = false, DUR = 6500, auto = !still && !editing;
+    // ── 기능 01~08 : 시연 화면이 보이면 처음부터 재생, 화면 밖으로 나가면 멈춤(다시 들어오면 또 재생). 누르면 다시 재생 ──
+    var stages = Q('[data-fx-stage-demo]');
+    if (stages.length) {
       var counters = function (box) {
         [].forEach.call(box.querySelectorAll('[data-fx-count-to]'), function (el) {
           var to = parseFloat(el.getAttribute('data-fx-count-to')), dec = +(el.getAttribute('data-fx-dec') || 0), t0 = performance.now();
+          if (still) { el.textContent = to.toFixed(dec); return; }
           (function step(t) { var k = Math.min(1, (t - t0) / 1600); k = 1 - Math.pow(1 - k, 3); el.textContent = (to * k).toFixed(dec); if (k < 1) requestAnimationFrame(step); })(t0);
         });
       };
-      var playVideo = function (box) {
-        var v = box.querySelector('[data-fx-demo-video]'); if (!v || still) return;
-        if (!v.src) v.src = v.getAttribute('data-src');
-        var pr = v.play(); if (pr && pr.catch) pr.catch(function () {});
-      };
-      function go(i, byUser) {
-        i = (i + demos.length) % demos.length;
-        if (i !== fcur) {
-          fbtn.forEach(function (b, k) { b.setAttribute('aria-selected', k === i ? 'true' : 'false'); });
-          demos.forEach(function (d, k) {
-            if (k === i) { d.classList.remove('is-on'); void d.offsetWidth; d.classList.add('is-on'); }   // 애니메이션을 처음부터
-            else { d.classList.remove('is-on'); var v = d.querySelector('video'); if (v) v.pause(); }
-          });
-          fcur = i;
-          counters(demos[i]); playVideo(demos[i]);
-          if (countEl) countEl.textContent = (i < 9 ? '0' : '') + (i + 1) + ' / ' + (demos.length < 10 ? '0' : '') + demos.length;
-          var sm = fbtn[i].querySelector('small'); desc.textContent = sm ? sm.textContent : '';
-          if (byUser && window.matchMedia('(max-width:1024px)').matches) fbtn[i].scrollIntoView({ block: 'nearest', inline: 'center', behavior: still ? 'auto' : 'smooth' });
-        }
-        schedule();
-      }
-      function schedule() {
-        clearTimeout(timer);
-        var on = auto && inView && !hover && !document.hidden;
-        show.classList.toggle('is-auto', on);
-        if (on) { show.classList.remove('is-paused'); var bar = fbtn[fcur] && fbtn[fcur].querySelector('.fx-show__bar i'); if (bar) { bar.style.animation = 'none'; void bar.offsetWidth; bar.style.animation = ''; } timer = setTimeout(function () { go(fcur + 1); }, DUR); }
-      }
-      fbtn.forEach(function (b, k) { b.addEventListener('click', function () { fcur = -1; go(k, true); }); });
-      [].forEach.call(show.querySelectorAll('[data-fx-step]'), function (b) { b.addEventListener('click', function () { var n = fcur + (+b.getAttribute('data-fx-step')); fcur = -1; go(n, true); }); });
-      if (finePointer) {
-        stageEl.addEventListener('mouseenter', function () { hover = true; clearTimeout(timer); show.classList.add('is-paused'); });
-        stageEl.addEventListener('mouseleave', function () { hover = false; fcur = fcur; schedule(); });
-      }
-      if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { es.forEach(function (e) { var was = inView; inView = e.isIntersecting; if (inView && !was) { var k = fcur < 0 ? 0 : fcur; fcur = -1; go(k); } else if (!inView) schedule(); }); }, { threshold: .3 }).observe(stageEl);
-      else go(0);
-      document.addEventListener('visibilitychange', schedule);
+      var play = function (st) { var d = st.querySelector('.fx-demo'); if (!d) return; d.classList.remove('is-on'); void d.offsetWidth; d.classList.add('is-on'); counters(d); };
+      stages.forEach(function (st) { st.addEventListener('click', function (e) { if (e.target.closest('a,button')) return; play(st); }); });
+      if ('IntersectionObserver' in window && !editing) {
+        var sio = new IntersectionObserver(function (es) {
+          es.forEach(function (e) { var d = e.target.querySelector('.fx-demo'); if (e.isIntersecting) play(e.target); else if (d) d.classList.remove('is-on'); });
+        }, { threshold: 0.45 });
+        stages.forEach(function (st) { sio.observe(st); });
+      } else stages.forEach(play);
       // 마감 카운트다운 : data-fx-countdown 날짜까지 실제로 흐른다. 숫자가 바뀔 때 넘김(flip) 효과
-      [].forEach.call(show.querySelectorAll('[data-fx-countdown]'), function (box) {
+      Q('[data-fx-countdown]').forEach(function (box) {
         var end = new Date(box.getAttribute('data-fx-countdown')).getTime(), cells = box.querySelectorAll('[data-u]'), last = {};
         var tick = function () {
           var t = Math.max(0, Math.floor((end - Date.now()) / 1000));
@@ -206,9 +175,9 @@
         tick(); setInterval(tick, 1000);
       });
       // 타임세일 시계 : 실제로 1초씩 줄어든다
-      var clocks = [].slice.call(show.querySelectorAll('[data-fx-clock]')).map(function (el) { var p = el.textContent.split(':').map(Number); return { el: el, s: p[0] * 3600 + p[1] * 60 + p[2] }; });
+      var clocks = Q('[data-fx-clock]').map(function (el) { var p = el.textContent.split(':').map(Number); return { el: el, s: p[0] * 3600 + p[1] * 60 + p[2] }; });
       var pad = function (n) { return (n < 10 ? '0' : '') + n; };
-      setInterval(function () { clocks.forEach(function (c) { c.s = c.s > 0 ? c.s - 1 : 8 * 3600; c.el.textContent = pad(Math.floor(c.s / 3600)) + ':' + pad(Math.floor(c.s % 3600 / 60)) + ':' + pad(c.s % 60); }); }, 1000);
+      if (clocks.length) setInterval(function () { clocks.forEach(function (c) { c.s = c.s > 0 ? c.s - 1 : 8 * 3600; c.el.textContent = pad(Math.floor(c.s / 3600)) + ':' + pad(Math.floor(c.s % 3600 / 60)) + ':' + pad(c.s % 60); }); }, 1000);
     }
 
     // ── 이벤트 쇼핑 도우미 : D-day · [지금 직접 써 보기] · 대화 시연 ──

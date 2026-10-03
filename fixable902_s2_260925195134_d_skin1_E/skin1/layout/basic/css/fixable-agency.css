@@ -611,3 +611,18 @@ html.fx-js #lw-home.fx [data-fx-chat].is-play .fx-bm{opacity:1;transform:none}
 #lw-home.fx .fx-demo--count.is-on .fx-flip__u:nth-of-type(2){animation-delay:.1s}#lw-home.fx .fx-demo--count.is-on .fx-flip__u:nth-of-type(3){animation-delay:.2s}#lw-home.fx .fx-demo--count.is-on .fx-flip__u:nth-of-type(4){animation-delay:.3s}
 #lw-home.fx .fx-demo--count.is-on .fx-count__bar{animation:fx-in .5s .6s both}
 @media (max-width:767px){#lw-home.fx .fx-chatmini__body{min-height:0}#lw-home.fx .fx-cm--btns{display:none}#lw-home.fx .fx-demo--bot{gap:14px}}
+
+/* 6. 기능 01~08 펼침 : 기능마다 한 줄(설명 + 시연), 홀짝으로 좌우가 바뀐다. 시연은 화면에 들어오면 .is-on 으로 재생 */
+#lw-home.fx .fx-feats{display:flex;flex-direction:column;gap:clamp(48px,7vw,120px)}
+#lw-home.fx .fx-feat2{display:grid;grid-template-columns:.8fr 1.3fr;gap:clamp(28px,5vw,88px);align-items:center}
+#lw-home.fx .fx-feat2:nth-child(even){grid-template-columns:1.3fr .8fr}
+#lw-home.fx .fx-feat2:nth-child(even) .fx-feat2__copy{order:2}
+#lw-home.fx .fx-feat2__no{display:flex;align-items:center;gap:14px;font:500 clamp(56px,7vw,110px)/1 Jost,sans-serif;letter-spacing:-.04em;color:transparent;-webkit-text-stroke:1.2px var(--fx-ink)}
+#lw-home.fx .fx-feat2__no span{padding:7px 12px;border-radius:999px;border:1px solid var(--fx-line);-webkit-text-stroke:0;color:var(--fx-ink);font:500 13px/1 Pretendard,sans-serif;letter-spacing:0}
+#lw-home.fx .fx-feat2--event .fx-feat2__no span{background:var(--fx-ink);color:#fff;border-color:var(--fx-ink)}
+#lw-home.fx .fx-feat2 h3{margin:22px 0 14px!important;font-size:clamp(28px,3vw,46px);font-weight:700;letter-spacing:-.05em}
+#lw-home.fx .fx-feat2__desc{font-size:clamp(16px,1.2vw,19px);line-height:1.75;color:#555;max-width:440px}
+#lw-home.fx .fx-feat2__desc em{font-style:normal;margin-left:6px;padding:3px 9px;border-radius:999px;background:var(--fx-ink);color:#fff;font-size:12px;font-weight:600;white-space:nowrap}
+#lw-home.fx .fx-feat2__stage{position:relative;aspect-ratio:16/10;max-width:100%;border-radius:24px;overflow:hidden;color:#fff;background:radial-gradient(120% 90% at 70% 10%,#2a2a2e 0%,#111113 60%);cursor:pointer}
+@media (max-width:1024px){#lw-home.fx .fx-feat2,#lw-home.fx .fx-feat2:nth-child(even){grid-template-columns:1fr;gap:22px}#lw-home.fx .fx-feat2:nth-child(even) .fx-feat2__copy{order:0}#lw-home.fx .fx-feat2__no{font-size:56px}#lw-home.fx .fx-feat2 h3{margin:14px 0 10px!important}}
+@media (max-width:767px){#lw-home.fx .fx-feat2__stage{aspect-ratio:4/5;border-radius:18px}}
