@@ -99,8 +99,11 @@ node docs/tools/fixable-images.js          # 부분만 : skin | logo | products
 - 지운 것 : wear 디자인센터 상세(`designcenter/`, `*-designcenter-*.html`), 설명서(`manual-cms/`), wear 전용 도구, wear 사진 · 상품 30개
 
 ## 6. 남은 일 (카페24 관리자 — fixable902 계정)
-1. 파일업로더에 `fixable` 폴더 → `SkinImg/fixable/*.webp` 24개 올리기 → **이미지 주소의 `pg…` 번호 확인**
-2. 디자인 백업 → `python3 docs/pack.py <백업.tar.gz> <pg번호>` → 디자인 복구 (처음 한 번만, 다음부터는 코드 편집기)
+1. **디자인 복구** : `python3 docs/tools/make-restore.py` → `_deploy/fixable902_s2_261004003838_d_base_E.tar.gz` → 관리자 › 디자인 › 디자인 백업/복구 › 내 컴퓨터에서 복구 (처음 한 번만, 다음부터는 코드 편집기)
+   - 백업 원본 없이 만든다 : 최상위 폴더 `base`, 스킨 파일 전부 + **스킨 이미지(`SkinImg/fixable/`)도 포함** → 이미지 주소는 `/SkinImg/fixable/…` 그대로 (파일업로더 · pg 번호 불필요)
+   - 주문서 바로가기 링크 51개는 카페24 서버 공통 경로라 `docs/tools/restore-links.txt` 로 만든다 (pet 백업에서 뽑음)
+   - 복구가 "파일 압축 형식이 다릅니다" 로 막히면 형식을 `application/x-gzip` 으로 넣는다. 두 번째 복구부터는 **새 백업 이름**으로 (같은 이름이면 반영이 안 된다)
+2. (선택) 백업 원본을 받은 경우 : 파일업로더 `fixable` 폴더에 이미지를 올리고 `python3 docs/pack.py <백업.tar.gz> <pg번호>` 방식도 쓸 수 있다
 3. 분류 이름 변경 : 24 패션 · 뷰티 · 25 키즈 · 펫 · 26 푸드 · 리빙 · 27 SALE · 28 전체 스킨
 4. 상품 6개 등록(사진 **파일 업로드**) · 메인 진열 2(추천)에 6개 모두 · 옵션(단순 적용 / 커스터마이징 +180,000원)
 5. 실제 상품번호가 11 ~ 16 이 아니면 `index.html` 의 `product_no=` 6곳 교체
