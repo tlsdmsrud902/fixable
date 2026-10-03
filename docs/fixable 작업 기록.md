@@ -50,11 +50,12 @@
 
 | 순서 | 섹션 | 내용 |
 |---|---|---|
-| 1 | 첫 화면 | 큰 영문 "We design stores that actually sell." + 제목 · 버튼 2개 + 숫자 4칸 + 작업물 쇼릴 사진(스크롤하면 커짐) |
-| 2 | 업종 띠 | Fashion · Beauty · Kids · Food · Living · Pet 이 옆으로 흐름 |
+| 1 | 첫 화면 (스크롤 히어로) | myjiwon.com 히어로 방식. 화면이 고정된 채 스크롤하는 만큼 뒤 사진 7장(각 쇼핑몰 히어로 사진)이 겹쳐 넘어가며 당겨지고, 앞 패널이 01 Design → 02 Sell → 03 Edit → 04 Launch 로 바뀐다. 제목 한 글자씩 등장, 오른쪽 진행선, 마우스 시차, 탭을 누르면 그 챕터로 이동 |
+| 1-2 | 숫자 띠 · 쇼릴 | 숫자 4칸, 쇼릴 사진은 세라핌 필름 리빌(가장자리부터 펼쳐짐) + 패럴랙스 |
+| 2 | 글자 띠 두 줄 | 스스로 흐르면서 스크롤 방향에 따라 두 줄이 서로 반대로 밀림 (세라핌 마퀴) |
 | 3 | 01 About | 소개 문장이 스크롤에 맞춰 한 단어씩 진해짐 |
 | 4 | 02 Why fixable | 고민 4개 → 해결 4개 |
-| 5 | 03 Selected works | 작업물 6개를 한 줄씩 크게 (목업 · 업종 · 설명 · 특징 태그 · 스킨 자세히 보기 · 라이브 데모) |
+| 5 | 03 Selected works | 작업물 8개를 한 줄씩 크게 — 스킨 6종 + 맞춤 제작 사례 2곳(07 TRENDIN myjiwon.com · 08 SERAPHIN adia90222.cafe24.com). 사진은 필름 리빌 + 패럴랙스, 마우스를 올리면 DEMO / VISIT 커서 |
 | 6 | 04 What's inside | 공통 기능 8개 |
 | 7 | 05 Mobile first | 휴대폰 화면 6개가 옆으로 흐름 (검정 배경) |
 | 8 | 06 Shop the skins | 카페24 메인 진열 1(추천상품) 6개, 3열 |
@@ -65,6 +66,8 @@
 | 13 | 문의 | "Let's fix your store." + 문의 버튼 (검정 배경, 푸터와 바로 붙음) |
 
 - 파일 : `layout/basic/css/fixable-agency.css`, `layout/basic/js/fixable-agency.js` (외부 라이브러리 없음)
+- 세라핌(adia90222) 효과 중 가져온 것 : 맨 위 스크롤 진행 막대, 필름 리빌, 사진 패럴랙스, 스크롤 마퀴, 커서 라벨 (원본은 `layout.html` 의 s9-fx 와 `seraphin.js`)
+- 모션 줄이기 설정이면 연속 움직임은 끄고, 히어로는 스크롤로 챕터만 넘어간다
 - 지운 파일 : `fixable-cozy-home.css/js`, `fixable-modern.css`, `fixable-editorial.css`, `st-world.css` (옛 쇼핑몰 메인 전용)
 - `<main id="lw-home">` 는 그대로 둔다 → 공통 CSS 의 `body:has(#lw-home)` 와 편집 모드가 메인으로 알아본다
 - 이벤트 팝업은 끔 (`store-content.js` 의 `popup.enabled = false`)
@@ -75,7 +78,10 @@
 |---|---|
 | `work-*.webp` (PC 첫 화면) · `mobile-*.webp` (휴대폰 첫 화면) | 6개 쇼핑몰 캡처 |
 | `mock-*.webp` (1672×1100) · 상품 `p01~p06.jpg` | 브라우저 창 + 휴대폰 목업 |
-| `hero-fixable.webp` (1920×1080) | 6개 화면을 기울어진 격자로 놓은 쇼릴 |
+| `hero-fixable.webp` (1920×1080) | 화면들을 기울어진 격자로 놓은 쇼릴 |
+| `scene-*.webp` (1920×1080) | 첫 화면 뒤 사진 7장 — 각 쇼핑몰 저장소의 히어로 사진(글자 없음) + TRENDIN `public/trendar/hero/hero-pearl-03.webp` |
+| `mock-trendin.webp` · `work-trendin.webp` | TRENDIN : `tlsdmsrud902/viral-finder` 를 `npm ci` → `npx next dev -p 3100` 로 띄워 찍음 |
+| `mock-seraphin.webp` | 세라핌 : **글자형 임시 이미지**. 이 작업 환경에서 adia90222.cafe24.com 이 막혀 캡처하지 못했다 → `_deploy/shots/seraphin-d.png` · `-m.png` 를 넣고 `fixable-images.js` 의 SITES 에 추가해 다시 만든다 |
 | `card-style.webp` · `card-life.webp` | 휴대폰 3대 |
 | `logo-fixable.webp` · `logo-fixable-white.webp` · `wordmark-fixable.webp` | Jost 글자 로고, 배경 투명 |
 

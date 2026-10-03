@@ -1,65 +1,165 @@
 /* fixable 메인 움직임 (index.html 전용) — 외부 라이브러리 없이 동작한다.
-   1) 화면에 들어오면 아래에서 올라오기  2) 쇼릴 사진이 스크롤에 맞춰 커지기  3) 소개 문장이 한 단어씩 진해지기 */
+   1) 스크롤 히어로 (myjiwon.com 방식) : 무대가 화면에 붙어 있는 동안 스크롤 진행률 --p 로
+      뒤의 쇼핑몰 화면이 차례로 겹쳐 넘어가고, 앞 패널은 챕터 01~04 로 바뀐다. 마우스 시차 --mx · --my
+   2) 세라핌 효과 : 맨 위 진행 막대 · 필름 리빌(가장자리부터 펼쳐짐) · 사진 패럴랙스 · 스크롤에 밀리는 글자 띠 · 커서 라벨
+   3) 등장 : 화면에 들어오면 아래에서 올라오기, 소개 문장은 한 단어씩 진해지기
+   모션을 줄이는 설정(prefers-reduced-motion)이면 연속 움직임은 끄고, 히어로 챕터 전환만 스크롤로 넘긴다. */
 (function () {
   'use strict';
+  var clamp = function (v, a, b) { return Math.max(a, Math.min(b, v)); };
+  var esc = function (t) { return t.replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; }); };
+
   function init() {
     var home = document.querySelector('#lw-home.fx');
     if (!home) return;
     if (window.FIXABLE_CMS && FIXABLE_CMS.applyCached) { try { FIXABLE_CMS.applyCached(); } catch (e) {} }
     var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
     var editing = /[?&]edit=1(&|$)/.test(location.search);
+    var finePointer = window.matchMedia && matchMedia('(hover: hover) and (pointer: fine)').matches;
+    var Q = function (s) { return Array.prototype.slice.call(home.querySelectorAll(s)); };
 
-    // 1) 등장 : 제목 줄 · 카드마다 data-fx-in, 같은 줄 카드는 조금씩 늦게
+    // 헤더(띠배너 + 메뉴) 높이 → 히어로 글자가 헤더 밑에서 시작하게
+    function headerH() {
+      var h = document.getElementById('header'), b = h ? h.getBoundingClientRect().bottom : 98;
+      home.style.setProperty('--fx-hh', Math.max(56, Math.round(b)) + 'px');
+    }
+    headerH();
+
+    // 제목 글자를 한 글자씩 (편집 모드에서는 원문 그대로)
+    if (!editing && !still) {
+      var delay = 120;
+      Q('[data-fx-chars]').forEach(function (el) {
+        var text = el.textContent;
+        el.setAttribute('aria-label', text);
+        el.innerHTML = [].map.call(text, function (ch, i) {
+          return ch === ' ' ? ' ' : '<span class="fx-ch" aria-hidden="true" style="animation-delay:' + (delay + i * 28) + 'ms">' + esc(ch) + '</span>';
+        }).join('');
+        delay += text.length * 28 + 120;
+      });
+    }
+
+    // ── 1) 스크롤 히어로 ─────────────────────────────
+    var pin = home.querySelector('[data-fx-hero]');
+    var stage = pin && pin.querySelector('[data-fx-stage]');
+    var scenes = pin ? Q('[data-fx-scene]') : [];
+    var tabs = pin ? Q('[data-fx-tab]') : [];
+    var chaps = pin ? Q('[data-fx-chap]') : [];
+    var chapter = -1;
+    function setChapter(i) {
+      if (i === chapter) return;
+      chapter = i;
+      tabs.forEach(function (t, k) { t.setAttribute('aria-selected', k === i ? 'true' : 'false'); t.classList.toggle('is-past', k < i); });
+      chaps.forEach(function (c, k) { c.classList.toggle('is-on', k === i); });
+    }
+    setChapter(0);
+    function heroProgress() {
+      var r = pin.getBoundingClientRect(), dist = pin.offsetHeight - stage.offsetHeight;
+      return dist > 0 ? clamp(-r.top / dist, 0, 1) : 0;
+    }
+    // 장면 n장을 진행률에 나눠 배치 : 앞 장면 위로 다음 장면이 겹쳐 들어오며(opacity) 살짝 당겨진다(scale)
+    function paintHero(p) {
+      stage.style.setProperty('--p', p.toFixed(4));
+      var n = scenes.length;
+      if (n && !still) {
+        var f = p * (n - 1), base = Math.floor(f), frac = f - base;
+        scenes.forEach(function (img, i) {
+          // 뒤 장면이 위에 쌓인다 : 지나온 장면은 1, 다음 장면은 진행만큼 겹쳐 들어오고, 나머지는 0
+          var o = i <= base ? 1 : i === base + 1 ? frac : 0;
+          var z = 1.14 - clamp(f - i + 1, 0, 2) * 0.05;   // 들어오는 동안 1.14 → 1.04 로 당겨진다
+          img.style.setProperty('--o', o.toFixed(3));
+          img.style.setProperty('--z', z.toFixed(4));
+        });
+      } else if (n) {
+        var k = Math.min(n - 1, Math.round(p * (n - 1)));
+        scenes.forEach(function (img, i) { img.style.setProperty('--o', i === k ? '1' : '0'); img.style.setProperty('--z', '1'); });
+      }
+      setChapter(Math.min(tabs.length - 1, Math.floor(p * tabs.length * 0.999)));
+    }
+    tabs.forEach(function (t, k) {
+      t.addEventListener('click', function () {
+        var dist = pin.offsetHeight - stage.offsetHeight, top = pin.getBoundingClientRect().top + window.pageYOffset;
+        window.scrollTo({ top: top + dist * ((k + 0.5) / tabs.length), behavior: still ? 'auto' : 'smooth' });
+      });
+    });
+    if (pin && finePointer && !still) {
+      var mx = 0, my = 0, praf = 0;
+      window.addEventListener('pointermove', function (e) {
+        mx = e.clientX / window.innerWidth * 2 - 1; my = e.clientY / window.innerHeight * 2 - 1;
+        if (!praf) praf = requestAnimationFrame(function () { praf = 0; stage.style.setProperty('--mx', mx.toFixed(3)); stage.style.setProperty('--my', my.toFixed(3)); });
+      }, { passive: true });
+    }
+
+    // ── 3) 등장 ─────────────────────────────────────
     if (!still && !editing && 'IntersectionObserver' in window) {
       document.documentElement.classList.add('fx-js');
-      var groups = ['.fx-head', '.fx-about__sub', '.fx-why__list li', '.fx-work', '.fx-feat li', '.fx-mobile__head', '.fx-steps li', '.fx-plan', '.fx-faq details', '.fx-contact__row', '.fx-shop .prdList > li'];
-      groups.forEach(function (sel) {
-        [].forEach.call(home.querySelectorAll(sel), function (el, i) {
-          el.setAttribute('data-fx-in', '');
-          el.style.setProperty('--d', (i % 4) * 0.08 + 's');
-        });
+      ['.fx-head', '.fx-about__sub', '.fx-why__list li', '.fx-work__info', '.fx-feat li', '.fx-mobile__head', '.fx-steps li', '.fx-plan', '.fx-faq details', '.fx-contact__row', '.fx-shop .prdList > li', '.fx-hero__meta li'].forEach(function (sel) {
+        Q(sel).forEach(function (el, i) { el.setAttribute('data-fx-in', ''); el.style.setProperty('--d', (i % 4) * 0.08 + 's'); });
       });
       var io = new IntersectionObserver(function (list) {
         list.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); } });
       }, { rootMargin: '0px 0px -8% 0px' });
-      [].forEach.call(home.querySelectorAll('[data-fx-in]'), function (el) { io.observe(el); });
-      // 상품 진열은 카페24 가 나중에 채울 수 있어 다시 한 번
-      setTimeout(function () {
-        [].forEach.call(home.querySelectorAll('.fx-shop .prdList > li:not([data-fx-in])'), function (el) { el.setAttribute('data-fx-in', ''); io.observe(el); });
-      }, 1200);
+      Q('[data-fx-in]').forEach(function (el) { io.observe(el); });
+      setTimeout(function () { Q('.fx-shop .prdList > li:not([data-fx-in])').forEach(function (el) { el.setAttribute('data-fx-in', ''); io.observe(el); }); }, 1200);
     }
-
-    // 3) 소개 문장을 단어로 나눈다 (편집 모드에서는 원문 그대로 둔다)
     var words = home.querySelector('[data-fx-words]');
     if (words && !editing && !still) {
       var text = words.textContent.trim();
       words.setAttribute('aria-label', text);
-      words.innerHTML = text.split(/\s+/).map(function (w) { return '<span class="w" aria-hidden="true">' + w.replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; }) + '</span>'; }).join(' ');
+      words.innerHTML = text.split(/\s+/).map(function (w) { return '<span class="w" aria-hidden="true">' + esc(w) + '</span>'; }).join(' ');
     }
     var wordEls = words ? words.querySelectorAll('.w') : [];
 
-    // 2) + 3) 스크롤 따라 움직이는 것들
-    var reel = home.querySelector('[data-fx-reel]');
-    var ticking = false;
+    // ── 2) 세라핌 효과 ──────────────────────────────
+    var bar = null;
+    if (!still) { bar = document.getElementById('fxProgress') || document.createElement('div'); bar.id = 'fxProgress'; document.body.appendChild(bar); }
+    var films = still ? [] : Q('[data-fx-film], .fx-work__media');
+    var pars = still ? [] : Q('.fx-reel, .fx-work__media').map(function (box) { return { box: box, img: box.querySelector('img') }; }).filter(function (x) { return x.img; });
+    var marq = still ? [] : Q('[data-fx-marq]');
+
+    if (finePointer && !still) {
+      var zones = Q('[data-fx-cursor]');
+      if (zones.length) {
+        var cur = document.createElement('div'); cur.className = 'fx-cursor'; cur.setAttribute('aria-hidden', 'true'); document.body.appendChild(cur);
+        var cx = 0, cy = 0, tx = 0, ty = 0, on = false, craf = 0;
+        var loop = function () { craf = 0; tx += (cx - tx) * 0.2; ty += (cy - ty) * 0.2; cur.style.transform = 'translate3d(' + tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px,0)'; if (on && Math.abs(cx - tx) + Math.abs(cy - ty) > 0.3) craf = requestAnimationFrame(loop); };
+        document.addEventListener('mousemove', function (e) { cx = e.clientX; cy = e.clientY; if (on && !craf) craf = requestAnimationFrame(loop); }, { passive: true });
+        zones.forEach(function (z) {
+          z.addEventListener('mouseenter', function () { cur.textContent = z.getAttribute('data-fx-cursor') || 'VIEW'; tx = cx; ty = cy; on = true; cur.classList.add('is-on'); if (!craf) craf = requestAnimationFrame(loop); });
+          z.addEventListener('mouseleave', function () { on = false; cur.classList.remove('is-on'); });
+        });
+      }
+    }
+
+    var ticking = false, vh = window.innerHeight;
     function frame() {
       ticking = false;
-      var vh = window.innerHeight;
-      if (reel && !still) {
-        var r = reel.getBoundingClientRect();
-        var p = Math.min(1, Math.max(0, (vh - r.top) / (vh + r.height * 0.5)));
-        reel.style.setProperty('--reel', (0.9 + p * 0.1).toFixed(4));
-        reel.style.setProperty('--reel-y', (-(p - 0.5) * 40).toFixed(1) + 'px');
-      }
+      var sy = window.pageYOffset, docH = document.documentElement.scrollHeight - vh;
+      if (pin && stage) paintHero(heroProgress());
+      if (bar) bar.style.transform = 'scaleX(' + (docH > 0 ? clamp(sy / docH, 0, 1) : 0).toFixed(4) + ')';
+      films.forEach(function (f) {    // 화면 아래에서 올라올수록 가장자리 여백(--fi)이 0 으로
+        var r = f.getBoundingClientRect(); if (r.bottom < -50 || r.top > vh + 50) return;
+        var t = clamp((vh - r.top) / (vh * 0.85), 0, 1); t = t * t * (3 - 2 * t);
+        f.style.setProperty('--fi', ((1 - t) * 7).toFixed(2) + '%');
+        f.style.setProperty('--fr', ((1 - t) * 28).toFixed(1) + 'px');
+      });
+      pars.forEach(function (p) {     // 화면 가운데에서 벗어난 만큼 사진을 천천히 밀기
+        var r = p.box.getBoundingClientRect(); if (r.bottom < -50 || r.top > vh + 50) return;
+        var c = clamp((r.top + r.height / 2 - vh / 2) / vh, -1, 1);
+        p.img.style.setProperty('--py', (-c * r.height * 0.06).toFixed(1) + 'px');
+      });
+      marq.forEach(function (m) {     // 줄마다 반대 방향으로
+        var r = m.getBoundingClientRect(); if (r.bottom < -50 || r.top > vh + 50) return;
+        m.style.setProperty('--sx', ((r.top - vh) * 0.35 * (parseFloat(m.getAttribute('data-fx-marq')) || 1)).toFixed(1) + 'px');
+      });
       if (wordEls.length) {
         var w = words.getBoundingClientRect();
-        var q = Math.min(1, Math.max(0, (vh * 0.85 - w.top) / (w.height + vh * 0.35)));
-        var n = Math.round(q * wordEls.length);
+        var q = clamp((vh * 0.85 - w.top) / (w.height + vh * 0.35), 0, 1), n = Math.round(q * wordEls.length);
         for (var i = 0; i < wordEls.length; i++) wordEls[i].classList.toggle('on', i < n);
       }
     }
     function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(frame); } }
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
+    window.addEventListener('resize', function () { vh = window.innerHeight; headerH(); onScroll(); });
     frame();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();

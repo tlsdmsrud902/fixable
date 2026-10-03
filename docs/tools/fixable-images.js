@@ -20,8 +20,11 @@ const SITES = [
   { key: 'baby', shot: 'baby', code: 'p03', name: 'BABYANG' },
   { key: 'food', shot: 'food902', code: 'p04', name: 'FOOD902' },
   { key: 'inter', shot: 'inter', code: 'p05', name: 'INTER902' },
-  { key: 'pet', shot: 'pet', code: 'p06', name: 'PETPIA' }
+  { key: 'pet', shot: 'pet', code: 'p06', name: 'PETPIA' },
+  // 판매 상품이 아닌 작업물(샘플 사이트) : 상품 이미지는 만들지 않는다
+  { key: 'trendin', shot: 'trendin', name: 'TRENDIN' }      // myjiwon.com (tlsdmsrud902/viral-finder, next dev 로 띄워 찍음)
 ];
+// 세라핌(adia90222.cafe24.com) : 캡처가 없어 글자형 대표 이미지로 둔다. _deploy/shots/seraphin-d.png · -m.png 가 생기면 SITES 에 옮긴다
 const src = (s, t) => 'file://' + path.join(SHOTS, s.shot + '-' + t + '.png');
 // 글꼴 : Jost (가변 굵기). 웹 글꼴은 캡처 시점에 늦게 붙어서, 내려받은 파일을 직접 쓴다
 const JOST = path.join(REPO, '_deploy/fonts/jost.woff2');
@@ -40,11 +43,14 @@ const mock = (s, W, H, bg) => `${FONT}<style>${BASE}body{width:${W}px;height:${H
 <div class="win"><i><b></b><b></b><b></b></i><img src="${src(s, 'd')}"></div><div class="phone"><img src="${src(s, 'm')}"></div>`;
 
 // 히어로 : 6개 화면이 기울어진 격자로 흐르는 쇼릴
+const typeTile = (W, H, word, sub) => `${FONT}<style>body{margin:0;width:${W}px;height:${H}px;background:#ededed;display:flex;align-items:center;justify-content:center;font-family:Jost}
+.c{width:${W * .74}px;aspect-ratio:16/10;background:#121212;border-radius:16px;box-shadow:0 30px 80px rgba(0,0,0,.2);display:flex;flex-direction:column;justify-content:center;align-items:center;gap:22px;color:#fff}
+b{font-weight:500;font-size:${W * .085}px;letter-spacing:.18em;margin-right:-.18em}i{font-style:normal;font-size:${W * .014}px;letter-spacing:.3em;opacity:.6}</style><div class="c"><b>${word}</b><i>${sub}</i></div>`;
 const hero = (W, H) => `${FONT}<style>${BASE}body{width:${W}px;height:${H}px;background:#0f0f10}
 .g{position:absolute;left:-14%;top:-30%;width:128%;display:grid;grid-template-columns:repeat(3,1fr);gap:34px;transform:rotate(-8deg) skewX(4deg)}
 .g .win{box-shadow:0 40px 80px rgba(0,0,0,.5)}.g .win:nth-child(3n+2){transform:translateY(-120px)}
 .v{position:absolute;inset:0;background:linear-gradient(90deg,rgba(15,15,16,.86) 0%,rgba(15,15,16,.35) 55%,rgba(15,15,16,.1) 100%)}</style>
-<div class="g">${[...SITES, ...SITES, ...SITES].map(s => `<div class="win"><i><b></b><b></b><b></b></i><img src="${src(s, 'd')}"></div>`).join('')}</div><div class="v"></div>`;
+<div class="g">${[...SITES, ...SITES, ...SITES].slice(0, 18).map(s => `<div class="win"><i><b></b><b></b><b></b></i><img src="${src(s, 'd')}"></div>`).join('')}</div><div class="v"></div>`;
 
 // 휴대폰 3대 나란히 (세로 카드)
 const phones = (list, W, H, bg) => `${FONT}<style>${BASE}body{width:${W}px;height:${H}px;background:${bg};display:flex;align-items:center;justify-content:center;gap:${W * .04}px}
@@ -80,6 +86,7 @@ const logo = (W, H, size, color, text) => `${FONT}<style>body{margin:0;width:${W
       execFileSync('ffmpeg', ['-v', 'error', '-y', '-i', path.join(SHOTS, s.shot + '-m.png'), '-vf', 'scale=600:-2', '-c:v', 'libwebp', '-quality', '80', path.join(OUT, 'mobile-' + s.key + '.webp')]);
       console.log('work-' + s.key + '.webp · mobile-' + s.key + '.webp');
     }
+    await render(typeTile(1672, 1100, 'SERAPHIN', 'SCROLL INTERACTIVE STORE'), 1672, 1100, path.join(OUT, 'mock-seraphin.webp'));
     await render(phones([SITES[0], SITES[1], SITES[4]], 1086, 1448, '#e9e9e9'), 1086, 1448, path.join(OUT, 'card-style.webp'));
     await render(phones([SITES[2], SITES[3], SITES[5]], 1086, 1448, '#1a1a1a'), 1086, 1448, path.join(OUT, 'card-life.webp'));
   }
@@ -89,7 +96,7 @@ const logo = (W, H, size, color, text) => `${FONT}<style>body{margin:0;width:${W
     await render(logo(2146, 724, 560, '#d4d4d4', 'fixable.'), 2146, 724, path.join(OUT, 'wordmark-fixable.webp'), { alpha: true });
   }
   if (!only || only === 'products') {
-    for (const s of SITES) await render(mock(s, 800, 800, '#efefef').replace('top:96px', 'top:150px'), 800, 800, path.join(PRD, s.code + '.jpg'));
+    for (const s of SITES.filter(x => x.code)) await render(mock(s, 800, 800, '#efefef').replace('top:96px', 'top:150px'), 800, 800, path.join(PRD, s.code + '.jpg'));
   }
   await b.close();
 })();
