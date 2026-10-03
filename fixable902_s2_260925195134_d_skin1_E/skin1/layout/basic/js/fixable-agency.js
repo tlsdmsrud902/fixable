@@ -160,14 +160,16 @@
     if (whyLine) { whyPos(); whyPaint(); window.addEventListener('resize', function () { whyPos(); whyPaint(); }); window.addEventListener('scroll', whyPaint, { passive: true }); window.addEventListener('load', function () { whyPos(); whyPaint(); }); }
 
     // ── 문의 「fixable.」 점 글자 : 글자를 보이지 않는 캔버스에 그려 픽셀을 일정 간격으로 훑어 점 자리를 만든다.
-    //    화면에 처음 들어오면 흩어진 점이 제자리로 모이고, 마우스 근처 점은 밀려나며 하얗게, 누르면 그 자리에서 터졌다가 다시 모인다 ──
+    //    화면에 처음 들어오면 어둠 속에서 점이 하나둘 떠오르듯 왼쪽부터 천천히(약 4초) 제자리를 찾고, 그 뒤로는 아주 작게 숨 쉬듯 일렁인다.
+    //    마우스 근처 점은 물결처럼 천천히 밀려나며 은은하게 밝아지고, 누르면 그 자리에서 부드럽게 퍼졌다가 다시 모인다 ──
     var dotEm = home.querySelector('[data-fx-dots]');
     if (dotEm && !editing && window.HTMLCanvasElement) (function () {
       var cv = document.createElement('canvas'), g = cv.getContext('2d');
       if (!g) return;
       cv.className = 'fx-dots'; cv.setAttribute('aria-hidden', 'true');
-      var P = [], W = 0, H = 0, pad = 0, dpr = 1, gap = 6, rad = 2, mx = -1e4, my = -1e4, vis = false, raf = 0, born = false;
-      var area = dotEm.closest('section') || dotEm;
+      var P = [], W = 0, H = 0, pad = 0, dpr = 1, gap = 6, rad = 2, mx = -1e4, my = -1e4, vis = false, raf = 0, t0 = 0, settled = !!still;
+      var area = dotEm.closest('section') || dotEm, LV = 10;
+      var ease = function (t) { return t <= 0 ? 0 : t >= 1 ? 1 : 1 - Math.pow(1 - t, 4); };
       function build() {
         var r = dotEm.getBoundingClientRect(), cs = getComputedStyle(dotEm), fs = parseFloat(cs.fontSize), text = (dotEm.textContent || '').trim();
         if (!r.width || !fs) return;
@@ -179,50 +181,63 @@
         if ('letterSpacing' in o) o.letterSpacing = cs.letterSpacing;
         var m = o.measureText(text), asc = m.actualBoundingBoxAscent || fs * 0.75, desc = m.actualBoundingBoxDescent || 0;
         o.fillText(text, pad + (m.actualBoundingBoxLeft || 0), pad + (r.height - asc - desc) / 2 + asc);
-        var px = o.getImageData(0, 0, W, H).data;
+        var px = o.getImageData(0, 0, W, H).data, minX = W, maxX = 0;
         gap = Math.max(4, Math.round(fs / 46)); rad = gap * 0.36;
         P = [];
         for (var y = 0; y < H; y += gap) for (var x = 0; x < W; x += gap) {
-          if (px[(y * W + x) * 4 + 3] > 128) P.push(born || still ? { hx: x, hy: y, x: x, y: y, vx: 0, vy: 0 } : { hx: x, hy: y, x: x + (Math.random() - 0.5) * W * 0.5, y: y + H * (0.4 + Math.random()), vx: 0, vy: 0 });
+          if (px[(y * W + x) * 4 + 3] < 128) continue;
+          minX = Math.min(minX, x); maxX = Math.max(maxX, x);
+          var ang = Math.random() * 6.2832, dist = gap * (3 + Math.random() * 9);
+          P.push({ hx: x, hy: y, sx: x + Math.cos(ang) * dist, sy: y + Math.sin(ang) * dist - gap * 4, x: x, y: y, vx: 0, vy: 0, ph: Math.random() * 6.2832, dl: Math.random() });
         }
+        P.forEach(function (p) { p.dl = ((p.hx - minX) / Math.max(1, maxX - minX)) * 1.6 + p.dl * 0.9; });   // 왼쪽부터 · 조금씩 엇갈려 떠오른다 (초)
         if (!cv.parentNode) { dotEm.appendChild(cv); dotEm.classList.add('is-dots'); }
         kick(true);
       }
-      function draw() {
+      function draw(now) {
         g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, H);
-        var R = Math.max(80, gap * 18), R2 = R * R, moving = false, hot = [], cold = [];
+        var R = Math.max(110, gap * 24), R2 = R * R, sec = now / 1000, intro = !settled, buckets = [];
+        for (var k = 0; k <= LV; k++) buckets.push([]);
+        var allIn = true;
         for (var i = 0; i < P.length; i++) {
-          var p = P[i], dx = p.x - mx, dy = p.y - my, d2 = dx * dx + dy * dy;
-          if (born && !still) {
-            if (d2 < R2) { var d = Math.sqrt(d2) || 1, f = (1 - d / R) * 5; p.vx += dx / d * f; p.vy += dy / d * f; }
-            p.vx = (p.vx + (p.hx - p.x) * 0.05) * 0.84; p.vy = (p.vy + (p.hy - p.y) * 0.05) * 0.84;
+          var p = P[i], a = 1, glow = 0;
+          var bx = p.hx + Math.sin(sec * 0.7 + p.ph) * gap * 0.12, by = p.hy + Math.cos(sec * 0.6 + p.ph) * gap * 0.12;   // 숨 쉬듯 아주 작게
+          if (intro) {
+            var t = t0 ? (now - t0) / 1000 - p.dl : -1, e = ease(t / 2.4);
+            if (e < 1) allIn = false;
+            p.x = p.sx + (bx - p.sx) * e; p.y = p.sy + (by - p.sy) * e; a = Math.min(1, Math.max(0, t / 1.4));
+          } else if (!still) {
+            var dx = p.x - mx, dy = p.y - my, d2 = dx * dx + dy * dy;
+            if (d2 < R2) { var d = Math.sqrt(d2) || 1, f = (1 - d / R); p.vx += dx / d * f * 0.7; p.vy += dy / d * f * 0.7; glow = f; }
+            p.vx = (p.vx + (bx - p.x) * 0.018) * 0.9; p.vy = (p.vy + (by - p.y) * 0.018) * 0.9;
             p.x += p.vx; p.y += p.vy;
-            if (Math.abs(p.vx) + Math.abs(p.vy) > 0.04 || Math.abs(p.hx - p.x) + Math.abs(p.hy - p.y) > 0.3) moving = true;
           }
-          (d2 < R2 * 0.55 ? hot : cold).push(p);
+          if (a <= 0.01) continue;
+          buckets[Math.round(Math.min(1, a * (0.55 + glow * 0.9)) * LV)].push(p);
         }
-        [[cold, '#9a9a9a'], [hot, '#ffffff']].forEach(function (set) {
-          if (!set[0].length) return;
-          g.fillStyle = set[1]; g.beginPath();
-          set[0].forEach(function (p) { g.moveTo(p.x + rad, p.y); g.arc(p.x, p.y, rad, 0, 6.2832); });
+        if (intro && allIn && t0) settled = true;
+        for (var lv = 1; lv <= LV; lv++) {
+          var set = buckets[lv]; if (!set.length) continue;
+          var v = lv / LV, c = Math.round(60 + v * 175);   // 어두운 회색 → 밝은 회색
+          g.fillStyle = 'rgba(' + c + ',' + c + ',' + c + ',' + Math.min(1, 0.25 + v).toFixed(2) + ')'; g.beginPath();
+          for (var j = 0; j < set.length; j++) { var q = set[j]; g.moveTo(q.x + rad, q.y); g.arc(q.x, q.y, rad, 0, 6.2832); }
           g.fill();
-        });
-        return moving;
+        }
       }
-      function loop() { raf = 0; if (draw() && vis) raf = requestAnimationFrame(loop); }
+      function loop(now) { raf = 0; draw(now); if (vis && !still) raf = requestAnimationFrame(loop); }
       function kick(force) { if (!raf && (vis || force)) raf = requestAnimationFrame(loop); }
       if (!still) {
-        area.addEventListener('pointermove', function (e) { var r = cv.getBoundingClientRect(); mx = e.clientX - r.left; my = e.clientY - r.top; kick(); }, { passive: true });
-        area.addEventListener('pointerleave', function () { mx = my = -1e4; kick(); });
-        area.addEventListener('pointerdown', function (e) {   // 누른 자리에서 점이 터진다
+        area.addEventListener('pointermove', function (e) { var r = cv.getBoundingClientRect(); mx = e.clientX - r.left; my = e.clientY - r.top; }, { passive: true });
+        area.addEventListener('pointerleave', function () { mx = my = -1e4; });
+        area.addEventListener('pointerdown', function (e) {   // 누른 자리에서 물결처럼 퍼졌다가 천천히 돌아온다
+          if (!settled) return;
           var r = cv.getBoundingClientRect(), bx = e.clientX - r.left, by = e.clientY - r.top;
-          P.forEach(function (p) { var dx = p.x - bx, dy = p.y - by, d = Math.sqrt(dx * dx + dy * dy) || 1, f = Math.max(0, 1 - d / (W * 0.7)) * 60; p.vx += dx / d * f + (Math.random() - 0.5) * 2; p.vy += dy / d * f + (Math.random() - 0.5) * 2; });
-          kick();
+          P.forEach(function (p) { var dx = p.x - bx, dy = p.y - by, d = Math.sqrt(dx * dx + dy * dy) || 1, f = Math.max(0, 1 - d / (W * 0.5)) * 9; p.vx += dx / d * f; p.vy += dy / d * f; });
         });
       }
       if ('IntersectionObserver' in window) {
-        new IntersectionObserver(function (es) { vis = es[0].isIntersecting; if (vis) { if (!born) setTimeout(function () { born = true; kick(); }, 150); kick(); } }, { threshold: 0.2 }).observe(dotEm);
-      } else { vis = born = true; }
+        new IntersectionObserver(function (es) { vis = es[0].isIntersecting; if (vis) { if (!t0) t0 = performance.now() + 250; kick(); } }, { threshold: 0.25 }).observe(dotEm);
+      } else { vis = true; t0 = performance.now(); }
       var rz = 0;
       window.addEventListener('resize', function () { clearTimeout(rz); rz = setTimeout(build, 200); });
       (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(build);
