@@ -126,7 +126,7 @@
     // ── 3) 등장 ─────────────────────────────────────
     if (!still && !editing && 'IntersectionObserver' in window) {
       document.documentElement.classList.add('fx-js');
-      ['.fx-head', '.fx-about__sub', '.fx-why__list li', '.fx-work__info', '.fx-feat2__copy', '.fx-feat li', '.fx-mobile__head', '.fx-steps li', '.fx-plan', '.fx-faq details', '.fx-contact__row', '.fx-hero__meta li'].forEach(function (sel) {
+      ['.fx-head', '.fx-about__sub', '.fx-why__list li', '.fx-work__info', '.fx-feat2__copy', '.fx-feat li', '.fx-mobile__head', '.fx-steps li', '.fx-plan', '.fx-faq details', '.fx-hero__meta li'].forEach(function (sel) {
         Q(sel).forEach(function (el, i) { el.setAttribute('data-fx-in', ''); el.style.setProperty('--d', (i % 4) * 0.08 + 's'); });
       });
       var io = new IntersectionObserver(function (list) {
