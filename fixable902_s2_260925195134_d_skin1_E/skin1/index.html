@@ -110,11 +110,12 @@
     </div>
   </section>
 
-  <!-- 4. 왜 fixable : 줄마다 고민 → 해결. 화면에 들어오면 고민에 줄이 그어지고 답이 들어온다 -->
+  <!-- 4. 왜 fixable : 줄마다 고민 → 해결. 내릴수록 화살표를 잇는 세로선이 따라 그려지고, 선이 닿은 줄의 화살표 · 답이 진해진다 (fixable-agency.js) -->
   <section class="fx-sec fx-why" aria-labelledby="fx-why-title" data-cms="왜 fixable" data-cms-grow>
     <div class="fx-wrap">
       <header class="fx-head"><div class="fx-label"><span>02</span><p data-cms-text="작은 제목">Why fixable</p></div><h2 id="fx-why-title" data-cms-text="제목">이런 고민, 이제 고쳐 드릴게요.</h2></header>
-      <ol class="fx-why__list">
+      <ol class="fx-why__list" data-fx-why>
+        <li class="fx-why__line" aria-hidden="true"><i></i></li>
         <li data-cms-item><div class="fx-why__p"><small>고민 01</small><p class="fx-why__q" data-cms-text="고민">“예쁜데 안 팔려요.”</p></div><span class="fx-why__arrow" aria-hidden="true"><svg><use href="#fx-arrow"/></svg></span><div class="fx-why__a"><small>fixable 의 답</small><h3 data-cms-text="해결 제목">사는 이유가 보이는 화면</h3><p data-cms-text="해결 설명">첫 화면 · 장면 속 상품 · 포토리뷰 · 체크리스트까지, 업종의 구매 이유를 순서대로 보여 주는 구성으로 만들었어요.</p></div></li>
         <li data-cms-item><div class="fx-why__p"><small>고민 02</small><p class="fx-why__q" data-cms-text="고민">“글자 하나 바꾸는데 개발자를 불러요.”</p></div><span class="fx-why__arrow" aria-hidden="true"><svg><use href="#fx-arrow"/></svg></span><div class="fx-why__a"><small>fixable 의 답</small><h3 data-cms-text="해결 제목">코드 없이 직접 고치는 편집 모드</h3><p data-cms-text="해결 설명">관리자 전용 편집 모드를 켜면 영역마다 [고치기] 버튼이 생겨요. 사진 · 문구 · 배너를 게시판 글처럼 바꿉니다.</p></div></li>
         <li data-cms-item><div class="fx-why__p"><small>고민 03</small><p class="fx-why__q" data-cms-text="고민">“세일을 해도 반응이 없어요.”</p></div><span class="fx-why__arrow" aria-hidden="true"><svg><use href="#fx-arrow"/></svg></span><div class="fx-why__a"><small>fixable 의 답</small><h3 data-cms-text="해결 제목">들어오면 사게 만드는 장치</h3><p data-cms-text="해결 설명">쿠폰 뽑기 · 타임세일 띠 · 할인율 강조 · 세일 전용 화면이 기본으로 들어 있어요. 쿠폰 번호만 넣으면 바로 써요.</p></div></li>
@@ -468,12 +469,11 @@
     </div>
   </section>
 
-  <!-- 13. 문의 : Let’s fix your store. 큰 글자 바로 아래에 fixable 워드마크를 겹쳐 한 덩어리로 -->
+  <!-- 13. 문의 : 큰 글자 두 줄 「Let’s fix / fixable.」 -->
   <section class="fx-contact" id="fx-contact" aria-labelledby="fx-contact-title" data-cms="문의">
     <div class="fx-wrap">
       <p class="fx-eyebrow fx-eyebrow--light" data-cms-text="작은 글"><i></i>Start a project</p>
-      <h2 id="fx-contact-title" class="fx-contact__title" data-cms-text="영문 큰 글">Let’s fix<br><em>your store.</em></h2>
+      <h2 id="fx-contact-title" class="fx-contact__title" data-cms-text="영문 큰 글">Let’s fix<br><em>fixable.</em></h2>
     </div>
-    <div class="fx-contact__mark"><img data-cms-src="큰 글자 사진" src="/SkinImg/fixable/wordmark-fixable.webp" alt="fixable" width="2146" height="724" loading="lazy"></div>
   </section>
 </main>

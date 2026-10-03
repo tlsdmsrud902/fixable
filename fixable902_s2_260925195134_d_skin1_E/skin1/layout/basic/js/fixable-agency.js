@@ -126,7 +126,7 @@
     // ── 3) 등장 ─────────────────────────────────────
     if (!still && !editing && 'IntersectionObserver' in window) {
       document.documentElement.classList.add('fx-js');
-      ['.fx-head', '.fx-about__sub', '.fx-why__list li', '.fx-work__info', '.fx-feat2__copy', '.fx-feat li', '.fx-mobile__head', '.fx-steps li', '.fx-plan', '.fx-faq details', '.fx-hero__meta li'].forEach(function (sel) {
+      ['.fx-head', '.fx-about__sub', '.fx-why__list li:not(.fx-why__line)', '.fx-work__info', '.fx-feat2__copy', '.fx-feat li', '.fx-mobile__head', '.fx-steps li', '.fx-plan', '.fx-faq details', '.fx-hero__meta li'].forEach(function (sel) {
         Q(sel).forEach(function (el, i) { el.setAttribute('data-fx-in', ''); el.style.setProperty('--d', (i % 4) * 0.08 + 's'); });
       });
       var io = new IntersectionObserver(function (list) {
@@ -141,6 +141,23 @@
       words.innerHTML = text.split(/\s+/).map(function (w) { return '<span class="w" aria-hidden="true">' + esc(w) + '</span>'; }).join(' ');
     }
     var wordEls = words ? words.querySelectorAll('.w') : [];
+
+    // ── 왜 fixable : 화살표 동그라미를 잇는 세로선. 화면 60% 높이를 기준으로 내린 만큼 선이 채워지고, 선이 지나간 줄은 .is-on ──
+    var whyList = home.querySelector('[data-fx-why]'), whyLine = whyList && whyList.querySelector('.fx-why__line');
+    var whyRows = whyList ? [].slice.call(whyList.querySelectorAll('li:not(.fx-why__line)')) : [];
+    var whyNode = function (li) { var ar = li.querySelector('.fx-why__arrow'); return { x: li.offsetLeft + ar.offsetLeft + ar.offsetWidth / 2, y: li.offsetTop + ar.offsetTop + ar.offsetHeight / 2 }; };   // offset 값이라 등장 움직임(transform)과 상관없다
+    var whyPos = function () {
+      if (!whyLine || whyRows.length < 2) return;
+      var a = whyNode(whyRows[0]), z = whyNode(whyRows[whyRows.length - 1]);
+      whyLine.style.setProperty('--lx', a.x + 'px'); whyLine.style.setProperty('--ly', a.y + 'px'); whyLine.style.setProperty('--lh', (z.y - a.y) + 'px');
+    };
+    var whyPaint = function () {
+      if (!whyLine) return;
+      var mark = window.innerHeight * 0.6, top = whyList.getBoundingClientRect().top, a = whyNode(whyRows[0]).y, h = parseFloat(whyLine.style.getPropertyValue('--lh')) || 0;
+      whyLine.style.setProperty('--p', h ? clamp((mark - top - a) / h, 0, 1).toFixed(4) : 0);
+      whyRows.forEach(function (li) { li.classList.toggle('is-on', still || editing || top + whyNode(li).y <= mark); });
+    };
+    if (whyLine) { whyPos(); whyPaint(); window.addEventListener('resize', function () { whyPos(); whyPaint(); }); window.addEventListener('scroll', whyPaint, { passive: true }); window.addEventListener('load', function () { whyPos(); whyPaint(); }); }
 
     // ── 숫자 띠 : 숫자 한 칸마다 0~9 기둥을 만들어 두고, 화면에 들어올 때마다 두 바퀴 굴러 목표 숫자에 멈춘다 ──
     if (!still && !editing) Q('[data-fx-odo]').forEach(function (strip) {
