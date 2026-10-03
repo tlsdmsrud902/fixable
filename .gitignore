@@ -1,0 +1,6 @@
+_deploy/
+/*.png
+/photos/
+/*.jpg
+.claude/
+node_modules/
