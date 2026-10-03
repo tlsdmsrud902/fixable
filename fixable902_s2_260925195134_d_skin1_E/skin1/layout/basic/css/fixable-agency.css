@@ -146,13 +146,21 @@ html.fx-js #lw-home.fx [data-fx-in].is-in{opacity:1;transform:none}
 /* 4. 왜 fixable */
 #lw-home.fx .fx-why{background:var(--fx-soft)}
 #lw-home.fx .fx-why .fx-head{border-color:#d9d9d9}
-#lw-home.fx .fx-why__list{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;background:#d9d9d9;border:1px solid #d9d9d9}
-#lw-home.fx .fx-why__list li{display:flex;gap:28px;padding:clamp(28px,3.4vw,52px);background:var(--fx-soft);transition:background .4s}
-#lw-home.fx .fx-why__list li:hover{background:#fff}
-#lw-home.fx .fx-why__no{font:500 64px/.8 Jost,sans-serif;color:transparent;-webkit-text-stroke:1px var(--fx-ink)}
-#lw-home.fx .fx-why__q{color:var(--fx-mute);font-size:16px;margin-bottom:14px}
-#lw-home.fx .fx-why__list h3{font-size:clamp(22px,1.9vw,30px);font-weight:600;letter-spacing:-.04em;margin-bottom:12px}
-#lw-home.fx .fx-why__list p:last-child{color:#555;line-height:1.75;font-size:16px}
+/* 왜 fixable : 줄마다 「고민 → 해결」. 고민은 흐린 글씨, 화면에 들어오면 줄이 그어진다. 마우스를 올리면 그 줄이 흰 카드로 떠오른다 */
+#lw-home.fx .fx-why__list{display:flex;flex-direction:column;margin:0;padding:0;list-style:none}
+#lw-home.fx .fx-why__list li{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 56px minmax(0,1.2fr);align-items:center;gap:clamp(18px,3vw,56px);padding:clamp(28px,3vw,44px) clamp(14px,2.2vw,36px);border-radius:22px;transition:background .45s var(--fx-e),box-shadow .45s var(--fx-e)}
+#lw-home.fx .fx-why__list li::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:#d9d9d9;transition:opacity .3s}
+#lw-home.fx .fx-why__list li:last-child::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:#d9d9d9;transition:opacity .3s}
+#lw-home.fx .fx-why__list li:hover{background:#fff;box-shadow:0 24px 60px -30px rgba(0,0,0,.25)}
+#lw-home.fx .fx-why__list li:hover::before,#lw-home.fx .fx-why__list li:hover+li::before,#lw-home.fx .fx-why__list li:last-child:hover::after{opacity:0}
+#lw-home.fx .fx-why__p small,#lw-home.fx .fx-why__a small{display:block;margin-bottom:12px;font:500 12px/1 Jost,Pretendard,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--fx-mute)}
+#lw-home.fx .fx-why__q{position:relative;display:inline;font-size:clamp(20px,1.9vw,28px);font-weight:500;letter-spacing:-.04em;line-height:1.4;color:#7a7a7a;background:linear-gradient(currentColor,currentColor) 0 58%/0 1.5px no-repeat;transition:background-size .9s var(--fx-e) calc(var(--d,0s) + .45s),color .6s}
+#lw-home.fx .fx-why__list li.is-in .fx-why__q,html:not(.fx-js) #lw-home.fx .fx-why__q{background-size:100% 1.5px;color:#999}
+#lw-home.fx .fx-why__arrow{display:grid;place-items:center;width:56px;height:56px;border-radius:50%;border:1px solid #cfcfcf;color:var(--fx-ink);transition:background .4s,color .4s,border-color .4s,transform .5s var(--fx-e)}
+#lw-home.fx .fx-why__arrow svg{width:22px;height:22px}
+#lw-home.fx .fx-why__list li:hover .fx-why__arrow{background:var(--fx-ink);border-color:var(--fx-ink);color:#fff;transform:translateX(4px)}
+#lw-home.fx .fx-why__a h3{margin:0 0 10px!important;font-size:clamp(22px,2vw,30px);font-weight:700;letter-spacing:-.045em;line-height:1.3;color:var(--fx-ink)}
+#lw-home.fx .fx-why__a p{max-width:520px;font-size:15px;line-height:1.75;color:#5a5a5a}
 
 /* 5. 작업물 */
 #lw-home.fx .fx-works__list{display:flex;flex-direction:column;gap:clamp(64px,8vw,140px)}
@@ -276,9 +284,11 @@ html.fx-js #lw-home.fx [data-fx-in].is-in{opacity:1;transform:none}
   #lw-home.fx .fx-tabs button{padding:6px 7px 8px}
   #lw-home.fx .fx-stage__poster,#lw-home.fx .fx-stage__video{object-position:50% 20%;transform:translate3d(0,6%,0) scale(1.25)}
   #lw-home.fx .fx-stage__scrim{background:linear-gradient(180deg,rgba(5,5,6,.75),rgba(5,5,6,.45) 45%,rgba(5,5,6,.85))}
-  #lw-home.fx .fx-why__list{grid-template-columns:1fr}
-  #lw-home.fx .fx-why__list li{flex-direction:column;gap:16px}
-  #lw-home.fx .fx-why__no{font-size:44px}
+  #lw-home.fx .fx-why__list li{grid-template-columns:1fr;gap:14px;padding:26px 4px}
+  #lw-home.fx .fx-why__list li:hover{background:transparent;box-shadow:none}
+  #lw-home.fx .fx-why__list li:hover::before,#lw-home.fx .fx-why__list li:hover+li::before,#lw-home.fx .fx-why__list li:last-child:hover::after{opacity:1}
+  #lw-home.fx .fx-why__arrow{width:36px;height:36px;transform:rotate(90deg)!important}
+  #lw-home.fx .fx-why__arrow svg{width:16px;height:16px}
   #lw-home.fx .fx-feat{grid-template-columns:1fr}
   #lw-home.fx .fx-feat li,#lw-home.fx .fx-feat li:nth-child(even){padding:24px 0;border-left:0;min-height:0}
   #lw-home.fx .fx-feat h3{margin-top:4px}
