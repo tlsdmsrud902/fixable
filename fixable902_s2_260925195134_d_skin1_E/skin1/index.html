@@ -15,16 +15,13 @@
        바깥 섹션이 화면보다 길고 안쪽 무대가 sticky 로 붙는다. 그 차이만큼 스크롤하는 동안
        뒤의 쇼핑몰 화면 7장이 차례로 겹쳐 넘어가고(푸시인), 앞의 패널은 챕터 01~04 로 바뀐다.
        연속값(진행률 · 마우스 시차)은 CSS 변수 --p · --mx · --my 로 내린다 → fixable-agency.js initHero -->
-  <section class="fx-pin" data-fx-hero aria-labelledby="fx-title" data-cms="첫 화면" data-cms-help="제목 · 설명 · 버튼과 뒤에 넘어가는 쇼핑몰 화면 사진을 바꿀 수 있어요. 사진은 글자 없는 가로 사진(1920×1080)이 잘 맞아요.">
+  <section class="fx-pin" data-fx-hero aria-labelledby="fx-title" data-cms="첫 화면" data-cms-help="제목 · 설명 · 버튼, 영상이 뜨기 전 사진, 오른쪽 스킨 카드 6장을 바꿀 수 있어요. 배경 영상 주소는 코드(data-fx-scrub)에서 바꿔요.">
     <div class="fx-stage" data-fx-stage>
       <div class="fx-stage__media" aria-hidden="true">
-        <img data-fx-scene data-cms-src="화면 1" src="/SkinImg/fixable/scene-wear.webp" alt="" width="1920" height="1080">
-        <img data-fx-scene data-cms-src="화면 2" src="/SkinImg/fixable/scene-eppum.webp" alt="" width="1920" height="1080" loading="lazy">
-        <img data-fx-scene data-cms-src="화면 3" src="/SkinImg/fixable/scene-trendin.webp" alt="" width="1920" height="1080" loading="lazy">
-        <img data-fx-scene data-cms-src="화면 4" src="/SkinImg/fixable/scene-baby.webp" alt="" width="1920" height="1080" loading="lazy">
-        <img data-fx-scene data-cms-src="화면 5" src="/SkinImg/fixable/scene-food.webp" alt="" width="1920" height="1080" loading="lazy">
-        <img data-fx-scene data-cms-src="화면 6" src="/SkinImg/fixable/scene-inter.webp" alt="" width="1920" height="1080" loading="lazy">
-        <img data-fx-scene data-cms-src="화면 7" src="/SkinImg/fixable/scene-pet.webp" alt="" width="1920" height="1080" loading="lazy">
+        <!-- 스크롤 진행률이 그대로 영상 재생 위치(스크럽, PC · 휴대폰) — 내리면 얼굴이 정면에서 옆으로 돈다. 루프 영상은 모션 줄이기 설정용
+             영상은 카페24 스킨 폴더에 둘 수 없어 GitHub(jsDelivr) 주소. 바꾸려면 data-fx-scrub · data-fx-loop 주소를 바꾼다 -->
+        <img class="fx-stage__poster" data-cms-src="첫 화면 사진" src="/SkinImg/fixable/hero-fixable-poster.webp" alt="" width="1600" height="900">
+        <video class="fx-stage__video" data-fx-video data-fx-scrub="https://cdn.jsdelivr.net/gh/tlsdmsrud902/fixable@1e76b45/video/hero-fixable.mp4" data-fx-loop="https://cdn.jsdelivr.net/gh/tlsdmsrud902/fixable@1e76b45/video/hero-fixable-loop.mp4" data-ready="false" muted playsinline preload="none" tabindex="-1" disablepictureinpicture></video>
         <i class="fx-stage__scrim"></i>
       </div>
       <div class="fx-stage__content">
@@ -38,29 +35,45 @@
           </div>
         </div>
         <div class="fx-panel">
-          <div class="fx-tabs" role="tablist" aria-label="첫 화면 챕터">
-            <button type="button" role="tab" data-fx-tab="0" aria-selected="true"><b>01</b><span>Design</span></button>
-            <button type="button" role="tab" data-fx-tab="1" aria-selected="false"><b>02</b><span>Sell</span></button>
-            <button type="button" role="tab" data-fx-tab="2" aria-selected="false"><b>03</b><span>Edit</span></button>
-            <button type="button" role="tab" data-fx-tab="3" aria-selected="false"><b>04</b><span>Launch</span></button>
-          </div>
+          <p class="fx-panel__label"><span>Ready-made skins</span><b data-fx-count>01</b> / 06</p>
+          <div class="fx-tabs" role="tablist" aria-label="쇼핑몰 스킨 6종"><button type="button" role="tab" data-fx-tab="0" aria-selected="true"><b>01</b><span>Fashion</span></button><button type="button" role="tab" data-fx-tab="1" aria-selected="false"><b>02</b><span>Beauty</span></button><button type="button" role="tab" data-fx-tab="2" aria-selected="false"><b>03</b><span>Kids</span></button><button type="button" role="tab" data-fx-tab="3" aria-selected="false"><b>04</b><span>Food</span></button><button type="button" role="tab" data-fx-tab="4" aria-selected="false"><b>05</b><span>Living</span></button><button type="button" role="tab" data-fx-tab="5" aria-selected="false"><b>06</b><span>Pet</span></button></div>
           <div class="fx-panel__card">
-            <p class="fx-panel__bar"><i></i><i></i><i></i><span>fixable.studio</span></p>
+            <p class="fx-panel__bar"><i></i><i></i><i></i><span>fixable.studio / skins</span></p>
             <article class="fx-chap is-on" data-fx-chap="0" data-cms-item>
-              <img src="/SkinImg/fixable/mobile-wear.webp" alt="WEAR902 휴대폰 화면" width="600" height="1298" loading="lazy" data-cms-src="사진">
-              <div><p class="fx-chap__k">01 · Design</p><h2 data-cms-text="제목">업종별 완성 디자인</h2><p data-cms-text="설명">패션부터 펫까지, 실제로 운영 중인 쇼핑몰 화면을 그대로 가져가요.</p><ul class="fx-chips"><li>패션</li><li>뷰티</li><li>키즈</li><li>푸드</li><li>리빙</li><li>펫</li></ul></div>
+              <a class="fx-chap__img" href="/product/detail.html?product_no=11" data-cms-href="상세 링크" tabindex="-1"><img src="/SkinImg/fixable/sq-wear.webp" alt="WEAR902 여성 의류 쇼핑몰 의 PC · 모바일 화면" width="480" height="480" loading="lazy" data-cms-src="사진"></a>
+              <div class="fx-chap__body"><p class="fx-chap__k">01 · <span data-cms-text="업종">Fashion</span></p><h2 data-cms-text="이름">WEAR902</h2><p class="fx-chap__kr" data-cms-text="한 줄 소개">여성 의류 쇼핑몰</p><p data-cms-text="설명">흑백 모노톤 · 패션 영상 히어로 · 스타일 찾기 · 사이즈 가이드</p>
+                <div class="fx-chap__foot"><p class="fx-chap__price" data-cms-text="가격"><b>250,000</b>원</p><a class="fx-chap__go" href="/product/detail.html?product_no=11" data-cms-text="버튼" data-cms-href="상세 링크">스킨 보기<svg><use href="#fx-arrow"/></svg></a></div>
+                <ul class="fx-chips" data-cms-list="특징"><li>패션 영상</li><li>스타일 찾기</li><li>쿠폰 뽑기</li></ul></div>
             </article>
             <article class="fx-chap" data-fx-chap="1" data-cms-item>
-              <img src="/SkinImg/fixable/mobile-eppum.webp" alt="EPPUM902 휴대폰 화면" width="600" height="1298" loading="lazy" data-cms-src="사진">
-              <div><p class="fx-chap__k">02 · Sell</p><h2 data-cms-text="제목">들어오면 사게 만드는 장치</h2><p data-cms-text="설명">쿠폰 뽑기 · 타임세일 · 포토리뷰가 기본으로 들어 있어요.</p><ul class="fx-chips"><li class="is-hot">최대 50% 쿠폰</li><li>타임세일 02:14:09</li><li>★ 5.0 · 리뷰</li></ul></div>
+              <a class="fx-chap__img" href="/product/detail.html?product_no=12" data-cms-href="상세 링크" tabindex="-1"><img src="/SkinImg/fixable/sq-eppum.webp" alt="EPPUM902 K-뷰티 화장품 쇼핑몰 의 PC · 모바일 화면" width="480" height="480" loading="lazy" data-cms-src="사진"></a>
+              <div class="fx-chap__body"><p class="fx-chap__k">02 · <span data-cms-text="업종">Beauty</span></p><h2 data-cms-text="이름">EPPUM902</h2><p class="fx-chap__kr" data-cms-text="한 줄 소개">K-뷰티 화장품 쇼핑몰</p><p data-cms-text="설명">피부 고민 · 루틴 찾기 · 포토리뷰 자동 진열 · 타임세일</p>
+                <div class="fx-chap__foot"><p class="fx-chap__price" data-cms-text="가격"><b>250,000</b>원</p><a class="fx-chap__go" href="/product/detail.html?product_no=12" data-cms-text="버튼" data-cms-href="상세 링크">스킨 보기<svg><use href="#fx-arrow"/></svg></a></div>
+                <ul class="fx-chips" data-cms-list="특징"><li>루틴 찾기</li><li>포토리뷰</li><li>타임세일</li></ul></div>
             </article>
             <article class="fx-chap" data-fx-chap="2" data-cms-item>
-              <img src="/SkinImg/fixable/mobile-food.webp" alt="FOOD902 휴대폰 화면" width="600" height="1298" loading="lazy" data-cms-src="사진">
-              <div><p class="fx-chap__k">03 · Edit</p><h2 data-cms-text="제목">코드 없이 직접 수정</h2><p data-cms-text="설명">주소 뒤에 ?edit=1 하나로 사진 · 문구 · 배너를 바꿔요.</p><ul class="fx-chips"><li class="is-hot">✏️ 첫 화면 고치기</li><li>섹션 순서</li><li>게시판으로 저장</li></ul></div>
+              <a class="fx-chap__img" href="/product/detail.html?product_no=13" data-cms-href="상세 링크" tabindex="-1"><img src="/SkinImg/fixable/sq-baby.webp" alt="BABYANG 아기용품 쇼핑몰 의 PC · 모바일 화면" width="480" height="480" loading="lazy" data-cms-src="사진"></a>
+              <div class="fx-chap__body"><p class="fx-chap__k">03 · <span data-cms-text="업종">Kids</span></p><h2 data-cms-text="이름">BABYANG</h2><p class="fx-chap__kr" data-cms-text="한 줄 소개">아기용품 쇼핑몰</p><p data-cms-text="설명">월령별 추천 · 출산 준비 체크리스트 · 바디슈트 사이즈 가이드</p>
+                <div class="fx-chap__foot"><p class="fx-chap__price" data-cms-text="가격"><b>250,000</b>원</p><a class="fx-chap__go" href="/product/detail.html?product_no=13" data-cms-text="버튼" data-cms-href="상세 링크">스킨 보기<svg><use href="#fx-arrow"/></svg></a></div>
+                <ul class="fx-chips" data-cms-list="특징"><li>월령별 추천</li><li>체크리스트</li><li>사이즈 가이드</li></ul></div>
             </article>
             <article class="fx-chap" data-fx-chap="3" data-cms-item>
-              <img src="/SkinImg/fixable/mobile-pet.webp" alt="PETPIA 휴대폰 화면" width="600" height="1298" loading="lazy" data-cms-src="사진">
-              <div><p class="fx-chap__k">04 · Launch</p><h2 data-cms-text="제목">결제하고 하루 뒤 오픈</h2><p data-cms-text="설명">설치 · 백업 · 사용 안내까지 저희가 해요. 사장님은 상품만 준비하세요.</p><ul class="fx-chips"><li class="is-hot">D+1 OPEN</li><li>백업 후 적용</li><li>사용 설명서</li></ul></div>
+              <a class="fx-chap__img" href="/product/detail.html?product_no=14" data-cms-href="상세 링크" tabindex="-1"><img src="/SkinImg/fixable/sq-food.webp" alt="FOOD902 식품 쇼핑몰 의 PC · 모바일 화면" width="480" height="480" loading="lazy" data-cms-src="사진"></a>
+              <div class="fx-chap__body"><p class="fx-chap__k">04 · <span data-cms-text="업종">Food</span></p><h2 data-cms-text="이름">FOOD902</h2><p class="fx-chap__kr" data-cms-text="한 줄 소개">식품 쇼핑몰</p><p data-cms-text="설명">식탁 장면 속 상품 · 메뉴 찾기 · 세일 전용 화면</p>
+                <div class="fx-chap__foot"><p class="fx-chap__price" data-cms-text="가격"><b>250,000</b>원</p><a class="fx-chap__go" href="/product/detail.html?product_no=14" data-cms-text="버튼" data-cms-href="상세 링크">스킨 보기<svg><use href="#fx-arrow"/></svg></a></div>
+                <ul class="fx-chips" data-cms-list="특징"><li>장면 속 상품</li><li>메뉴 찾기</li><li>세일 화면</li></ul></div>
+            </article>
+            <article class="fx-chap" data-fx-chap="4" data-cms-item>
+              <a class="fx-chap__img" href="/product/detail.html?product_no=15" data-cms-href="상세 링크" tabindex="-1"><img src="/SkinImg/fixable/sq-inter.webp" alt="INTER902 북유럽풍 인테리어 가구 쇼핑몰 의 PC · 모바일 화면" width="480" height="480" loading="lazy" data-cms-src="사진"></a>
+              <div class="fx-chap__body"><p class="fx-chap__k">05 · <span data-cms-text="업종">Living</span></p><h2 data-cms-text="이름">INTER902</h2><p class="fx-chap__kr" data-cms-text="한 줄 소개">북유럽풍 인테리어 가구 쇼핑몰</p><p data-cms-text="설명">공간별 둘러보기 · 장면 속 상품 · 여백 중심 레이아웃</p>
+                <div class="fx-chap__foot"><p class="fx-chap__price" data-cms-text="가격"><b>250,000</b>원</p><a class="fx-chap__go" href="/product/detail.html?product_no=15" data-cms-text="버튼" data-cms-href="상세 링크">스킨 보기<svg><use href="#fx-arrow"/></svg></a></div>
+                <ul class="fx-chips" data-cms-list="특징"><li>공간별 보기</li><li>장면 속 상품</li><li>편집 모드</li></ul></div>
+            </article>
+            <article class="fx-chap" data-fx-chap="5" data-cms-item>
+              <a class="fx-chap__img" href="/product/detail.html?product_no=16" data-cms-href="상세 링크" tabindex="-1"><img src="/SkinImg/fixable/sq-pet.webp" alt="PETPIA 반려동물 용품 쇼핑몰 의 PC · 모바일 화면" width="480" height="480" loading="lazy" data-cms-src="사진"></a>
+              <div class="fx-chap__body"><p class="fx-chap__k">06 · <span data-cms-text="업종">Pet</span></p><h2 data-cms-text="이름">PETPIA</h2><p class="fx-chap__kr" data-cms-text="한 줄 소개">반려동물 용품 쇼핑몰</p><p data-cms-text="설명">강아지 · 고양이별 메뉴 · 맞춤 찾기 · 타임세일 · 포토리뷰</p>
+                <div class="fx-chap__foot"><p class="fx-chap__price" data-cms-text="가격"><b>250,000</b>원</p><a class="fx-chap__go" href="/product/detail.html?product_no=16" data-cms-text="버튼" data-cms-href="상세 링크">스킨 보기<svg><use href="#fx-arrow"/></svg></a></div>
+                <ul class="fx-chips" data-cms-list="특징"><li>반려동물별 메뉴</li><li>맞춤 찾기</li><li>포토리뷰</li></ul></div>
             </article>
           </div>
         </div>

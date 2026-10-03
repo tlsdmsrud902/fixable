@@ -50,7 +50,7 @@
 
 | 순서 | 섹션 | 내용 |
 |---|---|---|
-| 1 | 첫 화면 (스크롤 히어로) | myjiwon.com 히어로 방식. 화면이 고정된 채 스크롤하는 만큼 뒤 사진 7장(각 쇼핑몰 히어로 사진)이 겹쳐 넘어가며 당겨지고, 앞 패널이 01 Design → 02 Sell → 03 Edit → 04 Launch 로 바뀐다. 제목 한 글자씩 등장, 오른쪽 진행선, 마우스 시차, 탭을 누르면 그 챕터로 이동 |
+| 1 | 첫 화면 (스크롤 영상 히어로) | myjiwon.com(TRENDIN) 히어로 영상과 같은 방식. 화면이 고정된 채 **스크롤 진행률이 그대로 영상 재생 위치**가 되어 내리면 얼굴이 정면에서 옆으로 돈다(PC · 휴대폰). 오른쪽 카드는 **스킨 상품 01 WEAR902 → 06 PETPIA** 로 바뀐다(사진 · 이름 · 가격 · 스킨 보기). 제목 한 글자씩 등장, 진행선, 마우스 시차, 탭을 누르면 그 카드로 이동 |
 | 1-2 | 숫자 띠 · 쇼릴 | 숫자 4칸, 쇼릴 사진은 세라핌 필름 리빌(가장자리부터 펼쳐짐) + 패럴랙스 |
 | 2 | 글자 띠 두 줄 | 스스로 흐르면서 스크롤 방향에 따라 두 줄이 서로 반대로 밀림 (세라핌 마퀴) |
 | 3 | 01 About | 소개 문장이 스크롤에 맞춰 한 단어씩 진해짐 |
@@ -79,7 +79,9 @@
 | `work-*.webp` (PC 첫 화면) · `mobile-*.webp` (휴대폰 첫 화면) | 6개 쇼핑몰 캡처 |
 | `mock-*.webp` (1672×1100) · 상품 `p01~p06.jpg` | 브라우저 창 + 휴대폰 목업 |
 | `hero-fixable.webp` (1920×1080) | 화면들을 기울어진 격자로 놓은 쇼릴 |
-| `scene-*.webp` (1920×1080) | 첫 화면 뒤 사진 7장 — 각 쇼핑몰 저장소의 히어로 사진(글자 없음) + TRENDIN `public/trendar/hero/hero-pearl-03.webp` |
+| 첫 화면 영상 | `video/hero-fixable.mp4`(스크럽용 1600×900 · 2.2MB) · `video/hero-fixable-loop.mp4`(모션 줄이기용) — viral-finder `public/trendar/hero/hero-pearl-04.mp4` 그대로. 카페24 스킨 폴더에는 mp4 를 둘 수 없어 **jsDelivr 주소**(`…/gh/tlsdmsrud902/fixable@1e76b45/video/…`)로 연결. 영상을 바꾸면 새 커밋 번호로 `index.html` 의 `data-fx-scrub` · `data-fx-loop` 를 고친다 (jsDelivr 는 저장소 전체 50MB 제한) |
+| `hero-fixable-poster.webp` | 영상 첫 프레임 — 영상을 받기 전 · 데이터 절약 모드에서 보인다 |
+| `sq-*.webp` (480×480) | 첫 화면 카드의 상품 사진 (상품 이미지 p01~p06 을 줄인 것) |
 | `mock-trendin.webp` · `work-trendin.webp` | TRENDIN : `tlsdmsrud902/viral-finder` 를 `npm ci` → `npx next dev -p 3100` 로 띄워 찍음 |
 | `mock-seraphin.webp` | 세라핌 : **글자형 임시 이미지**. 이 작업 환경에서 adia90222.cafe24.com 이 막혀 캡처하지 못했다 → `_deploy/shots/seraphin-d.png` · `-m.png` 를 넣고 `fixable-images.js` 의 SITES 에 추가해 다시 만든다 |
 | `card-style.webp` · `card-life.webp` | 휴대폰 3대 |

@@ -1,6 +1,6 @@
 /* fixable 메인 움직임 (index.html 전용) — 외부 라이브러리 없이 동작한다.
-   1) 스크롤 히어로 (myjiwon.com 방식) : 무대가 화면에 붙어 있는 동안 스크롤 진행률 --p 로
-      뒤의 쇼핑몰 화면이 차례로 겹쳐 넘어가고, 앞 패널은 챕터 01~04 로 바뀐다. 마우스 시차 --mx · --my
+   1) 스크롤 히어로 (myjiwon.com 방식) : 무대가 화면에 붙어 있는 동안 스크롤 진행률이 배경 영상의 재생 위치가 되고
+      (내리면 얼굴이 돈다), 앞 카드는 스킨 01 ~ 06 으로 바뀐다. 마우스 시차 --mx · --my
    2) 세라핌 효과 : 맨 위 진행 막대 · 필름 리빌(가장자리부터 펼쳐짐) · 사진 패럴랙스 · 스크롤에 밀리는 글자 띠 · 커서 라벨
    3) 등장 : 화면에 들어오면 아래에서 올라오기, 소개 문장은 한 단어씩 진해지기
    모션을 줄이는 설정(prefers-reduced-motion)이면 연속 움직임은 끄고, 히어로 챕터 전환만 스크롤로 넘긴다. */
@@ -39,41 +39,75 @@
     }
 
     // ── 1) 스크롤 히어로 ─────────────────────────────
+    // 배경 영상 : 스크롤 진행률 = 재생 위치(스크럽, PC · 휴대폰 모두). 데이터 절약 모드 · 2G 는 포스터만
+    // 앞 카드 : 진행률을 상품 수(6)로 나눠 01 → 06
     var pin = home.querySelector('[data-fx-hero]');
     var stage = pin && pin.querySelector('[data-fx-stage]');
-    var scenes = pin ? Q('[data-fx-scene]') : [];
+    var video = pin && pin.querySelector('[data-fx-video]');
     var tabs = pin ? Q('[data-fx-tab]') : [];
     var chaps = pin ? Q('[data-fx-chap]') : [];
+    var count = pin && pin.querySelector('[data-fx-count]');
     var chapter = -1;
     function setChapter(i) {
       if (i === chapter) return;
       chapter = i;
       tabs.forEach(function (t, k) { t.setAttribute('aria-selected', k === i ? 'true' : 'false'); t.classList.toggle('is-past', k < i); });
       chaps.forEach(function (c, k) { c.classList.toggle('is-on', k === i); });
+      if (count) count.textContent = (i < 9 ? '0' : '') + (i + 1);
     }
     setChapter(0);
     function heroProgress() {
       var r = pin.getBoundingClientRect(), dist = pin.offsetHeight - stage.offsetHeight;
       return dist > 0 ? clamp(-r.top / dist, 0, 1) : 0;
     }
-    // 장면 n장을 진행률에 나눠 배치 : 앞 장면 위로 다음 장면이 겹쳐 들어오며(opacity) 살짝 당겨진다(scale)
+    var scrub = null, videoReady = false, visualTime = 0, lastT = 0, chase = 0;
+    if (video && !editing) {
+      var conn = navigator.connection || {}, thrifty = !!conn.saveData || /(^|-)2g$/.test(conn.effectiveType || '');
+      var reveal = function () { videoReady = true; video.setAttribute('data-ready', 'true'); kick(); };
+      // 아이폰 · 맥 사파리는 한 번도 재생되지 않은 영상의 seek 화면을 그리지 않는다 → 숨긴 채 재생했다 바로 멈춰 깨운다
+      var ua = navigator.userAgent, needsWake = /iP(hone|ad|od)/.test(ua) || (/Safari/.test(ua) && !/Chrome|Chromium|Edg|Android/.test(ua));
+      if (!still && !thrifty) {
+        // 파일을 한 번에 받아(blob) 물린다 — seek 마다 네트워크 요청이 생기지 않아 빠르게 굴려도 멈추지 않는다
+        scrub = video; video.loop = false; video.preload = 'auto';
+        var src = video.getAttribute('data-fx-scrub'), started = false;
+        var load = function () {
+          if (started) return; started = true;
+          fetch(src).then(function (r) { return r.ok ? r.blob() : Promise.reject(r.status); })
+            .then(function (b) { video.src = URL.createObjectURL(b); video.load(); })
+            .catch(function () { video.src = src; video.load(); });
+        };
+        var settle = function () { if (video.currentTime < 0.02) reveal(); else { video.addEventListener('seeked', reveal, { once: true }); video.currentTime = 0; } };
+        video.addEventListener('loadeddata', function () {
+          if (!needsWake) return settle();
+          var pr = video.play(); if (pr && pr.then) pr.then(function () { video.pause(); settle(); }, settle); else settle();
+        }, { once: true });
+        if ('requestIdleCallback' in window) requestIdleCallback(load, { timeout: 800 });
+        setTimeout(load, 900);
+      } else if (still && !thrifty) {
+        // 모션 줄이기 설정 : 스크롤과 묶지 않고 가벼운 루프 영상을 조용히 재생
+        video.loop = true; video.preload = 'metadata'; video.src = video.getAttribute('data-fx-loop');
+        video.addEventListener('playing', reveal, { once: true });
+        var tryPlay = function () { var pr = video.play(); if (pr && pr.catch) pr.catch(function () {}); };
+        tryPlay(); window.addEventListener('touchstart', tryPlay, { passive: true, once: true });
+      }
+    }
+    // 영상 위치는 목표를 부드럽게 따라간다(75ms 반응). 디코더가 직전 seek 을 푸는 중이면 새 seek 을 얹지 않는다
+    function chaseVideo(ts) {
+      chase = 0;
+      if (!scrub || !videoReady || !isFinite(scrub.duration)) return;
+      var dt = lastT ? Math.min(64, ts - lastT) : 16.7; lastT = ts;
+      var want = Math.min(scrub.duration - 0.05, heroProgress() * scrub.duration);
+      visualTime += (want - visualTime) * (1 - Math.exp(-dt / 75));
+      if (Math.abs(want - visualTime) < 0.008) visualTime = want;
+      if (Math.abs(visualTime - scrub.currentTime) > 1 / 60 && !scrub.seeking) scrub.currentTime = visualTime;
+      if (Math.abs(want - visualTime) > 0.008 || Math.abs(visualTime - scrub.currentTime) > 1 / 60) chase = requestAnimationFrame(chaseVideo);
+      else lastT = 0;
+    }
+    function kick() { if (!chase) chase = requestAnimationFrame(chaseVideo); }
     function paintHero(p) {
       stage.style.setProperty('--p', p.toFixed(4));
-      var n = scenes.length;
-      if (n && !still) {
-        var f = p * (n - 1), base = Math.floor(f), frac = f - base;
-        scenes.forEach(function (img, i) {
-          // 뒤 장면이 위에 쌓인다 : 지나온 장면은 1, 다음 장면은 진행만큼 겹쳐 들어오고, 나머지는 0
-          var o = i <= base ? 1 : i === base + 1 ? frac : 0;
-          var z = 1.14 - clamp(f - i + 1, 0, 2) * 0.05;   // 들어오는 동안 1.14 → 1.04 로 당겨진다
-          img.style.setProperty('--o', o.toFixed(3));
-          img.style.setProperty('--z', z.toFixed(4));
-        });
-      } else if (n) {
-        var k = Math.min(n - 1, Math.round(p * (n - 1)));
-        scenes.forEach(function (img, i) { img.style.setProperty('--o', i === k ? '1' : '0'); img.style.setProperty('--z', '1'); });
-      }
-      setChapter(Math.min(tabs.length - 1, Math.floor(p * tabs.length * 0.999)));
+      setChapter(Math.min(tabs.length - 1, Math.floor(p * tabs.length * 0.9999)));
+      kick();
     }
     tabs.forEach(function (t, k) {
       t.addEventListener('click', function () {

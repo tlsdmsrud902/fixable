@@ -49,22 +49,24 @@ html.fx-js #lw-home.fx [data-fx-in].is-in{opacity:1;transform:none}
    뒤 화면 7장은 각자 --o(보임) · --z(확대)를 받는다. 마우스 시차는 --mx · --my (-1~1) */
 #lw-home.fx .fx-pin{position:relative;height:340svh;background:var(--fx-dark)}
 #lw-home.fx .fx-stage{position:sticky;top:0;height:100svh;min-height:680px;overflow:hidden;isolation:isolate;color:#fff;background:var(--fx-dark)}
-#lw-home.fx .fx-stage__media{position:absolute;inset:0;z-index:-1;transform:scale(calc(1.06 - var(--p,0)*.06))}
-#lw-home.fx .fx-stage__media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:65% center;opacity:var(--o,0);transform:scale(var(--z,1.08)) translate3d(calc(var(--mx,0)*-8px),calc(var(--my,0)*-6px),0);will-change:opacity,transform}
-#lw-home.fx .fx-stage__media img:first-child{--o:1}
-#lw-home.fx .fx-stage__scrim{position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,10,12,.9) 0%,rgba(10,10,12,.62) 42%,rgba(10,10,12,.2) 72%,rgba(10,10,12,.35) 100%),linear-gradient(180deg,rgba(10,10,12,.55),transparent 22%,transparent 78%,rgba(10,10,12,.6))}
+#lw-home.fx .fx-stage__media{position:absolute;inset:0;z-index:-1;background:#050506}
+/* 영상 속 얼굴을 오른쪽으로 옮겨 왼쪽 글자와 겹치지 않게 하고, 스크롤할수록 살짝 다가온다(푸시인) */
+#lw-home.fx .fx-stage__poster,#lw-home.fx .fx-stage__video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 30%;transform:translate3d(calc(14% + var(--mx,0)*-10px),calc(3% + var(--my,0)*-8px),0) scale(calc(1.1 + var(--p,0)*.1));will-change:transform}
+#lw-home.fx .fx-stage__video{opacity:0;transition:opacity .45s}
+#lw-home.fx .fx-stage__video[data-ready=true]{opacity:1}
+#lw-home.fx .fx-stage__scrim{position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,5,6,.92) 0%,rgba(5,5,6,.6) 34%,rgba(5,5,6,.05) 58%,rgba(5,5,6,.1) 82%,rgba(5,5,6,.55) 100%),linear-gradient(180deg,rgba(10,10,12,.55),transparent 22%,transparent 78%,rgba(10,10,12,.6))}
 #lw-home.fx .fx-stage__content{position:relative;height:100%;max-width:var(--fx-max);margin:0 auto;padding:calc(var(--fx-hh,98px) + 24px) var(--fx-gut) 56px;display:flex;flex-direction:column;justify-content:center;gap:clamp(22px,3vh,40px)}
 #lw-home.fx .fx-stage__heading{max-width:760px;transform:translate3d(calc(var(--mx,0)*4px),calc(var(--my,0)*3px),0);transition:transform .6s}
-#lw-home.fx .fx-stage__title{margin:18px 0 0;font-size:clamp(36px,4.6vw,78px);font-weight:700;line-height:1.14;letter-spacing:-.06em;text-shadow:0 2px 28px rgba(0,0,0,.35)}
+#lw-home.fx .fx-stage__title{margin:16px 0 0;font-size:clamp(34px,min(4.2vw,6.4vh),72px);font-weight:700;line-height:1.14;letter-spacing:-.06em;text-shadow:0 2px 28px rgba(0,0,0,.35)}
 #lw-home.fx .fx-stage__title>span{display:block}
 #lw-home.fx .fx-stage__light{font-weight:300;color:#dcdcdc}
 #lw-home.fx .fx-ch{display:inline-block;animation:fx-char .7s var(--fx-e) both}
 @keyframes fx-char{from{opacity:0;transform:translateY(.45em);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
-#lw-home.fx .fx-stage__sub{margin:20px 0 28px;color:rgba(255,255,255,.75);font-size:clamp(15px,1.1vw,18px);line-height:1.75;animation:fx-up .8s .9s both var(--fx-e)}
+#lw-home.fx .fx-stage__sub{margin:16px 0 22px;color:rgba(255,255,255,.75);font-size:clamp(15px,1.1vw,18px);line-height:1.75;animation:fx-up .8s .9s both var(--fx-e)}
 #lw-home.fx .fx-stage .fx-hero__cta{animation:fx-up .8s 1.05s both var(--fx-e)}
 @keyframes fx-up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-#lw-home.fx .fx-panel{width:min(100%,500px);transform:perspective(1200px) rotateY(calc(var(--mx,0)*-1deg));transition:transform .7s;animation:fx-up .9s 1.2s both var(--fx-e)}
-#lw-home.fx .fx-tabs{display:flex;gap:6px;margin-bottom:12px}
+#lw-home.fx .fx-panel{width:min(100%,460px);transform:perspective(1200px) rotateY(calc(var(--mx,0)*-1deg));transition:transform .7s;animation:fx-up .9s 1.2s both var(--fx-e)}
+#lw-home.fx .fx-tabs{display:flex;gap:4px;margin-bottom:12px}
 #lw-home.fx .fx-tabs button{display:flex;align-items:center;gap:8px;padding:6px 10px 8px;border:0;border-bottom:2px solid rgba(255,255,255,.12);border-radius:4px;background:transparent;color:rgba(255,255,255,.4);font:inherit;cursor:pointer;transition:color .3s,border-color .3s,background .3s}
 #lw-home.fx .fx-tabs button:hover{color:rgba(255,255,255,.75)}
 #lw-home.fx .fx-tabs button b{font:500 12px/1 Jost,sans-serif;letter-spacing:.04em}
@@ -77,13 +79,26 @@ html.fx-js #lw-home.fx [data-fx-in].is-in{opacity:1;transform:none}
 #lw-home.fx .fx-panel__bar i{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.18)}
 #lw-home.fx .fx-panel__bar span{margin-left:auto}
 #lw-home.fx .fx-panel__card>div,#lw-home.fx .fx-chaps{position:relative}
-#lw-home.fx .fx-chap{display:none;grid-template-columns:110px 1fr;gap:20px;padding:20px;align-items:center}
+#lw-home.fx .fx-panel__label{display:flex;align-items:baseline;gap:8px;margin-bottom:10px!important;font:500 12px/1 Jost,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+#lw-home.fx .fx-panel__label span{margin-right:auto}
+#lw-home.fx .fx-panel__label b{font-size:22px;letter-spacing:-.02em;color:#fff;font-weight:500}
+#lw-home.fx .fx-chap{display:none;grid-template-columns:150px 1fr;gap:0;align-items:center}
 #lw-home.fx .fx-chap.is-on{display:grid;animation:fx-up .5s both var(--fx-e)}
-#lw-home.fx .fx-chap img{width:110px;border-radius:14px;border:4px solid #2a2a2c}
+#lw-home.fx .fx-chap__img{display:block;overflow:hidden;background:#efefef;aspect-ratio:1/1;margin:16px 0 16px 16px;border-radius:10px}
+#lw-home.fx .fx-chap__img img{width:100%;height:100%;object-fit:cover;transform:scale(1.04);transition:transform .8s var(--fx-e)}
+#lw-home.fx .fx-chap.is-on .fx-chap__img img{transform:none}
+#lw-home.fx .fx-chap__body{padding:16px 18px 16px}
+#lw-home.fx .fx-chap__body>p[data-cms-text="설명"]{display:none}
+#lw-home.fx .fx-chap__kr{color:#fff!important;font-weight:600;font-size:15px!important;margin-bottom:6px!important}
+#lw-home.fx .fx-chap__foot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px!important;padding-top:14px;border-top:1px solid rgba(255,255,255,.12)}
+#lw-home.fx .fx-chap__price{color:#fff!important;font-size:14px!important}
+#lw-home.fx .fx-chap__price b{font:500 24px/1 Jost,sans-serif;letter-spacing:-.03em;margin-right:2px}
+#lw-home.fx .fx-chap__go{display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 16px;border-radius:999px;background:#fff;color:#111!important;font-size:13px;font-weight:600}
+#lw-home.fx .fx-chap__go svg{width:16px;height:16px}
 #lw-home.fx .fx-chap__k{font:500 12px/1 Jost,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:10px!important}
-#lw-home.fx .fx-chap h2{font-size:22px;font-weight:700;letter-spacing:-.04em;margin-bottom:8px!important}
+#lw-home.fx .fx-chap h2{font:500 26px/1 Jost,sans-serif;letter-spacing:-.04em;margin-bottom:8px!important}
 #lw-home.fx .fx-chap p{color:rgba(255,255,255,.7);font-size:14px;line-height:1.65}
-#lw-home.fx .fx-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px!important}
+#lw-home.fx .fx-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px!important}
 #lw-home.fx .fx-chips li{padding:5px 10px;border:1px solid rgba(255,255,255,.18);border-radius:999px;font-size:12px;color:rgba(255,255,255,.8)}
 #lw-home.fx .fx-chips li.is-hot{background:#fff;color:var(--fx-ink);border-color:#fff;font-weight:600}
 #lw-home.fx .fx-stage__progress{position:absolute;right:var(--fx-gut);top:42%;width:1px;height:110px;background:rgba(255,255,255,.18)}
@@ -253,10 +268,14 @@ html.fx-js #lw-home.fx [data-fx-in].is-in{opacity:1;transform:none}
   #lw-home.fx .fx-stage__title{font-size:clamp(30px,8.4vw,40px)}
   #lw-home.fx .fx-stage__sub{margin:14px 0 18px;font-size:14px}
   #lw-home.fx .fx-stage__progress{display:none}
-  #lw-home.fx .fx-chap{grid-template-columns:72px 1fr;gap:14px;padding:14px}
-  #lw-home.fx .fx-chap img{width:72px}
-  #lw-home.fx .fx-chap h2{font-size:18px}
-  #lw-home.fx .fx-stage__media img{object-position:62% center}
+  #lw-home.fx .fx-chap{grid-template-columns:96px 1fr;align-items:start}
+  #lw-home.fx .fx-chap__img{aspect-ratio:1/1;margin:14px 0 14px 14px;border-radius:10px}
+  #lw-home.fx .fx-chap__body{padding:14px}
+  #lw-home.fx .fx-chap h2{font-size:22px}
+  #lw-home.fx .fx-chap .fx-chips{display:none}
+  #lw-home.fx .fx-tabs button{padding:6px 7px 8px}
+  #lw-home.fx .fx-stage__poster,#lw-home.fx .fx-stage__video{object-position:50% 20%;transform:translate3d(0,6%,0) scale(1.25)}
+  #lw-home.fx .fx-stage__scrim{background:linear-gradient(180deg,rgba(5,5,6,.75),rgba(5,5,6,.45) 45%,rgba(5,5,6,.85))}
   #lw-home.fx .fx-why__list{grid-template-columns:1fr}
   #lw-home.fx .fx-why__list li{flex-direction:column;gap:16px}
   #lw-home.fx .fx-why__no{font-size:44px}
