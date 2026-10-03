@@ -2,7 +2,7 @@
    색 : 흰 바탕 · 검정 글자 · 회색 선. 포인트 색 없이 크기 · 굵기 · 여백으로 강조한다. */
 #lw-home.fx{--fx-sp:clamp(80px,10vw,150px);--fx-ink:#111111;--fx-bg:#ffffff;--fx-soft:#f3f3f3;--fx-line:#e4e4e4;--fx-mute:#777777;--fx-dark:#0f0f10;
   --fx-gut:clamp(20px,4vw,64px);--fx-max:1600px;--fx-e:cubic-bezier(.22,.8,.2,1);
-  display:block;background:var(--fx-bg);color:var(--fx-ink);font-family:Pretendard,'Noto Sans KR',sans-serif;letter-spacing:-.02em;overflow:clip;word-break:keep-all}
+  display:block;background:var(--fx-bg);color:var(--fx-ink);font-family:'Pretendard Variable',Pretendard,'Noto Sans KR',sans-serif;letter-spacing:-.02em;overflow:clip;word-break:keep-all}
 #lw-home.fx *{box-sizing:border-box}
 #lw-home.fx :is(h1,h2,h3,p,ul,ol,figure){margin:0;padding:0}
 #lw-home.fx :is(ul,ol){list-style:none}
@@ -159,7 +159,7 @@ html.fx-js #lw-home.fx [data-fx-in].is-in{opacity:1;transform:none}
 #lw-home.fx .fx-why__list li:hover{background:#fff;box-shadow:0 24px 60px -30px rgba(0,0,0,.25)}
 #lw-home.fx .fx-why__list li:hover::before,#lw-home.fx .fx-why__list li:hover+li::before,#lw-home.fx .fx-why__list li:last-child:hover::after{opacity:0}
 #lw-home.fx .fx-why__list li:hover .fx-why__a{opacity:1}
-#lw-home.fx .fx-why__p small,#lw-home.fx .fx-why__a small{display:block;margin-bottom:12px;font:500 12px/1 Jost,Pretendard,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--fx-mute)}
+#lw-home.fx .fx-why__p small,#lw-home.fx .fx-why__a small{display:block;margin-bottom:12px;font:500 12px/1 Jost,'Pretendard Variable',Pretendard,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--fx-mute)}
 #lw-home.fx .fx-why__q{font-size:clamp(20px,1.9vw,28px);font-weight:500;letter-spacing:-.04em;line-height:1.4;color:#8a8a8a;transition:color .5s}
 /* 화살표를 잇는 세로선 : 위치 · 길이는 스크립트가 첫 화살표 ~ 마지막 화살표 가운데로 맞추고, 채움(--p)은 스크롤 따라 0 → 1 */
 #lw-home.fx .fx-why__list{position:relative}
@@ -228,7 +228,7 @@ html.fx-js #lw-home.fx [data-fx-in].is-in{opacity:1;transform:none}
 #lw-home.fx .fx-plan:hover{transform:translateY(-6px);box-shadow:0 30px 60px rgba(0,0,0,.08)}
 #lw-home.fx .fx-plan--best{background:var(--fx-ink);color:#fff;border-color:var(--fx-ink)}
 #lw-home.fx .fx-plan--best .fx-btn{background:#fff;color:var(--fx-ink)!important;border-color:#fff}
-#lw-home.fx .fx-plan__name{font:500 15px/1 Jost,Pretendard,sans-serif;letter-spacing:.02em;opacity:.7}
+#lw-home.fx .fx-plan__name{font:500 15px/1 Jost,'Pretendard Variable',Pretendard,sans-serif;letter-spacing:.02em;opacity:.7}
 #lw-home.fx .fx-plan__price{font-size:20px;font-weight:600}
 #lw-home.fx .fx-plan__price b{font:500 clamp(40px,4vw,60px)/1 Jost,sans-serif;letter-spacing:-.04em;margin-right:4px}
 #lw-home.fx .fx-plan__time{font-size:14px;opacity:.6;padding-bottom:22px;border-bottom:1px solid currentColor}
@@ -567,7 +567,7 @@ html.fx-js #lw-home.fx [data-fx-chat].is-play .fx-bm{opacity:1;transform:none}
 #lw-home.fx .fx-feat2__copy{position:relative;z-index:1;display:grid;justify-items:center;text-align:center;padding:clamp(22px,2.4vw,34px) clamp(22px,3vw,44px) 0}
 #lw-home.fx .fx-feat2__no{justify-self:stretch;display:flex;align-items:center;justify-content:space-between;font:500 13px/1 Jost,sans-serif;letter-spacing:.1em;color:rgba(255,255,255,.4)}
 #lw-home.fx .fx-feat2__no{gap:8px}#lw-home.fx .fx-feat2__no::after{content:"/ 08";order:2;color:rgba(255,255,255,.22)}
-#lw-home.fx .fx-feat2__no span{order:-1;margin-right:auto;padding:7px 13px;border-radius:999px;border:1px solid rgba(255,255,255,.16);color:rgba(255,255,255,.82);font:500 12px/1 Pretendard,sans-serif;letter-spacing:0}
+#lw-home.fx .fx-feat2__no span{order:-1;margin-right:auto;padding:7px 13px;border-radius:999px;border:1px solid rgba(255,255,255,.16);color:rgba(255,255,255,.82);font:500 12px/1 'Pretendard Variable',Pretendard,sans-serif;letter-spacing:0}
 #lw-home.fx .fx-feat2 h3{margin:clamp(14px,2vh,28px) 0 10px!important;color:#fff;font-size:clamp(34px,4.6vw,76px);font-weight:700;letter-spacing:-.055em;line-height:1.05}
 #lw-home.fx .fx-feat2__desc{max-width:620px;font-size:clamp(15px,1.15vw,18px);line-height:1.7;color:rgba(255,255,255,.58)}
 #lw-home.fx .fx-feat2__stage{position:relative;flex:1;min-height:0;cursor:pointer}
