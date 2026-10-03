@@ -143,6 +143,25 @@
     }
     var wordEls = words ? words.querySelectorAll('.w') : [];
 
+    // ── 이벤트 쇼핑 도우미 : D-day · [지금 직접 써 보기] · 대화 시연 ──
+    Q('[data-fx-dday]').forEach(function (el) {
+      var end = new Date(el.getAttribute('data-fx-dday')).getTime(), left = Math.ceil((end - Date.now()) / 86400000);
+      if (!isFinite(left)) return;
+      el.textContent = left > 0 ? 'D-' + left : left === 0 ? 'D-DAY' : '마감';
+      if (left < 0) home.classList.add('fx-event-over');
+    });
+    Q('[data-fx-open-helper]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        if (window.SHOP_HELPER && SHOP_HELPER.open) SHOP_HELPER.open();
+        else { var f = document.querySelector('.wh-fab'); if (f) f.click(); }
+      });
+    });
+    var chat = home.querySelector('[data-fx-chat]');
+    if (chat && document.documentElement.classList.contains('fx-js') && 'IntersectionObserver' in window) {
+      var cio = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { chat.classList.add('is-play'); cio.disconnect(); } }); }, { threshold: 0.35 });
+      cio.observe(chat);
+    } else if (chat) chat.classList.add('is-play');
+
     // ── 2) 세라핌 효과 ──────────────────────────────
     var bar = null;
     if (!still) { bar = document.getElementById('fxProgress') || document.createElement('div'); bar.id = 'fxProgress'; document.body.appendChild(bar); }

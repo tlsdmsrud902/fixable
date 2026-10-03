@@ -316,3 +316,57 @@ body:has(#lw-home.fx) #contents>.RTMB{display:none!important}
 /* 휴대폰 : 공통 #contents 좌우 여백을 메인에서는 없앤다 (검은 히어로 · 쇼릴이 화면 끝까지) */
 @media (max-width:1024px){body:has(#lw-home.fx) #contents{margin-left:0!important;margin-right:0!important;width:100%!important;max-width:100%!important;padding-left:0!important;padding-right:0!important}}
 @media (max-width:767px){#lw-home.fx .fx-hero__cta .fx-btn{flex:none;height:52px}}
+
+/* 7-2. 이벤트 특전 : 쇼핑 도우미(챗봇) — 왼쪽 안내 · 오른쪽 휴대폰 속 대화 시연 */
+#lw-home.fx .fx-bot{background:var(--fx-soft);overflow:hidden}
+#lw-home.fx .fx-bot__grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(40px,6vw,110px);align-items:center}
+#lw-home.fx .fx-bot__badge{display:inline-flex;align-items:center;gap:10px;padding:6px 6px 6px 16px;border-radius:999px;background:var(--fx-ink);color:#fff;font:500 13px/1 Jost,sans-serif;letter-spacing:.1em;text-transform:uppercase}
+#lw-home.fx .fx-bot__badge b{padding:7px 12px;border-radius:999px;background:#fff;color:var(--fx-ink);letter-spacing:.02em}
+#lw-home.fx .fx-bot h2{margin:26px 0 20px!important;font-size:clamp(30px,3.8vw,58px);font-weight:700;line-height:1.16;letter-spacing:-.05em}
+#lw-home.fx .fx-bot__lead{color:#555;font-size:clamp(15px,1.15vw,18px);line-height:1.8;max-width:600px}
+#lw-home.fx .fx-bot__lead b{color:var(--fx-ink);box-shadow:inset 0 -.45em 0 rgba(17,17,17,.1)}
+#lw-home.fx .fx-bot__points{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin:34px 0!important;background:#dcdcdc;border:1px solid #dcdcdc;border-radius:16px;overflow:hidden}
+#lw-home.fx .fx-bot__points li{display:flex;flex-direction:column;gap:8px;padding:20px;background:var(--fx-soft)}
+#lw-home.fx .fx-bot__points b{font-size:16px;letter-spacing:-.03em}
+#lw-home.fx .fx-bot__points span{font-size:14px;line-height:1.6;color:#666}
+#lw-home.fx .fx-bot button.fx-btn{cursor:pointer;font-family:inherit}
+#lw-home.fx .fx-bot__note{margin-top:18px!important;font-size:13px;color:var(--fx-mute)}
+/* 휴대폰 시연 */
+#lw-home.fx .fx-bot__phone{position:relative;justify-self:center;width:min(100%,360px)}
+#lw-home.fx .fx-bot__screen{border:10px solid #111;border-radius:44px;overflow:hidden;background:#fff;box-shadow:0 40px 90px rgba(0,0,0,.18);display:flex;flex-direction:column;height:640px}
+#lw-home.fx .fx-bot__head{flex:none;padding:26px 22px 20px;background:#111;color:#fff;display:flex;flex-direction:column;gap:6px}
+#lw-home.fx .fx-bot__head small{font:500 10px/1 Jost,sans-serif;letter-spacing:.2em;opacity:.6}
+#lw-home.fx .fx-bot__head em{margin-top:10px;font:italic 400 18px/1 'Fraunces',Georgia,serif;opacity:.85}
+#lw-home.fx .fx-bot__head strong{font-size:22px;letter-spacing:-.03em}
+#lw-home.fx .fx-bot__head span{display:flex;align-items:center;gap:7px;font-size:12px;opacity:.75}
+#lw-home.fx .fx-bot__head span i{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 3px rgba(74,222,128,.2)}
+#lw-home.fx .fx-bot__body{flex:1;min-height:0;padding:18px 16px;display:flex;flex-direction:column;justify-content:flex-end;gap:10px;overflow:hidden}
+#lw-home.fx .fx-bm{flex:none}
+#lw-home.fx .fx-bm{max-width:86%;font-size:14px;line-height:1.55;transition:opacity .5s var(--fx-e),transform .6s var(--fx-e)}
+#lw-home.fx .fx-bm--bot{align-self:flex-start;padding:11px 14px;border-radius:4px 16px 16px 16px;background:#f2f2f2}
+#lw-home.fx .fx-bm--me{align-self:flex-end;padding:11px 14px;border-radius:16px 4px 16px 16px;background:#111;color:#fff}
+#lw-home.fx .fx-bm--menu{align-self:stretch;max-width:none;border-top:1px solid #111}
+#lw-home.fx .fx-bm--menu li{display:flex;gap:12px;padding:10px 2px;border-bottom:1px solid #ececec;font-weight:600;font-size:14px}
+#lw-home.fx .fx-bm--menu b{font:500 12px/1.6 Jost,sans-serif;color:#999}
+#lw-home.fx .fx-bm--btn{display:flex;flex-wrap:wrap;gap:6px;max-width:100%}
+#lw-home.fx .fx-bm--btn span{padding:8px 13px;border-radius:999px;border:1px solid #ddd;font-size:13px}
+#lw-home.fx .fx-bm--btn span:first-child{background:#111;border-color:#111;color:#fff}
+#lw-home.fx .fx-bot__input{flex:none;display:flex;align-items:center;gap:8px;margin:0 12px 14px;padding:6px 6px 6px 16px;border-radius:999px;background:#f2f2f2;font-size:13px;color:#999}
+#lw-home.fx .fx-bot__input span{flex:1}
+#lw-home.fx .fx-bot__input i{width:34px;height:34px;border-radius:50%;background:#111}
+#lw-home.fx .fx-bot__fab{position:absolute;right:-18px;bottom:-18px;width:64px;height:64px;border-radius:50%;background:#111;box-shadow:0 14px 30px rgba(0,0,0,.25)}
+#lw-home.fx .fx-bot__fab:before{content:'';position:absolute;inset:20px 18px 22px;border:2px solid #fff;border-radius:8px 8px 8px 2px}
+/* 대화가 한 줄씩 : 스크립트가 .is-play 를 붙이면 순서대로 나타난다 (스크립트 없으면 처음부터 다 보임) */
+html.fx-js #lw-home.fx [data-fx-chat] .fx-bm{opacity:0;transform:translateY(12px)}
+html.fx-js #lw-home.fx [data-fx-chat].is-play .fx-bm{opacity:1;transform:none}
+#lw-home.fx [data-fx-chat].is-play .fx-bm:nth-child(2){transition-delay:.5s}
+#lw-home.fx [data-fx-chat].is-play .fx-bm:nth-child(3){transition-delay:1.3s}
+#lw-home.fx [data-fx-chat].is-play .fx-bm:nth-child(4){transition-delay:2.1s}
+#lw-home.fx [data-fx-chat].is-play .fx-bm:nth-child(5){transition-delay:2.7s}
+/* 가격표의 이벤트 특전 줄 */
+#lw-home.fx .fx-plan li.fx-plan__event{padding:8px 12px;border-radius:10px;background:rgba(17,17,17,.06);font-weight:600}
+#lw-home.fx .fx-plan li.fx-plan__event:before{display:none}
+#lw-home.fx .fx-plan--best li.fx-plan__event{background:rgba(255,255,255,.12)}
+@media (max-width:1024px){#lw-home.fx .fx-bot__grid{grid-template-columns:1fr}#lw-home.fx .fx-bot__phone{width:min(100%,340px)}}
+@media (max-width:767px){#lw-home.fx .fx-bot__points{grid-template-columns:1fr}#lw-home.fx .fx-bot__screen{height:580px}#lw-home.fx .fx-bot__fab{right:-6px;bottom:-10px;width:54px;height:54px}#lw-home.fx .fx-bot__fab:before{inset:16px 15px 18px}}
+@media (prefers-reduced-motion:reduce){html.fx-js #lw-home.fx [data-fx-chat] .fx-bm{opacity:1;transform:none;transition:none}}

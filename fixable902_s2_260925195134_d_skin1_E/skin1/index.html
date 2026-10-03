@@ -257,6 +257,43 @@
     </div>
   </section>
 
+  <!-- 7-2. 이벤트 특전 : 쇼핑 도우미(챗봇). 이벤트 기간에 구매할 때만 스킨에 무료로 넣어 준다.
+       마감일은 data-fx-dday 하나만 고치면 D-day · 마감 표시가 같이 바뀐다 (도우미 답 문구는 /addons/shop-helper/shop-helper.config.js) -->
+  <section class="fx-sec fx-bot" id="fx-bot" aria-labelledby="fx-bot-title" data-cms="이벤트 쇼핑 도우미" data-cms-help="이벤트 마감일이 바뀌면 코드의 data-fx-dday 날짜와 쇼핑 도우미 설정 파일의 문구를 같이 바꿔요.">
+    <div class="fx-wrap fx-bot__grid">
+      <div class="fx-bot__copy">
+        <p class="fx-bot__badge"><span data-cms-text="작은 표시">Event only</span><b data-fx-dday="2026-10-31T23:59:59+09:00">D-28</b></p>
+        <h2 id="fx-bot-title" data-cms-text="제목">이벤트 기간에 구매하면<br>쇼핑 도우미를 무료로 넣어 드려요.</h2>
+        <p class="fx-bot__lead" data-cms-text="설명">손님이 말풍선을 누르면 배송 · 교환 · 사이즈 같은 질문에 먼저 답하고, 필요하면 카카오톡 상담으로 이어 주는 챗봇 도우미. <b>10월 31일까지 구매하신 분께만</b> 스킨과 함께 설치해 드려요.</p>
+        <ul class="fx-bot__points">
+          <li data-cms-item><b>월 이용료 0원</b><span data-cms-text="설명">외부 서비스 없이 스킨 안에서 동작해요.</span></li>
+          <li data-cms-item><b>게시판에 쓰면 배워요</b><span data-cms-text="설명">자주묻는질문 게시판 글이 그대로 답이 돼요.</span></li>
+          <li data-cms-item><b>틀린 답을 지어내지 않아요</b><span data-cms-text="설명">사장님이 적어 둔 내용으로만 답해요.</span></li>
+        </ul>
+        <div class="fx-hero__cta">
+          <button type="button" class="fx-btn" data-fx-open-helper>지금 직접 써 보기<svg><use href="#fx-arrow"/></svg></button>
+          <a class="fx-btn fx-btn--line" href="#fx-shop" data-cms-text="버튼" data-cms-href="버튼 링크">이벤트 기간에 스킨 고르기<svg><use href="#fx-arrow"/></svg></a>
+        </div>
+        <p class="fx-bot__note" data-cms-text="안내">※ 이벤트 기간이 지난 뒤 구매하시면 쇼핑 도우미는 포함되지 않아요.</p>
+      </div>
+      <!-- 시연 : 화면에 들어오면 대화가 한 줄씩 나타난다 (실제 상담 창과 같은 모양의 그림) -->
+      <div class="fx-bot__phone" aria-hidden="true" data-fx-chat>
+        <div class="fx-bot__screen">
+          <div class="fx-bot__head"><small>FIXABLE · CONCIERGE</small><em>How can we help?</em><strong>쇼핑 도우미</strong><span><i></i>지금 상담 가능</span></div>
+          <div class="fx-bot__body">
+            <p class="fx-bm fx-bm--bot">안녕하세요! 궁금한 내용을 골라 주세요.</p>
+            <ol class="fx-bm fx-bm--menu"><li><b>01</b>배송 안내</li><li><b>02</b>교환 · 반품 · 환불</li><li><b>03</b>상품 상담</li><li><b>04</b>상담원 연결</li></ol>
+            <p class="fx-bm fx-bm--me">오늘 주문하면 언제 와요?</p>
+            <p class="fx-bm fx-bm--bot">평일 오후 2시 전 주문은 오늘 출고돼요. 보통 다음 날 받아 보실 수 있어요.</p>
+            <p class="fx-bm fx-bm--btn"><span>주문 조회</span><span>배송비는 얼마예요?</span></p>
+          </div>
+          <div class="fx-bot__input"><span>메뉴에 없으면 직접 물어보세요</span><i></i></div>
+        </div>
+        <span class="fx-bot__fab"></span>
+      </div>
+    </div>
+  </section>
+
   <!-- 8. 스킨 구매 : 카페24 메인 진열(추천상품)의 상품 6개 -->
   <section class="fx-sec fx-shop" id="fx-shop" aria-labelledby="fx-shop-title" data-cms="스킨 구매 제목" data-cms-help="상품은 관리자 › 상품 › 메인 진열(추천상품)에서 골라요. 여기서는 제목만 바꿔요.">
     <div class="fx-wrap">
@@ -289,20 +326,20 @@
   <!-- 10. 가격 -->
   <section class="fx-sec fx-price" id="fx-price" aria-labelledby="fx-price-title" data-cms="가격" data-cms-grow>
     <div class="fx-wrap">
-      <header class="fx-head"><div class="fx-label"><span>08</span><p data-cms-text="작은 제목">Pricing</p></div><h2 id="fx-price-title" data-cms-text="제목">필요한 만큼만 고르세요.</h2><p class="fx-head__sub" data-cms-text="설명">스킨 6종 모두 같은 가격이에요. (VAT 포함)</p></header>
+      <header class="fx-head"><div class="fx-label"><span>08</span><p data-cms-text="작은 제목">Pricing</p></div><h2 id="fx-price-title" data-cms-text="제목">필요한 만큼만 고르세요.</h2><p class="fx-head__sub" data-cms-text="설명">스킨 6종 모두 같은 가격이에요. (VAT 포함) 10월 31일까지 구매하시면 쇼핑 도우미(챗봇)를 무료로 넣어 드려요.</p></header>
       <div class="fx-plans">
         <article class="fx-plan" data-cms-item>
           <p class="fx-plan__name" data-cms-text="이름">Basic · 단순 적용</p>
           <p class="fx-plan__price" data-cms-text="가격"><b>250,000</b>원</p>
           <p class="fx-plan__time" data-cms-text="기간">작업 기간 1일</p>
-          <ul data-cms-list="포함 내용"><li>선택한 스킨 디자인 그대로 설치</li><li>편집 모드 · 쿠폰 뽑기 · 타임세일 포함</li><li>사용 설명서 제공</li></ul>
+          <ul data-cms-list="포함 내용"><li class="fx-plan__event">이벤트 특전 · 쇼핑 도우미(챗봇) 무료 (10/31까지 구매 시)</li><li>선택한 스킨 디자인 그대로 설치</li><li>편집 모드 · 쿠폰 뽑기 · 타임세일 포함</li><li>사용 설명서 제공</li></ul>
           <a class="fx-btn fx-btn--line" href="/product/list.html?cate_no=28" data-cms-text="버튼" data-cms-href="버튼 링크">스킨 고르기<svg><use href="#fx-arrow"/></svg></a>
         </article>
         <article class="fx-plan fx-plan--best" data-cms-item>
           <p class="fx-plan__name" data-cms-text="이름">Custom · 커스터마이징</p>
           <p class="fx-plan__price" data-cms-text="가격"><b>430,000</b>원</p>
           <p class="fx-plan__time" data-cms-text="기간">작업 기간 5일</p>
-          <ul data-cms-list="포함 내용"><li>Basic 의 모든 내용</li><li>로고 변경 · 상단 메뉴 추가</li><li>메인 문구 · 롤링 이미지 변경</li><li>팝업 기능 수정 (항목별 1회)</li></ul>
+          <ul data-cms-list="포함 내용"><li class="fx-plan__event">이벤트 특전 · 쇼핑 도우미(챗봇) 무료 (10/31까지 구매 시)</li><li>Basic 의 모든 내용</li><li>로고 변경 · 상단 메뉴 추가</li><li>메인 문구 · 롤링 이미지 변경</li><li>팝업 기능 수정 (항목별 1회)</li></ul>
           <a class="fx-btn" href="/product/list.html?cate_no=28" data-cms-text="버튼" data-cms-href="버튼 링크">커스터마이징 주문<svg><use href="#fx-arrow"/></svg></a>
         </article>
         <article class="fx-plan" data-cms-item>
@@ -332,6 +369,7 @@
       <div class="fx-faq__list">
         <details data-cms-item><summary data-cms-text="질문">카페24 쇼핑몰이 있어야 하나요?</summary><p data-cms-text="답변">네, 카페24 쇼핑몰(무료 개설 가능)에 설치하는 디자인이에요. 아직 없으시면 개설부터 함께 안내해 드려요.</p></details>
         <details data-cms-item><summary data-cms-text="질문">지금 쓰는 디자인과 상품은 어떻게 되나요?</summary><p data-cms-text="답변">설치 전에 지금 디자인을 백업해 두고 적용해요. 상품 · 회원 · 주문 정보는 디자인과 따로 있어서 그대로 남아요.</p></details>
+        <details data-cms-item><summary data-cms-text="질문">쇼핑 도우미(챗봇)도 같이 받을 수 있나요?</summary><p data-cms-text="답변">이벤트 기간(10월 31일까지)에 구매하신 분께만 스킨과 함께 무료로 설치해 드려요. 이벤트 기간이 지난 뒤 구매하시면 포함되지 않아요. 오른쪽 아래 말풍선을 눌러 직접 써 보세요.</p></details>
         <details data-cms-item><summary data-cms-text="질문">적용 뒤에 직접 고칠 수 있나요?</summary><p data-cms-text="답변">주소 뒤에 ?edit=1 을 붙이면 사진 · 문구 · 배너를 게시판 글처럼 고칠 수 있어요. 설명서도 함께 드려요.</p></details>
         <details data-cms-item><summary data-cms-text="질문">데모의 사진도 그대로 쓸 수 있나요?</summary><p data-cms-text="답변">데모 사진은 예시예요. 사장님 상품 사진으로 바꿔 쓰시는 걸 권해요. 커스터마이징을 고르시면 메인 사진 교체를 저희가 해 드려요.</p></details>
         <details data-cms-item><summary data-cms-text="질문">환불은 어떻게 되나요?</summary><p data-cms-text="답변">디자인 적용 전이면 전액 환불해 드려요. 적용이 시작된 뒤에는 디자인 상품 특성상 환불이 어려워요. 자세한 기준은 <a href="/shopinfo/guide.html">이용 안내</a>를 확인해 주세요.</p></details>
