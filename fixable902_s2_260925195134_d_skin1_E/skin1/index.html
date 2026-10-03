@@ -1,0 +1,274 @@
+<!--@layout(/layout/basic/layout.html)-->
+<!--@css(/layout/basic/css/fixable-agency.css)-->
+<!--@js(/layout/basic/js/fixable-agency.js)-->
+<!-- fixable 메인 : 쇼핑몰 웹사이트(카페24 스킨) 6종을 파는 디자인 에이전시 소개 페이지.
+     한 장의 상세페이지처럼 위에서 아래로 읽힌다 — 첫 화면 → 소개 → 왜 fixable → 작업물 6 → 기능 → 모바일 → 스킨 구매 → 진행 과정 → 가격 → 후기 → 질문 → 문의
+     글자 · 사진은 ?edit=1 편집 모드(data-cms*)로 바꿀 수 있다. 움직임은 fixable-agency.js -->
+<main id="lw-home" class="fx" data-cms-sortable="섹션 순서">
+  <svg class="fx-sprite" aria-hidden="true" focusable="false">
+    <symbol id="fx-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="fx-out" viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="fx-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+  </svg>
+
+  <!-- 1. 첫 화면 : 큰 글자 + 작업물 쇼릴 -->
+  <section class="fx-hero" aria-labelledby="fx-title" data-cms="첫 화면" data-cms-help="큰 영문 · 제목 · 설명 · 버튼 2개와 아래 쇼릴 사진을 바꿀 수 있어요. 쇼릴 사진은 가로로 긴 사진(1920×1080)이 잘 맞아요.">
+    <div class="fx-wrap">
+      <p class="fx-eyebrow" data-cms-text="작은 글"><i></i>fixable — Online store design studio</p>
+      <p class="fx-display" aria-hidden="true" data-cms-text="영문 큰 글"><span class="fx-line"><span>We design stores</span></span><span class="fx-line"><span>that <em>actually sell.</em></span></span></p>
+      <div class="fx-hero__row">
+        <div>
+          <h1 id="fx-title" data-cms-text="제목">팔리는 쇼핑몰은<br>디자인부터 다릅니다.</h1>
+          <p class="fx-lead" data-cms-text="설명">패션 · 뷰티 · 키즈 · 푸드 · 리빙 · 펫.<br>업종마다 다른 ‘사는 이유’를 화면으로 설계한 카페24 쇼핑몰 6종.</p>
+        </div>
+        <div class="fx-hero__cta">
+          <a class="fx-btn" href="#fx-shop" data-cms-text="버튼" data-cms-href="버튼 링크">쇼핑몰 스킨 보기<svg><use href="#fx-arrow"/></svg></a>
+          <a class="fx-btn fx-btn--line" href="#fx-contact" data-cms-text="두 번째 버튼" data-cms-href="두 번째 버튼 링크">맞춤 제작 문의<svg><use href="#fx-arrow"/></svg></a>
+        </div>
+      </div>
+      <ul class="fx-hero__meta">
+        <li><b>06</b><span>업종별 완성 스킨</span></li>
+        <li><b>1 Day</b><span>디자인 적용 기간</span></li>
+        <li><b>100%</b><span>PC · 모바일 반응형</span></li>
+        <li><b>0 Code</b><span>편집 모드로 직접 수정</span></li>
+      </ul>
+    </div>
+    <figure class="fx-reel" data-fx-reel>
+      <img data-cms-src="쇼릴 사진" data-cms-size="1920x1080" src="/SkinImg/fixable/hero-fixable.webp" alt="fixable 이 만든 쇼핑몰 6곳의 첫 화면이 기울어진 격자로 놓인 모습" width="1920" height="1080">
+      <figcaption><span data-cms-text="쇼릴 작은 글">Selected works 2026</span><strong data-cms-text="쇼릴 제목">WEAR · EPPUM · BABYANG · FOOD · INTER · PETPIA</strong></figcaption>
+    </figure>
+  </section>
+
+  <!-- 2. 흐르는 업종 이름 -->
+  <div class="fx-marquee" aria-hidden="true">
+    <div class="fx-marquee__track"><span>Fashion</span><i>✦</i><span>Beauty</span><i>✦</i><span>Kids</span><i>✦</i><span>Food</span><i>✦</i><span>Living</span><i>✦</i><span>Pet</span><i>✦</i><span>Fashion</span><i>✦</i><span>Beauty</span><i>✦</i><span>Kids</span><i>✦</i><span>Food</span><i>✦</i><span>Living</span><i>✦</i><span>Pet</span><i>✦</i></div>
+  </div>
+
+  <!-- 3. 소개 : 스크롤하면 글자가 한 단어씩 진해진다 -->
+  <section class="fx-sec fx-about" id="fx-about" aria-labelledby="fx-about-title" data-cms="소개">
+    <div class="fx-wrap fx-split">
+      <header class="fx-label"><span>01</span><p data-cms-text="작은 제목">About</p></header>
+      <div>
+        <h2 id="fx-about-title" class="fx-statement" data-fx-words data-cms-text="큰 문장">우리는 예쁜 화면보다 장바구니에 담기는 순간을 설계합니다. 사진 한 장, 버튼 한 줄, 쿠폰 하나까지 — 손님이 머물고 고르고 결제하는 흐름을 업종마다 다르게 만듭니다.</h2>
+        <p class="fx-about__sub" data-cms-text="설명">fixable 은 카페24 쇼핑몰 디자인을 만드는 작은 스튜디오예요. 직접 운영해 보며 다듬은 스킨을 그대로 드리고, 오픈 뒤에도 사장님이 혼자 고칠 수 있게 만듭니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. 왜 fixable : 문제 → 해결 -->
+  <section class="fx-sec fx-why" aria-labelledby="fx-why-title" data-cms="왜 fixable" data-cms-grow>
+    <div class="fx-wrap">
+      <header class="fx-head"><div class="fx-label"><span>02</span><p data-cms-text="작은 제목">Why fixable</p></div><h2 id="fx-why-title" data-cms-text="제목">이런 고민, 이제 고쳐 드릴게요.</h2></header>
+      <ol class="fx-why__list">
+        <li data-cms-item><p class="fx-why__no">A</p><div><p class="fx-why__q" data-cms-text="고민">“예쁜데 안 팔려요.”</p><h3 data-cms-text="해결 제목">사는 이유가 보이는 화면</h3><p data-cms-text="해결 설명">첫 화면 · 장면 속 상품 · 포토리뷰 · 체크리스트까지, 업종의 구매 이유를 순서대로 보여 주는 구성으로 만들었어요.</p></div></li>
+        <li data-cms-item><p class="fx-why__no">B</p><div><p class="fx-why__q" data-cms-text="고민">“글자 하나 바꾸는데 개발자를 불러요.”</p><h3 data-cms-text="해결 제목">코드 없이 직접 고치는 편집 모드</h3><p data-cms-text="해결 설명">주소 뒤에 ?edit=1 만 붙이면 영역마다 [고치기] 버튼이 생겨요. 사진 · 문구 · 배너를 게시판 글처럼 바꿉니다.</p></div></li>
+        <li data-cms-item><p class="fx-why__no">C</p><div><p class="fx-why__q" data-cms-text="고민">“세일을 해도 반응이 없어요.”</p><h3 data-cms-text="해결 제목">들어오면 사게 만드는 장치</h3><p data-cms-text="해결 설명">쿠폰 뽑기 · 타임세일 띠 · 할인율 강조 · 세일 전용 화면이 기본으로 들어 있어요. 쿠폰 번호만 넣으면 바로 써요.</p></div></li>
+        <li data-cms-item><p class="fx-why__no">D</p><div><p class="fx-why__q" data-cms-text="고민">“모바일에서 다 깨져요.”</p><h3 data-cms-text="해결 제목">휴대폰부터 그린 반응형</h3><p data-cms-text="해결 설명">손님 대부분이 보는 휴대폰 화면을 먼저 맞추고 PC 로 넓혔어요. 메뉴 · 상품 · 결제까지 손가락 한 번이면 닿아요.</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 5. 작업물 6 : 한 줄씩 크게 (사진 · 업종 · 특징 · 데모 링크) -->
+  <section class="fx-sec fx-works" id="fx-works" aria-labelledby="fx-works-title" data-cms="작업물" data-cms-help="작업물마다 사진 · 이름 · 설명 · 특징 · 데모 링크 · 상세 링크를 바꿀 수 있어요. 사진은 1672×1100 이 잘 맞아요.">
+    <div class="fx-wrap">
+      <header class="fx-head"><div class="fx-label"><span>03</span><p data-cms-text="작은 제목">Selected works</p></div><h2 id="fx-works-title" data-cms-text="제목">업종마다, 다르게 팔리는 화면.</h2><p class="fx-head__sub" data-cms-text="설명">실제로 운영 중인 쇼핑몰 6곳이에요. 데모에서 직접 눌러 보고 고르세요.</p></header>
+      <div class="fx-works__list">
+        <article class="fx-work" data-cms-item>
+          <a class="fx-work__media" href="https://wear902.cafe24.com" target="_blank" rel="noopener" data-cms-href="데모 링크"><img data-cms-src="사진" src="/SkinImg/fixable/mock-wear.webp" alt="여성 의류 쇼핑몰 WEAR902 의 PC · 모바일 첫 화면" width="1672" height="1100" loading="lazy"></a>
+          <div class="fx-work__info">
+            <p class="fx-work__no">01 <span data-cms-text="업종">Fashion</span></p>
+            <h3 data-cms-text="이름">WEAR902</h3>
+            <p class="fx-work__kr" data-cms-text="한 줄 소개">매일 손이 가는 여성 의류 쇼핑몰</p>
+            <p data-cms-text="설명">흑백 모노톤 위에 패션 영상이 흐르는 첫 화면, 스타일 고르기 · 사이즈 가이드 · 장면 속 상품으로 ‘어울릴까?’를 바로 풀어 줘요.</p>
+            <ul class="fx-tags" data-cms-list="특징"><li>패션 영상 히어로</li><li>스타일 찾기</li><li>사이즈 가이드</li><li>쿠폰 뽑기</li></ul>
+            <div class="fx-work__links"><a class="fx-btn fx-btn--sm" href="/product/detail.html?product_no=11" data-cms-text="상세 버튼" data-cms-href="상세 링크">스킨 자세히 보기<svg><use href="#fx-arrow"/></svg></a><a class="fx-link" href="https://wear902.cafe24.com" target="_blank" rel="noopener" data-cms-href="데모 링크">라이브 데모<svg><use href="#fx-out"/></svg></a></div>
+          </div>
+        </article>
+        <article class="fx-work" data-cms-item>
+          <a class="fx-work__media" href="https://eppum902.cafe24.com" target="_blank" rel="noopener" data-cms-href="데모 링크"><img data-cms-src="사진" src="/SkinImg/fixable/mock-eppum.webp" alt="K-뷰티 쇼핑몰 EPPUM902 의 PC · 모바일 첫 화면" width="1672" height="1100" loading="lazy"></a>
+          <div class="fx-work__info">
+            <p class="fx-work__no">02 <span data-cms-text="업종">Beauty</span></p>
+            <h3 data-cms-text="이름">EPPUM902</h3>
+            <p class="fx-work__kr" data-cms-text="한 줄 소개">매일 더 예뻐지는 K-뷰티 쇼핑몰</p>
+            <p data-cms-text="설명">피부 고민 · 루틴 찾기로 내 피부에 맞는 제품을 골라 주고, 포토리뷰와 타임세일로 첫 구매까지 자연스럽게 이어 줘요.</p>
+            <ul class="fx-tags" data-cms-list="특징"><li>루틴 찾기</li><li>포토리뷰 자동</li><li>타임세일</li><li>편집 모드</li></ul>
+            <div class="fx-work__links"><a class="fx-btn fx-btn--sm" href="/product/detail.html?product_no=12" data-cms-text="상세 버튼" data-cms-href="상세 링크">스킨 자세히 보기<svg><use href="#fx-arrow"/></svg></a><a class="fx-link" href="https://eppum902.cafe24.com" target="_blank" rel="noopener" data-cms-href="데모 링크">라이브 데모<svg><use href="#fx-out"/></svg></a></div>
+          </div>
+        </article>
+        <article class="fx-work" data-cms-item>
+          <a class="fx-work__media" href="https://babyyang902.cafe24.com" target="_blank" rel="noopener" data-cms-href="데모 링크"><img data-cms-src="사진" src="/SkinImg/fixable/mock-baby.webp" alt="아기용품 쇼핑몰 BABYANG 의 PC · 모바일 첫 화면" width="1672" height="1100" loading="lazy"></a>
+          <div class="fx-work__info">
+            <p class="fx-work__no">03 <span data-cms-text="업종">Kids</span></p>
+            <h3 data-cms-text="이름">BABYANG</h3>
+            <p class="fx-work__kr" data-cms-text="한 줄 소개">아이와 함께하는 하루를 위한 아기용품 쇼핑몰</p>
+            <p data-cms-text="설명">월령별 카드 · 출산 준비 체크리스트 · 바디슈트 사이즈 가이드로 처음 준비하는 엄마 아빠의 고민을 덜어 줘요.</p>
+            <ul class="fx-tags" data-cms-list="특징"><li>월령별 추천</li><li>준비물 체크리스트</li><li>사이즈 가이드</li><li>포토리뷰</li></ul>
+            <div class="fx-work__links"><a class="fx-btn fx-btn--sm" href="/product/detail.html?product_no=13" data-cms-text="상세 버튼" data-cms-href="상세 링크">스킨 자세히 보기<svg><use href="#fx-arrow"/></svg></a><a class="fx-link" href="https://babyyang902.cafe24.com" target="_blank" rel="noopener" data-cms-href="데모 링크">라이브 데모<svg><use href="#fx-out"/></svg></a></div>
+          </div>
+        </article>
+        <article class="fx-work" data-cms-item>
+          <a class="fx-work__media" href="https://food902.cafe24.com" target="_blank" rel="noopener" data-cms-href="데모 링크"><img data-cms-src="사진" src="/SkinImg/fixable/mock-food.webp" alt="식품 쇼핑몰 FOOD902 의 PC · 모바일 첫 화면" width="1672" height="1100" loading="lazy"></a>
+          <div class="fx-work__info">
+            <p class="fx-work__no">04 <span data-cms-text="업종">Food</span></p>
+            <h3 data-cms-text="이름">FOOD902</h3>
+            <p class="fx-work__kr" data-cms-text="한 줄 소개">좋은 재료로 차리는 매일의 식탁</p>
+            <p data-cms-text="설명">신선식품 · 간편식 · 베이커리를 식탁 장면으로 보여 주고, 끼니별 메뉴 찾기와 장면 속 상품으로 한 번에 담게 해요.</p>
+            <ul class="fx-tags" data-cms-list="특징"><li>식탁 장면 속 상품</li><li>메뉴 찾기</li><li>세일 전용 화면</li><li>쿠폰 뽑기</li></ul>
+            <div class="fx-work__links"><a class="fx-btn fx-btn--sm" href="/product/detail.html?product_no=14" data-cms-text="상세 버튼" data-cms-href="상세 링크">스킨 자세히 보기<svg><use href="#fx-arrow"/></svg></a><a class="fx-link" href="https://food902.cafe24.com" target="_blank" rel="noopener" data-cms-href="데모 링크">라이브 데모<svg><use href="#fx-out"/></svg></a></div>
+          </div>
+        </article>
+        <article class="fx-work" data-cms-item>
+          <a class="fx-work__media" href="https://inter902.cafe24.com" target="_blank" rel="noopener" data-cms-href="데모 링크"><img data-cms-src="사진" src="/SkinImg/fixable/mock-inter.webp" alt="인테리어 가구 쇼핑몰 INTER902 의 PC · 모바일 첫 화면" width="1672" height="1100" loading="lazy"></a>
+          <div class="fx-work__info">
+            <p class="fx-work__no">05 <span data-cms-text="업종">Living</span></p>
+            <h3 data-cms-text="이름">INTER902</h3>
+            <p class="fx-work__kr" data-cms-text="한 줄 소개">오래 머물 가구 하나, 북유럽풍 인테리어 쇼핑몰</p>
+            <p data-cms-text="설명">거실 · 침실 · 다이닝 공간 사진 속 가구를 바로 눌러 보는 구성. 여백이 많은 화면이 가구의 결을 그대로 살려 줘요.</p>
+            <ul class="fx-tags" data-cms-list="특징"><li>공간별 둘러보기</li><li>장면 속 상품</li><li>여백 중심 레이아웃</li><li>편집 모드</li></ul>
+            <div class="fx-work__links"><a class="fx-btn fx-btn--sm" href="/product/detail.html?product_no=15" data-cms-text="상세 버튼" data-cms-href="상세 링크">스킨 자세히 보기<svg><use href="#fx-arrow"/></svg></a><a class="fx-link" href="https://inter902.cafe24.com" target="_blank" rel="noopener" data-cms-href="데모 링크">라이브 데모<svg><use href="#fx-out"/></svg></a></div>
+          </div>
+        </article>
+        <article class="fx-work" data-cms-item>
+          <a class="fx-work__media" href="https://petpia902.cafe24.com" target="_blank" rel="noopener" data-cms-href="데모 링크"><img data-cms-src="사진" src="/SkinImg/fixable/mock-pet.webp" alt="반려동물 쇼핑몰 PETPIA 의 PC · 모바일 첫 화면" width="1672" height="1100" loading="lazy"></a>
+          <div class="fx-work__info">
+            <p class="fx-work__no">06 <span data-cms-text="업종">Pet</span></p>
+            <h3 data-cms-text="이름">PETPIA</h3>
+            <p class="fx-work__kr" data-cms-text="한 줄 소개">함께하는 반려생활, 펫 용품 쇼핑몰</p>
+            <p data-cms-text="설명">강아지 · 고양이별 메뉴와 맞춤 찾기, 산책 · 휴식 장면 속 상품으로 우리 아이에게 맞는 용품을 금방 찾게 해요.</p>
+            <ul class="fx-tags" data-cms-list="특징"><li>반려동물별 메뉴</li><li>맞춤 찾기</li><li>타임세일</li><li>포토리뷰</li></ul>
+            <div class="fx-work__links"><a class="fx-btn fx-btn--sm" href="/product/detail.html?product_no=16" data-cms-text="상세 버튼" data-cms-href="상세 링크">스킨 자세히 보기<svg><use href="#fx-arrow"/></svg></a><a class="fx-link" href="https://petpia902.cafe24.com" target="_blank" rel="noopener" data-cms-href="데모 링크">라이브 데모<svg><use href="#fx-out"/></svg></a></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. 기능 : 모든 스킨에 공통으로 들어 있는 것 -->
+  <section class="fx-sec fx-features" aria-labelledby="fx-feat-title" data-cms="기능" data-cms-grow>
+    <div class="fx-wrap">
+      <header class="fx-head"><div class="fx-label"><span>04</span><p data-cms-text="작은 제목">What's inside</p></div><h2 id="fx-feat-title" data-cms-text="제목">스킨 하나에 다 들어 있어요.</h2><p class="fx-head__sub" data-cms-text="설명">6종 모두 같은 기능을 기본으로 담았어요. 추가 비용 없이 바로 씁니다.</p></header>
+      <ul class="fx-feat">
+        <li data-cms-item><span>01</span><h3 data-cms-text="이름">편집 모드</h3><p data-cms-text="설명">?edit=1 로 사진 · 문구 · 배너를 직접. 코드는 한 줄도 몰라도 돼요.</p></li>
+        <li data-cms-item><span>02</span><h3 data-cms-text="이름">쿠폰 뽑기</h3><p data-cms-text="설명">세일 화면에서 손님이 직접 쿠폰을 뽑아요. 최대 50% 까지 4종.</p></li>
+        <li data-cms-item><span>03</span><h3 data-cms-text="이름">타임세일</h3><p data-cms-text="설명">상품명에 날짜만 적으면 카드에 남은 시간 띠와 스티커가 붙어요.</p></li>
+        <li data-cms-item><span>04</span><h3 data-cms-text="이름">스크롤 히어로</h3><p data-cms-text="설명">영상 · 사진 3장면이 스크롤에 맞춰 넘어가는 첫 화면.</p></li>
+        <li data-cms-item><span>05</span><h3 data-cms-text="이름">장면 속 상품</h3><p data-cms-text="설명">사진 속 + 를 누르면 그 상품 구매 창이 바로 열려요.</p></li>
+        <li data-cms-item><span>06</span><h3 data-cms-text="이름">포토리뷰 자동 진열</h3><p data-cms-text="설명">사진 후기가 올라오면 메인과 상품 카드에 별점 · 리뷰 수가 자동으로.</p></li>
+        <li data-cms-item><span>07</span><h3 data-cms-text="이름">반응형 · 휴대폰 우선</h3><p data-cms-text="설명">PC · 태블릿 · 휴대폰 어디서든 같은 쇼핑몰. 따로 관리할 필요 없어요.</p></li>
+        <li data-cms-item><span>08</span><h3 data-cms-text="이름">Easy 편집기 호환</h3><p data-cms-text="설명">카페24 스마트디자인 Easy 에서도 상품 진열 · 배너를 그대로 고쳐요.</p></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 7. 모바일 : 휴대폰 화면 6개가 옆으로 흐른다 -->
+  <section class="fx-mobile" aria-labelledby="fx-mobile-title" data-cms="모바일 화면">
+    <div class="fx-wrap fx-mobile__head">
+      <div class="fx-label fx-label--light"><span>05</span><p data-cms-text="작은 제목">Mobile first</p></div>
+      <h2 id="fx-mobile-title" data-cms-text="제목">손님은 휴대폰으로 삽니다.<br>그래서 휴대폰부터 그렸어요.</h2>
+    </div>
+    <div class="fx-phones" aria-hidden="true">
+      <div class="fx-phones__track">
+        <img src="/SkinImg/fixable/mobile-wear.webp" alt="" width="600" height="1298" loading="lazy"><img src="/SkinImg/fixable/mobile-eppum.webp" alt="" width="600" height="1298" loading="lazy"><img src="/SkinImg/fixable/mobile-baby.webp" alt="" width="600" height="1298" loading="lazy"><img src="/SkinImg/fixable/mobile-food.webp" alt="" width="600" height="1298" loading="lazy"><img src="/SkinImg/fixable/mobile-inter.webp" alt="" width="600" height="1298" loading="lazy"><img src="/SkinImg/fixable/mobile-pet.webp" alt="" width="600" height="1298" loading="lazy">
+        <img src="/SkinImg/fixable/mobile-wear.webp" alt="" width="600" height="1298" loading="lazy"><img src="/SkinImg/fixable/mobile-eppum.webp" alt="" width="600" height="1298" loading="lazy"><img src="/SkinImg/fixable/mobile-baby.webp" alt="" width="600" height="1298" loading="lazy"><img src="/SkinImg/fixable/mobile-food.webp" alt="" width="600" height="1298" loading="lazy"><img src="/SkinImg/fixable/mobile-inter.webp" alt="" width="600" height="1298" loading="lazy"><img src="/SkinImg/fixable/mobile-pet.webp" alt="" width="600" height="1298" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. 스킨 구매 : 카페24 메인 진열(추천상품)의 상품 6개 -->
+  <section class="fx-sec fx-shop" id="fx-shop" aria-labelledby="fx-shop-title" data-cms="스킨 구매 제목" data-cms-help="상품은 관리자 › 상품 › 메인 진열(추천상품)에서 골라요. 여기서는 제목만 바꿔요.">
+    <div class="fx-wrap">
+      <header class="fx-head"><div class="fx-label"><span>06</span><p data-cms-text="작은 제목">Shop the skins</p></div><h2 id="fx-shop-title" data-cms-text="제목">마음에 드는 쇼핑몰, 그대로 가져가세요.</h2><a class="fx-link" href="/product/list.html?cate_no=28" data-cms-text="전체 보기 글자" data-cms-href="전체 보기 링크">전체 스킨 보기<svg><use href="#fx-arrow"/></svg></a></header>
+      <div module="product_listmain_1" class="ec-base-product">
+        <!--
+        $count = 6
+        $basket_result = /product/add_basket.html
+        $basket_option = /product/basket_option.html
+        $cache = yes
+        -->
+        <ul class="prdList grid3"><!--@import(/product/list_product.html)--></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. 진행 과정 : 왼쪽 제목은 멈춰 있고 오른쪽 단계가 올라온다 -->
+  <section class="fx-sec fx-process" aria-labelledby="fx-process-title" data-cms="진행 과정" data-cms-grow>
+    <div class="fx-wrap fx-split">
+      <header class="fx-process__head"><div class="fx-label"><span>07</span><p data-cms-text="작은 제목">Process</p></div><h2 id="fx-process-title" data-cms-text="제목">결제하고,<br>하루 뒤 오픈.</h2><p data-cms-text="설명">복잡한 설치는 저희가 해요. 사장님은 상품만 준비하세요.</p></header>
+      <ol class="fx-steps">
+        <li data-cms-item><b>Step 01</b><h3 data-cms-text="제목">스킨 고르고 결제</h3><p data-cms-text="설명">라이브 데모에서 직접 눌러 보고 마음에 드는 스킨과 옵션(단순 적용 · 커스터마이징)을 골라 주문해요.</p></li>
+        <li data-cms-item><b>Step 02</b><h3 data-cms-text="제목">카페24 정보 전달</h3><p data-cms-text="설명">주문서에 쇼핑몰 아이디와 바꾸고 싶은 로고 · 문구를 적어 주세요. 필요한 것만 짧게 여쭤봐요.</p></li>
+        <li data-cms-item><b>Step 03</b><h3 data-cms-text="제목">디자인 적용</h3><p data-cms-text="설명">단순 적용은 1일, 커스터마이징은 5일 안에 사장님 쇼핑몰에 그대로 설치해 드려요.</p></li>
+        <li data-cms-item><b>Step 04</b><h3 data-cms-text="제목">오픈 · 사용 안내</h3><p data-cms-text="설명">편집 모드 쓰는 법, 쿠폰 · 타임세일 켜는 법을 설명서와 함께 알려 드려요. 오픈 뒤 질문도 받아요.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 10. 가격 -->
+  <section class="fx-sec fx-price" id="fx-price" aria-labelledby="fx-price-title" data-cms="가격" data-cms-grow>
+    <div class="fx-wrap">
+      <header class="fx-head"><div class="fx-label"><span>08</span><p data-cms-text="작은 제목">Pricing</p></div><h2 id="fx-price-title" data-cms-text="제목">필요한 만큼만 고르세요.</h2><p class="fx-head__sub" data-cms-text="설명">스킨 6종 모두 같은 가격이에요. (VAT 포함)</p></header>
+      <div class="fx-plans">
+        <article class="fx-plan" data-cms-item>
+          <p class="fx-plan__name" data-cms-text="이름">Basic · 단순 적용</p>
+          <p class="fx-plan__price" data-cms-text="가격"><b>250,000</b>원</p>
+          <p class="fx-plan__time" data-cms-text="기간">작업 기간 1일</p>
+          <ul data-cms-list="포함 내용"><li>선택한 스킨 디자인 그대로 설치</li><li>편집 모드 · 쿠폰 뽑기 · 타임세일 포함</li><li>사용 설명서 제공</li></ul>
+          <a class="fx-btn fx-btn--line" href="/product/list.html?cate_no=28" data-cms-text="버튼" data-cms-href="버튼 링크">스킨 고르기<svg><use href="#fx-arrow"/></svg></a>
+        </article>
+        <article class="fx-plan fx-plan--best" data-cms-item>
+          <p class="fx-plan__name" data-cms-text="이름">Custom · 커스터마이징</p>
+          <p class="fx-plan__price" data-cms-text="가격"><b>430,000</b>원</p>
+          <p class="fx-plan__time" data-cms-text="기간">작업 기간 5일</p>
+          <ul data-cms-list="포함 내용"><li>Basic 의 모든 내용</li><li>로고 변경 · 상단 메뉴 추가</li><li>메인 문구 · 롤링 이미지 변경</li><li>팝업 기능 수정 (항목별 1회)</li></ul>
+          <a class="fx-btn" href="/product/list.html?cate_no=28" data-cms-text="버튼" data-cms-href="버튼 링크">커스터마이징 주문<svg><use href="#fx-arrow"/></svg></a>
+        </article>
+        <article class="fx-plan" data-cms-item>
+          <p class="fx-plan__name" data-cms-text="이름">Studio · 맞춤 제작</p>
+          <p class="fx-plan__price" data-cms-text="가격"><b>별도 견적</b></p>
+          <p class="fx-plan__time" data-cms-text="기간">상담 후 일정 안내</p>
+          <ul data-cms-list="포함 내용"><li>브랜드에 맞춘 새 디자인</li><li>촬영 · 영상 · 상세페이지 연계</li><li>오픈 뒤 운영 상담</li></ul>
+          <a class="fx-btn fx-btn--line" href="#fx-contact" data-cms-text="버튼" data-cms-href="버튼 링크">견적 문의<svg><use href="#fx-arrow"/></svg></a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. 후기 : 상품 사용후기(board_no=4)의 사진 후기를 fixable-reviews.js 가 채운다 -->
+  <section class="fx-sec fx-reviews" aria-labelledby="fx-rv-title" data-cms="후기 제목" data-cms-help="후기 카드는 상품 사용후기 게시판의 사진 후기가 자동으로 나와요. 여기서는 제목과 글자만 바꿔요.">
+    <div class="fx-wrap">
+      <header class="fx-head"><div class="fx-label"><span>09</span><p data-cms-text="작은 제목">Client notes</p></div><h2 id="fx-rv-title" data-cms-text="제목">먼저 시작한 사장님들의 이야기</h2><a class="fx-link" href="/board/product/list.html?board_no=4">후기 전체 보기<svg><use href="#fx-arrow"/></svg></a></header>
+      <div class="pr-grid" data-fixable-photoreviews></div>
+      <p class="pr-empty" data-cms-text="후기가 없을 때 글">아직 등록된 후기가 없어요. 첫 후기의 주인공이 되어 주세요.</p>
+    </div>
+  </section>
+
+  <!-- 12. 자주 묻는 질문 -->
+  <section class="fx-sec fx-faq" aria-labelledby="fx-faq-title" data-cms="자주 묻는 질문" data-cms-grow>
+    <div class="fx-wrap fx-split">
+      <header><div class="fx-label"><span>10</span><p data-cms-text="작은 제목">FAQ</p></div><h2 id="fx-faq-title" data-cms-text="제목">궁금한 점,<br>먼저 답해 드려요.</h2></header>
+      <div class="fx-faq__list">
+        <details data-cms-item><summary data-cms-text="질문">카페24 쇼핑몰이 있어야 하나요?</summary><p data-cms-text="답변">네, 카페24 쇼핑몰(무료 개설 가능)에 설치하는 디자인이에요. 아직 없으시면 개설부터 함께 안내해 드려요.</p></details>
+        <details data-cms-item><summary data-cms-text="질문">지금 쓰는 디자인과 상품은 어떻게 되나요?</summary><p data-cms-text="답변">설치 전에 지금 디자인을 백업해 두고 적용해요. 상품 · 회원 · 주문 정보는 디자인과 따로 있어서 그대로 남아요.</p></details>
+        <details data-cms-item><summary data-cms-text="질문">적용 뒤에 직접 고칠 수 있나요?</summary><p data-cms-text="답변">주소 뒤에 ?edit=1 을 붙이면 사진 · 문구 · 배너를 게시판 글처럼 고칠 수 있어요. 설명서도 함께 드려요.</p></details>
+        <details data-cms-item><summary data-cms-text="질문">데모의 사진도 그대로 쓸 수 있나요?</summary><p data-cms-text="답변">데모 사진은 예시예요. 사장님 상품 사진으로 바꿔 쓰시는 걸 권해요. 커스터마이징을 고르시면 메인 사진 교체를 저희가 해 드려요.</p></details>
+        <details data-cms-item><summary data-cms-text="질문">환불은 어떻게 되나요?</summary><p data-cms-text="답변">디자인 적용 전이면 전액 환불해 드려요. 적용이 시작된 뒤에는 디자인 상품 특성상 환불이 어려워요. 자세한 기준은 <a href="/shopinfo/guide.html">이용 안내</a>를 확인해 주세요.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13. 문의 : 큰 글자 + 버튼 -->
+  <section class="fx-contact" id="fx-contact" aria-labelledby="fx-contact-title" data-cms="문의">
+    <div class="fx-wrap">
+      <p class="fx-eyebrow fx-eyebrow--light" data-cms-text="작은 글"><i></i>Start a project</p>
+      <h2 id="fx-contact-title" class="fx-contact__title" data-cms-text="영문 큰 글">Let’s fix<br><em>your store.</em></h2>
+      <div class="fx-contact__row">
+        <p data-cms-text="설명">어떤 스킨이 맞을지 모르겠다면, 쇼핑몰 주소와 업종만 남겨 주세요.<br>맞는 스킨과 견적을 하루 안에 답해 드려요.</p>
+        <div class="fx-hero__cta">
+          <a class="fx-btn fx-btn--white" href="/board/product/list.html?board_no=6" data-cms-text="버튼" data-cms-href="버튼 링크">프로젝트 문의하기<svg><use href="#fx-arrow"/></svg></a>
+          <a class="fx-btn fx-btn--ghost" href="/product/list.html?cate_no=28" data-cms-text="두 번째 버튼" data-cms-href="두 번째 버튼 링크">스킨 둘러보기<svg><use href="#fx-arrow"/></svg></a>
+        </div>
+      </div>
+    </div>
+    <div class="fx-contact__mark"><img data-cms-src="큰 글자 사진" src="/SkinImg/fixable/wordmark-fixable.webp" alt="fixable" width="2146" height="724" loading="lazy"></div>
+  </section>
+</main>

@@ -11,7 +11,7 @@ const read = p => { try { return fs.readFileSync(path.join(root, p.replace(/^\//
 const won = n => n.toLocaleString('ko-KR') + '원';
 function cards() {
   let list = products;
-  if (CTX.group) list = list.filter(p => p.group === CTX.group);
+  if (CTX.group) list = list.filter(p => (p.groups || [p.group]).includes(CTX.group));
   else if (CTX.cate && CTX.cate !== '28') list = list.filter(p => p.cates.includes(+CTX.cate));
   if (CTX.keyword) list = list.filter(p => p.name.includes(CTX.keyword));
   return list.map(p => `<li class="xans-record-"><div class="thumbnail"><div class="prdImg"><a href="/product/detail.html?product_no=${p.product_no_temp}"><img src="/__prd/${p.img}" alt="${p.name}"></a></div></div>
@@ -38,11 +38,11 @@ function page(p) {
 
 // ---------- 카페24 변수 {$…} 채우기 ----------
 // 실제 쇼핑몰에서는 카페24 서버가 채우는 값. 미리보기에서는 예시 값을 넣고, 모르는 변수는 빈칸으로 지운다.
-const CATES = { 28: '전체 상품', 24: '아우터', 25: '상의', 26: '원피스/스커트', 27: 'SALE' };
+const CATES = { 28: '전체 스킨', 24: '패션 · 뷰티', 25: '키즈 · 펫', 26: '푸드 · 리빙', 27: 'SALE' };
 const SHOP = {
-  mall_name: 'wear902', company_name: 'wear902', president_name: '대표자명', phone: '000-0000-0000', inquiry_email: 'help@wear902.cafe24.com',
+  mall_name: 'fixable', company_name: 'fixable', president_name: '대표자명', phone: '000-0000-0000', inquiry_email: 'help@fixable902.cafe24.com',
   runtime: '평일 10:00 - 17:00 (점심 12:00 - 13:00)', mall_zipcode: '00000', mall_addr1: '서울특별시 ○○구 ○○로 00', mall_addr2: '',
-  company_regno: '000-00-00000', network_regno: '제0000-서울○○-0000호', cpo_name: '담당자명', cpo_email: 'help@wear902.cafe24.com',
+  company_regno: '000-00-00000', network_regno: '제0000-서울○○-0000호', cpo_name: '담당자명', cpo_email: 'help@fixable902.cafe24.com',
   basket_count: '0', basket_cnt: '0', basket_price: '0원', coupon_cnt: '0', interest_prd_cnt: '0', mileage: '0원', mileage_name: '적립금',
   deposit: '0원', deposit_name: '예치금', current_language: 'KO', locale_language: 'ko_KR', country_name: 'KOREA', shop_language_name: 'KOREAN'
 };
