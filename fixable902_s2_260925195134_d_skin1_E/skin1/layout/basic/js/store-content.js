@@ -447,7 +447,7 @@ window.STORE_CONTENT = {
   c.popup.slides[0].title = '오픈 기념 쿠폰 뽑기'; c.popup.slides[0].text = '스킨을 고르기 전에 쿠폰부터 뽑아 보세요. 최대 50% 할인.';
   c.popup.slides[1].image = base + 'work-eppum.webp'; c.popup.slides[1].imageAlt = 'fixable 이 만든 쇼핑몰 화면';
   c.popup.slides[1].title = '후기 남기면 3,000P'; c.popup.slides[1].text = '오픈한 쇼핑몰 화면과 함께 후기를 남기면 적립금 3,000원을 드려요.';
-  c.hero = {tag:'ONLINE STORE DESIGN STUDIO', title:'팔리는 쇼핑몰은 디자인부터', sub:'업종별 카페24 스킨 6종.',
+  c.hero = {tag:'ONLINE STORE DESIGN STUDIO', title:'팔리는 쇼핑몰은 시작부터', sub:'업종별 카페24 스킨 6종.',
     buttonText:'스킨 보기', buttonLink:'/product/list.html?cate_no=28', image:base+'hero-fixable.webp', imageMobile:base+'hero-fixable.webp'};
   c.onStore.hoverImages = ['work-wear.webp','work-eppum.webp','work-baby.webp','work-food.webp'].map(function (s) {return base+s});
   c.fabric = {image:base+'mock-inter.webp', eyebrow:'MADE TO SELL', titleHtml:'예쁜 화면보다<br>팔리는 흐름을',

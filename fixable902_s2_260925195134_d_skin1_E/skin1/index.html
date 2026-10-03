@@ -2,7 +2,7 @@
 <!--@css(/layout/basic/css/fixable-agency.css)-->
 <!--@js(/layout/basic/js/fixable-agency.js)-->
 <!-- fixable 메인 : 쇼핑몰 웹사이트(카페24 스킨) 6종을 파는 디자인 에이전시 소개 페이지.
-     한 장의 상세페이지처럼 위에서 아래로 읽힌다 — 첫 화면 → 소개 → 왜 fixable → 기능 → 작업물 → 모바일 → 스킨 구매 → 진행 과정 → 가격 → 후기 → 질문 → 문의
+     한 장의 상세페이지처럼 위에서 아래로 읽힌다 — 첫 화면 → 소개 → 왜 fixable → 기능 → 작업물 → 모바일 → 진행 과정 → 가격 → 후기 → 질문 → 문의
      글자 · 사진은 관리자 편집 모드(data-cms*)로 바꿀 수 있다. 움직임은 fixable-agency.js -->
 <main id="lw-home" class="fx" data-cms-sortable="섹션 순서">
   <svg class="fx-sprite" aria-hidden="true" focusable="false">
@@ -27,10 +27,10 @@
       <div class="fx-stage__content">
         <div class="fx-stage__heading">
           <p class="fx-eyebrow fx-eyebrow--light" data-cms-text="작은 글"><i></i>fixable · Online store design studio</p>
-          <h1 id="fx-title" class="fx-stage__title"><span data-fx-chars data-cms-text="제목 첫 줄">팔리는 쇼핑몰은</span><span class="fx-stage__light" data-fx-chars data-cms-text="제목 둘째 줄">디자인부터 다릅니다.</span></h1>
+          <h1 id="fx-title" class="fx-stage__title"><span data-fx-chars data-cms-text="제목 첫 줄">팔리는 쇼핑몰은</span><span class="fx-stage__light" data-fx-chars data-cms-text="제목 둘째 줄">시작부터 다릅니다.</span></h1>
           <p class="fx-stage__sub" data-cms-text="설명">패션 · 뷰티 · 키즈 · 푸드 · 리빙 · 펫.<br>업종마다 다른 ‘사는 이유’를 화면으로 설계한 쇼핑몰을 만듭니다.</p>
           <div class="fx-hero__cta">
-            <a class="fx-btn fx-btn--white" href="#fx-shop" data-cms-text="버튼" data-cms-href="버튼 링크">쇼핑몰 스킨 보기<svg><use href="#fx-arrow"/></svg></a>
+            <a class="fx-btn fx-btn--white" href="#fx-works" data-cms-text="버튼" data-cms-href="버튼 링크">쇼핑몰 스킨 보기<svg><use href="#fx-arrow"/></svg></a>
             <a class="fx-btn fx-btn--ghost" href="#fx-contact" data-cms-text="두 번째 버튼" data-cms-href="두 번째 버튼 링크">맞춤 제작 문의<svg><use href="#fx-arrow"/></svg></a>
           </div>
         </div>
@@ -370,7 +370,7 @@
     <div class="fx-wrap fx-bot__grid">
       <div class="fx-bot__copy">
         <p class="fx-bot__badge"><span data-cms-text="작은 표시">Event only</span><b data-fx-dday="2026-10-31T23:59:59+09:00">D-28</b></p>
-        <h2 id="fx-bot-title" data-cms-text="제목">이벤트 기간에 구매하면<br>쇼핑 도우미를 무료로 넣어 드려요.</h2>
+        <h2 id="fx-bot-title" data-cms-text="제목">이벤트 기간 구매 시<br>쇼핑 도우미 무료 제공</h2>
         <p class="fx-bot__lead" data-cms-text="설명">손님이 말풍선을 누르면 배송 · 교환 · 사이즈 같은 질문에 먼저 답하고, 필요하면 카카오톡 상담으로 이어 주는 챗봇 도우미. <b>10월 31일까지 구매하신 분께만</b> 스킨과 함께 설치해 드려요.</p>
         <ul class="fx-bot__points">
           <li data-cms-item><b>월 이용료 0원</b><span data-cms-text="설명">외부 서비스 없이 스킨 안에서 동작해요.</span></li>
@@ -379,7 +379,7 @@
         </ul>
         <div class="fx-hero__cta">
           <button type="button" class="fx-btn" data-fx-open-helper>지금 직접 써 보기<svg><use href="#fx-arrow"/></svg></button>
-          <a class="fx-btn fx-btn--line" href="#fx-shop" data-cms-text="버튼" data-cms-href="버튼 링크">이벤트 기간에 스킨 고르기<svg><use href="#fx-arrow"/></svg></a>
+          <a class="fx-btn fx-btn--line" href="#fx-price" data-cms-text="버튼" data-cms-href="버튼 링크">이벤트 기간에 스킨 고르기<svg><use href="#fx-arrow"/></svg></a>
         </div>
         <p class="fx-bot__note" data-cms-text="안내">※ 이벤트 기간이 지난 뒤 구매하시면 쇼핑 도우미는 포함되지 않아요.</p>
       </div>
@@ -401,26 +401,10 @@
     </div>
   </section>
 
-  <!-- 8. 스킨 구매 : 카페24 메인 진열(추천상품)의 상품 6개 -->
-  <section class="fx-sec fx-shop" id="fx-shop" aria-labelledby="fx-shop-title" data-cms="스킨 구매 제목" data-cms-help="상품은 관리자 › 상품 › 메인 진열(추천상품)에서 골라요. 여기서는 제목만 바꿔요.">
-    <div class="fx-wrap">
-      <header class="fx-head"><div class="fx-label"><span>06</span><p data-cms-text="작은 제목">Shop the skins</p></div><h2 id="fx-shop-title" data-cms-text="제목">마음에 드는 쇼핑몰, 그대로 가져가세요.</h2><a class="fx-link" href="/product/list.html?cate_no=28" data-cms-text="전체 보기 글자" data-cms-href="전체 보기 링크">전체 스킨 보기<svg><use href="#fx-arrow"/></svg></a></header>
-      <div module="product_listmain_1" class="ec-base-product">
-        <!--
-        $count = 6
-        $basket_result = /product/add_basket.html
-        $basket_option = /product/basket_option.html
-        $cache = yes
-        -->
-        <ul class="prdList grid3"><!--@import(/product/list_product.html)--></ul>
-      </div>
-    </div>
-  </section>
-
   <!-- 9. 진행 과정 : 왼쪽 제목은 멈춰 있고 오른쪽 단계가 올라온다 -->
   <section class="fx-sec fx-process" aria-labelledby="fx-process-title" data-cms="진행 과정" data-cms-grow>
     <div class="fx-wrap fx-split">
-      <header class="fx-process__head"><div class="fx-label"><span>07</span><p data-cms-text="작은 제목">Process</p></div><h2 id="fx-process-title" data-cms-text="제목">결제하고,<br>하루 뒤 오픈.</h2><p data-cms-text="설명">복잡한 설치는 저희가 해요. 사장님은 상품만 준비하세요.</p></header>
+      <header class="fx-process__head"><div class="fx-label"><span>06</span><p data-cms-text="작은 제목">Process</p></div><h2 id="fx-process-title" data-cms-text="제목">결제하고,<br>하루 뒤 오픈.</h2><p data-cms-text="설명">복잡한 설치는 저희가 해요. 사장님은 상품만 준비하세요.</p></header>
       <ol class="fx-steps">
         <li data-cms-item><b>Step 01</b><h3 data-cms-text="제목">스킨 고르고 결제</h3><p data-cms-text="설명">라이브 데모에서 직접 눌러 보고 마음에 드는 스킨과 옵션(단순 적용 · 커스터마이징)을 골라 주문해요.</p></li>
         <li data-cms-item><b>Step 02</b><h3 data-cms-text="제목">카페24 정보 전달</h3><p data-cms-text="설명">주문서에 쇼핑몰 아이디와 바꾸고 싶은 로고 · 문구를 적어 주세요. 필요한 것만 짧게 여쭤봐요.</p></li>
@@ -433,21 +417,21 @@
   <!-- 10. 가격 -->
   <section class="fx-sec fx-price" id="fx-price" aria-labelledby="fx-price-title" data-cms="가격" data-cms-grow>
     <div class="fx-wrap">
-      <header class="fx-head"><div class="fx-label"><span>08</span><p data-cms-text="작은 제목">Pricing</p></div><h2 id="fx-price-title" data-cms-text="제목">필요한 만큼만 고르세요.</h2><p class="fx-head__sub" data-cms-text="설명">스킨 6종 모두 같은 가격이에요. (VAT 포함) 10월 31일까지 구매하시면 쇼핑 도우미(챗봇)를 무료로 넣어 드려요.</p></header>
+      <header class="fx-head"><div class="fx-label"><span>07</span><p data-cms-text="작은 제목">Pricing</p></div><h2 id="fx-price-title" data-cms-text="제목">필요한 만큼만 고르세요.</h2><p class="fx-head__sub" data-cms-text="설명">스킨 6종 모두 같은 가격이에요. (VAT 포함) 10월 31일까지 구매하시면 쇼핑 도우미(챗봇)를 무료로 넣어 드려요.</p></header>
       <div class="fx-plans">
         <article class="fx-plan" data-cms-item>
-          <p class="fx-plan__name" data-cms-text="이름">Basic · 단순 적용</p>
-          <p class="fx-plan__price" data-cms-text="가격"><b>250,000</b>원</p>
-          <p class="fx-plan__time" data-cms-text="기간">작업 기간 1일</p>
-          <ul data-cms-list="포함 내용"><li class="fx-plan__event">이벤트 특전 · 쇼핑 도우미(챗봇) 무료 (10/31까지 구매 시)</li><li>선택한 스킨 디자인 그대로 설치</li><li>편집 모드 · 쿠폰 뽑기 · 타임세일 포함</li><li>사용 설명서 제공</li></ul>
-          <a class="fx-btn fx-btn--line" href="/product/list.html?cate_no=28" data-cms-text="버튼" data-cms-href="버튼 링크">스킨 고르기<svg><use href="#fx-arrow"/></svg></a>
-        </article>
-        <article class="fx-plan fx-plan--best" data-cms-item>
           <p class="fx-plan__name" data-cms-text="이름">Custom · 커스터마이징</p>
           <p class="fx-plan__price" data-cms-text="가격"><b>430,000</b>원</p>
           <p class="fx-plan__time" data-cms-text="기간">작업 기간 5일</p>
           <ul data-cms-list="포함 내용"><li class="fx-plan__event">이벤트 특전 · 쇼핑 도우미(챗봇) 무료 (10/31까지 구매 시)</li><li>Basic 의 모든 내용</li><li>로고 변경 · 상단 메뉴 추가</li><li>메인 문구 · 롤링 이미지 변경</li><li>팝업 기능 수정 (항목별 1회)</li></ul>
-          <a class="fx-btn" href="/product/list.html?cate_no=28" data-cms-text="버튼" data-cms-href="버튼 링크">커스터마이징 주문<svg><use href="#fx-arrow"/></svg></a>
+          <a class="fx-btn fx-btn--line" href="/product/list.html?cate_no=28" data-cms-text="버튼" data-cms-href="버튼 링크">커스터마이징 주문<svg><use href="#fx-arrow"/></svg></a>
+        </article>
+        <article class="fx-plan fx-plan--best" data-cms-item>
+          <p class="fx-plan__name" data-cms-text="이름">Basic · 단순 적용</p>
+          <p class="fx-plan__price" data-cms-text="가격"><b>250,000</b>원</p>
+          <p class="fx-plan__time" data-cms-text="기간">작업 기간 1일</p>
+          <ul data-cms-list="포함 내용"><li class="fx-plan__event">이벤트 특전 · 쇼핑 도우미(챗봇) 무료 (10/31까지 구매 시)</li><li>선택한 스킨 디자인 그대로 설치</li><li>편집 모드 · 쿠폰 뽑기 · 타임세일 포함</li><li>사용 설명서 제공</li></ul>
+          <a class="fx-btn" href="/product/list.html?cate_no=28" data-cms-text="버튼" data-cms-href="버튼 링크">스킨 고르기<svg><use href="#fx-arrow"/></svg></a>
         </article>
         <article class="fx-plan" data-cms-item>
           <p class="fx-plan__name" data-cms-text="이름">Studio · 맞춤 제작</p>
@@ -463,7 +447,7 @@
   <!-- 11. 후기 : 상품 사용후기(board_no=4)의 사진 후기를 fixable-reviews.js 가 채운다 -->
   <section class="fx-sec fx-reviews" aria-labelledby="fx-rv-title" data-cms="후기 제목" data-cms-help="후기 카드는 상품 사용후기 게시판의 사진 후기가 자동으로 나와요. 여기서는 제목과 글자만 바꿔요.">
     <div class="fx-wrap">
-      <header class="fx-head"><div class="fx-label"><span>09</span><p data-cms-text="작은 제목">Client notes</p></div><h2 id="fx-rv-title" data-cms-text="제목">먼저 시작한 사장님들의 이야기</h2><a class="fx-link" href="/board/product/list.html?board_no=4">후기 전체 보기<svg><use href="#fx-arrow"/></svg></a></header>
+      <header class="fx-head"><div class="fx-label"><span>08</span><p data-cms-text="작은 제목">Client notes</p></div><h2 id="fx-rv-title" data-cms-text="제목">먼저 시작한 사장님들의 이야기</h2><a class="fx-link" href="/board/product/list.html?board_no=4">후기 전체 보기<svg><use href="#fx-arrow"/></svg></a></header>
       <div class="pr-grid" data-fixable-photoreviews></div>
       <p class="pr-empty" data-cms-text="후기가 없을 때 글">아직 등록된 후기가 없어요. 첫 후기의 주인공이 되어 주세요.</p>
     </div>
@@ -472,7 +456,7 @@
   <!-- 12. 자주 묻는 질문 -->
   <section class="fx-sec fx-faq" aria-labelledby="fx-faq-title" data-cms="자주 묻는 질문" data-cms-grow>
     <div class="fx-wrap fx-split">
-      <header><div class="fx-label"><span>10</span><p data-cms-text="작은 제목">FAQ</p></div><h2 id="fx-faq-title" data-cms-text="제목">궁금한 점,<br>먼저 답해 드려요.</h2></header>
+      <header><div class="fx-label"><span>09</span><p data-cms-text="작은 제목">FAQ</p></div><h2 id="fx-faq-title" data-cms-text="제목">궁금한 점,<br>먼저 답해 드려요.</h2></header>
       <div class="fx-faq__list">
         <details data-cms-item><summary data-cms-text="질문">카페24 쇼핑몰이 있어야 하나요?</summary><p data-cms-text="답변">네, 카페24 쇼핑몰(무료 개설 가능)에 설치하는 디자인이에요. 아직 없으시면 개설부터 함께 안내해 드려요.</p></details>
         <details data-cms-item><summary data-cms-text="질문">지금 쓰는 디자인과 상품은 어떻게 되나요?</summary><p data-cms-text="답변">설치 전에 지금 디자인을 백업해 두고 적용해요. 상품 · 회원 · 주문 정보는 디자인과 따로 있어서 그대로 남아요.</p></details>

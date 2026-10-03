@@ -126,14 +126,13 @@
     // ── 3) 등장 ─────────────────────────────────────
     if (!still && !editing && 'IntersectionObserver' in window) {
       document.documentElement.classList.add('fx-js');
-      ['.fx-head', '.fx-about__sub', '.fx-why__list li', '.fx-work__info', '.fx-feat2__copy', '.fx-feat li', '.fx-mobile__head', '.fx-steps li', '.fx-plan', '.fx-faq details', '.fx-contact__row', '.fx-shop .prdList > li', '.fx-hero__meta li'].forEach(function (sel) {
+      ['.fx-head', '.fx-about__sub', '.fx-why__list li', '.fx-work__info', '.fx-feat2__copy', '.fx-feat li', '.fx-mobile__head', '.fx-steps li', '.fx-plan', '.fx-faq details', '.fx-contact__row', '.fx-hero__meta li'].forEach(function (sel) {
         Q(sel).forEach(function (el, i) { el.setAttribute('data-fx-in', ''); el.style.setProperty('--d', (i % 4) * 0.08 + 's'); });
       });
       var io = new IntersectionObserver(function (list) {
         list.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); } });
       }, { rootMargin: '0px 0px -8% 0px' });
       Q('[data-fx-in]').forEach(function (el) { io.observe(el); });
-      setTimeout(function () { Q('.fx-shop .prdList > li:not([data-fx-in])').forEach(function (el) { el.setAttribute('data-fx-in', ''); io.observe(el); }); }, 1200);
     }
     var words = home.querySelector('[data-fx-words]');
     if (words && !editing && !still) {
