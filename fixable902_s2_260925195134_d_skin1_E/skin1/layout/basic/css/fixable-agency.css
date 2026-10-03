@@ -612,17 +612,49 @@ html.fx-js #lw-home.fx [data-fx-chat].is-play .fx-bm{opacity:1;transform:none}
 #lw-home.fx .fx-demo--count.is-on .fx-count__bar{animation:fx-in .5s .6s both}
 @media (max-width:767px){#lw-home.fx .fx-chatmini__body{min-height:0}#lw-home.fx .fx-cm--btns{display:none}#lw-home.fx .fx-demo--bot{gap:14px}}
 
-/* 6. 기능 01~08 펼침 : 기능마다 한 줄(설명 + 시연), 홀짝으로 좌우가 바뀐다. 시연은 화면에 들어오면 .is-on 으로 재생 */
-#lw-home.fx .fx-feats{display:flex;flex-direction:column;gap:clamp(48px,7vw,120px)}
-#lw-home.fx .fx-feat2{display:grid;grid-template-columns:.8fr 1.3fr;gap:clamp(28px,5vw,88px);align-items:center}
-#lw-home.fx .fx-feat2:nth-child(even){grid-template-columns:1.3fr .8fr}
-#lw-home.fx .fx-feat2:nth-child(even) .fx-feat2__copy{order:2}
-#lw-home.fx .fx-feat2__no{display:flex;align-items:center;gap:14px;font:500 clamp(56px,7vw,110px)/1 Jost,sans-serif;letter-spacing:-.04em;color:transparent;-webkit-text-stroke:1.2px var(--fx-ink)}
-#lw-home.fx .fx-feat2__no span{padding:7px 12px;border-radius:999px;border:1px solid var(--fx-line);-webkit-text-stroke:0;color:var(--fx-ink);font:500 13px/1 Pretendard,sans-serif;letter-spacing:0}
-#lw-home.fx .fx-feat2--event .fx-feat2__no span{background:var(--fx-ink);color:#fff;border-color:var(--fx-ink)}
-#lw-home.fx .fx-feat2 h3{margin:22px 0 14px!important;font-size:clamp(28px,3vw,46px);font-weight:700;letter-spacing:-.05em}
-#lw-home.fx .fx-feat2__desc{font-size:clamp(16px,1.2vw,19px);line-height:1.75;color:#555;max-width:440px}
-#lw-home.fx .fx-feat2__desc em{font-style:normal;margin-left:6px;padding:3px 9px;border-radius:999px;background:var(--fx-ink);color:#fff;font-size:12px;font-weight:600;white-space:nowrap}
-#lw-home.fx .fx-feat2__stage{position:relative;aspect-ratio:16/10;max-width:100%;border-radius:24px;overflow:hidden;color:#fff;background:radial-gradient(120% 90% at 70% 10%,#2a2a2e 0%,#111113 60%);cursor:pointer}
-@media (max-width:1024px){#lw-home.fx .fx-feat2,#lw-home.fx .fx-feat2:nth-child(even){grid-template-columns:1fr;gap:22px}#lw-home.fx .fx-feat2:nth-child(even) .fx-feat2__copy{order:0}#lw-home.fx .fx-feat2__no{font-size:56px}#lw-home.fx .fx-feat2 h3{margin:14px 0 10px!important}}
-@media (max-width:767px){#lw-home.fx .fx-feat2__stage{aspect-ratio:4/5;border-radius:18px}}
+/* 6. 기능 01~08 : 벤토 그리드 — 크기가 다른 어두운 카드를 모자이크로 엮는다 (위 작업물의 좌우 교차와 겹치지 않게).
+   카드 = 위 설명(번호 · 분류 · 이름 · 설명) + 아래 시연. 시연은 화면에 들어오면 .is-on 으로 재생, 누르면 다시 재생 */
+#lw-home.fx .fx-feats{display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(12px,1.2vw,20px)}
+#lw-home.fx .fx-feat2{--fx-glow:rgba(255,255,255,.06);position:relative;grid-column:span 4;display:flex;flex-direction:column;min-width:0;border-radius:28px;overflow:hidden;isolation:isolate;color:#fff;
+  background:radial-gradient(120% 80% at 100% 0%,var(--fx-glow) 0%,transparent 55%),linear-gradient(180deg,#19191c 0%,#0e0e10 100%);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.07),0 1px 0 rgba(255,255,255,.04);transition:transform .7s var(--fx-e),box-shadow .5s}
+#lw-home.fx .fx-feat2::before{content:"";position:absolute;inset:0 0 auto;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.28),transparent);z-index:2;pointer-events:none}
+#lw-home.fx .fx-feat2:hover{transform:translateY(-4px);box-shadow:inset 0 0 0 1px rgba(255,255,255,.16),0 30px 60px -30px rgba(0,0,0,.55)}
+@media (min-width:1025px){ /* 01 02 / 03 + 07(세로로 긴 카드) / 04 / 05 06 / 08 */
+  #lw-home.fx .fx-feat2:nth-child(1){grid-area:1/1/2/8}#lw-home.fx .fx-feat2:nth-child(2){grid-area:1/8/2/13}
+  #lw-home.fx .fx-feat2:nth-child(3){grid-area:2/1/3/8}#lw-home.fx .fx-feat2:nth-child(7){grid-area:2/8/4/13}
+  #lw-home.fx .fx-feat2:nth-child(4){grid-area:3/1/4/8}
+  #lw-home.fx .fx-feat2:nth-child(5){grid-area:4/1/5/6}#lw-home.fx .fx-feat2:nth-child(6){grid-area:4/6/5/13}
+  #lw-home.fx .fx-feat2--event{grid-row:5}
+  /* 07 은 세로로 긴 카드라 휴대폰 화면을 더 크게 */
+  #lw-home.fx .fx-feat2:nth-child(7) .fx-demo--resp.is-on .fx-resp__frame{animation-name:fx-resize-tall}}
+@keyframes fx-resize-tall{0%,18%{width:96%;aspect-ratio:16/10;border-radius:14px}40%,55%{width:70%;aspect-ratio:3/4;border-radius:18px}78%,100%{width:48%;aspect-ratio:9/19;border-radius:28px;border-width:8px}}
+#lw-home.fx .fx-feat2__copy{position:relative;z-index:1;padding:clamp(24px,2.4vw,36px) clamp(24px,2.4vw,36px) 0}
+#lw-home.fx .fx-feat2__no{display:flex;align-items:center;gap:10px;font:500 13px/1 Jost,sans-serif;letter-spacing:.08em;color:rgba(255,255,255,.45)}
+#lw-home.fx .fx-feat2__no::after{content:"/ 08";order:0;margin-right:auto;color:rgba(255,255,255,.25)}
+#lw-home.fx .fx-feat2__no span{order:1;padding:6px 11px;border-radius:999px;border:1px solid rgba(255,255,255,.16);color:rgba(255,255,255,.8);font:500 12px/1 Pretendard,sans-serif;letter-spacing:0}
+#lw-home.fx .fx-feat2 h3{margin:18px 0 8px!important;color:#fff;font-size:clamp(22px,1.9vw,30px);font-weight:700;letter-spacing:-.045em;line-height:1.25}
+#lw-home.fx .fx-feat2__desc{font-size:15px;line-height:1.7;color:rgba(255,255,255,.58);max-width:420px}
+#lw-home.fx .fx-feat2__stage{position:relative;flex:1;min-height:clamp(320px,26vw,400px);cursor:pointer}
+/* 08 이벤트 특전 : 한 줄 전체, 설명 왼쪽 · 시연 오른쪽, 따뜻한 빛 */
+#lw-home.fx .fx-feat2--event{grid-column:1/-1;display:grid;grid-template-columns:5fr 7fr;align-items:center;--fx-glow:rgba(255,120,60,.22);
+  background:radial-gradient(70% 120% at 0% 100%,rgba(255,90,31,.16) 0%,transparent 60%),radial-gradient(120% 80% at 100% 0%,var(--fx-glow) 0%,transparent 55%),linear-gradient(180deg,#1b1714 0%,#0e0d0c 100%)}
+#lw-home.fx .fx-feat2--event .fx-feat2__copy{padding:clamp(28px,4vw,64px)}
+#lw-home.fx .fx-feat2--event h3{font-size:clamp(28px,2.8vw,44px)}
+#lw-home.fx .fx-feat2--event .fx-feat2__no span{background:#fff;color:var(--fx-ink);border-color:#fff;font-weight:600}
+#lw-home.fx .fx-feat2--event .fx-feat2__stage{align-self:stretch}
+@media (max-width:1024px){
+  /* 시연이 넓어야 하는 01 · 03 · 04 · 08 은 한 줄 전체, 나머지는 반씩 (dense 로 빈칸을 채움 → 01 / 02 05 / 03 / 04 / 06 07 / 08) */
+  #lw-home.fx .fx-feats{grid-auto-flow:row dense}
+  #lw-home.fx .fx-feat2,#lw-home.fx .fx-feat2:nth-child(n){grid-column:span 6}
+  #lw-home.fx .fx-feat2:nth-child(1),#lw-home.fx .fx-feat2:nth-child(3),#lw-home.fx .fx-feat2:nth-child(4),#lw-home.fx .fx-feat2--event:nth-child(n){grid-column:1/-1}
+  #lw-home.fx .fx-feat2--event{grid-template-columns:1fr}
+  #lw-home.fx .fx-feat2--event .fx-feat2__copy{padding:28px 28px 0}
+  #lw-home.fx .fx-feat2--event .fx-feat2__stage{min-height:360px}}
+@media (max-width:767px){
+  #lw-home.fx .fx-feat2,#lw-home.fx .fx-feat2:nth-child(n){grid-column:1/-1;border-radius:22px}
+  #lw-home.fx .fx-feat2:hover{transform:none}
+  #lw-home.fx .fx-feat2__stage,#lw-home.fx .fx-feat2--event .fx-feat2__stage{min-height:0;aspect-ratio:4/5}
+  /* 06 포토리뷰는 사진 4장이 2줄로 쌓여 길어지므로 시연 높이만큼 카드가 늘어난다 */
+  #lw-home.fx .fx-feat2:nth-child(6) .fx-feat2__stage{aspect-ratio:auto}
+  #lw-home.fx .fx-feat2:nth-child(6) .fx-demo{position:relative;inset:auto;padding-top:28px}}
