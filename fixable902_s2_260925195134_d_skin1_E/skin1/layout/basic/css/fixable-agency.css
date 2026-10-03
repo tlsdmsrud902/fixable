@@ -251,8 +251,8 @@ html.fx-js #lw-home.fx [data-fx-in].is-in{opacity:1;transform:none}
 
 /* 13. 문의 */
 #lw-home.fx .fx-contact{background:var(--fx-dark);color:#fff;padding:clamp(90px,11vw,180px) 0 clamp(80px,10vw,160px);overflow:hidden}
-#lw-home.fx .fx-contact__title{position:relative;z-index:1;margin:30px 0 0;font:500 clamp(64px,12vw,220px)/.9 Jost,sans-serif;letter-spacing:-.06em}
-#lw-home.fx .fx-contact__title em{font-style:normal;color:#9a9a9a}
+#lw-home.fx .fx-contact__title{position:relative;z-index:1;margin:30px 0 0;font:500 clamp(40px,7vw,128px)/.9 Jost,sans-serif;letter-spacing:-.05em}
+#lw-home.fx .fx-contact__title em{display:block;margin-top:.04em;font-style:normal;font-size:clamp(100px,28vw,440px);line-height:.82;letter-spacing:-.065em;color:#9a9a9a}
 
 /* 태블릿 · 휴대폰 */
 @media (max-width:1024px){
