@@ -96,7 +96,7 @@ html.fx-js #lw-home.fx [data-fx-in].is-in{opacity:1;transform:none}
 #lw-home.fx .fx-chap__foot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px!important;padding-top:14px;border-top:1px solid rgba(255,255,255,.12)}
 #lw-home.fx .fx-chap__price{color:#fff!important;font-size:14px!important}
 #lw-home.fx .fx-chap__price b{font:500 24px/1 Jost,sans-serif;letter-spacing:-.03em;margin-right:2px}
-#lw-home.fx .fx-chap__go{display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 16px;border-radius:999px;background:#fff;color:#111!important;font-size:13px;font-weight:600}
+#lw-home.fx .fx-chap__go{flex:none;white-space:nowrap;display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 16px;border-radius:999px;background:#fff;color:#111!important;font-size:13px;font-weight:600}
 #lw-home.fx .fx-chap__go svg{width:16px;height:16px}
 #lw-home.fx .fx-chap__k{font:500 12px/1 Jost,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:10px!important}
 #lw-home.fx .fx-chap h2{font:500 26px/1 Jost,sans-serif;letter-spacing:-.04em;margin-bottom:8px!important}
@@ -264,6 +264,7 @@ html.fx-js #lw-home.fx [data-fx-in].is-in{opacity:1;transform:none}
   #lw-home.fx .fx-feat li:not(:nth-child(4n+1)){padding-left:0;border-left:0}
   #lw-home.fx .fx-feat li:nth-child(even){padding-left:22px;border-left:1px solid var(--fx-line)}
   #lw-home.fx .fx-plans{grid-template-columns:1fr}
+  #lw-home.fx .fx-plan--best{order:-1}
   #lw-home.fx .fx-work{grid-template-columns:1fr}
   #lw-home.fx .fx-work:nth-child(even) .fx-work__media{order:0}
   #lw-home.fx .fx-reviews .pr-grid{grid-template-columns:repeat(2,1fr)}
@@ -580,9 +581,9 @@ html.fx-js #lw-home.fx [data-fx-chat].is-play .fx-bm{opacity:1;transform:none}
   #lw-home.fx .fx-feat2{position:relative;top:auto;height:auto;border-radius:22px}
   #lw-home.fx .fx-feat2 h3{font-size:clamp(28px,8vw,36px)}
   #lw-home.fx .fx-feat2__stage{flex:none;aspect-ratio:4/5}
-  /* 03 타임세일(관리자 창 + 상품 카드) · 06 포토리뷰(사진 2줄)는 길어서 시연 높이만큼 카드가 늘어난다 */
-  #lw-home.fx .fx-feat2:is(:nth-child(3),:nth-child(6)) .fx-feat2__stage{aspect-ratio:auto}
-  #lw-home.fx .fx-feat2:is(:nth-child(3),:nth-child(6)) .fx-demo{position:relative;inset:auto;padding-top:28px}}
+  /* 휴대폰 : 시연 높이만큼만 카드가 커진다(빈 공간 없이). 07 반응형만 재생 중 높이가 바뀌어 화면이 출렁이므로 4:5 고정 */
+  #lw-home.fx .fx-feat2:not(:nth-child(7)) .fx-feat2__stage{aspect-ratio:auto}
+  #lw-home.fx .fx-feat2:not(:nth-child(7)) .fx-demo{position:relative;inset:auto;padding:28px 16px 34px}}
 
 /* 6-1. 기능 01 쉬운 편집 : ① 사진 누르기 → 새 사진 고르기 ② 글자 누르기 → 고쳐 쓰기 ③ 저장 → 바로 반영. 화면에 보이는 동안 10초마다 반복 */
 #lw-home.fx .fx-demo--ed{gap:clamp(14px,2vh,22px)}
@@ -791,3 +792,18 @@ html.fx-js #lw-home.fx [data-fx-chat].is-play .fx-bm{opacity:1;transform:none}
 #lw-home.fx [data-fx-dots].is-dots{color:transparent}
 #lw-home.fx .fx-dots{position:absolute;pointer-events:none}
 #lw-home.fx .fx-contact{cursor:default}
+
+/* 휴대폰 정리 */
+@media (max-width:767px){
+  #lw-home.fx .fx-chap__foot{gap:10px}
+  #lw-home.fx .fx-chap__price b{font-size:21px}
+  #lw-home.fx .fx-chap__go{height:34px;padding:0 13px;font-size:12px}
+  #lw-home.fx .fx-feat2 .fx-demo__code{text-align:center}
+}
+/* 휴대폰 : 07 반응형은 높이를 고정해 두고(재생 중 출렁이지 않게) 휴대폰 화면을 크게 */
+@media (max-width:767px){
+  #lw-home.fx .fx-feat2:nth-child(7) .fx-feat2__stage{aspect-ratio:auto;height:400px}
+  #lw-home.fx .fx-feat2 .fx-resp{width:100%}
+  #lw-home.fx .fx-feat2 .fx-demo--resp.is-on .fx-resp__frame{animation-name:fx-resize-m}
+}
+@keyframes fx-resize-m{0%,18%{width:96%;aspect-ratio:16/10;border-radius:12px}40%,55%{width:64%;aspect-ratio:3/4;border-radius:16px}78%,100%{width:40%;aspect-ratio:9/19;border-radius:22px;border-width:6px}}
