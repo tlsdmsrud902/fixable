@@ -233,29 +233,36 @@
       <header class="fx-head"><div class="fx-label"><span>04</span><p data-cms-text="작은 제목">What's inside</p></div><h2 id="fx-feat-title" data-cms-text="제목">스킨 하나에 다 들어 있어요.</h2><p class="fx-head__sub" data-cms-text="설명">말로 설명하는 대신 직접 보여 드릴게요. 카드마다 실제로 움직이는 시연이 들어 있어요. 누르면 다시 재생돼요.</p></header>
       <div class="fx-feats">
         <article class="fx-feat2" data-cms-item>
-          <div class="fx-feat2__copy"><p class="fx-feat2__no">01<span data-cms-text="분류">운영 편의</span></p><h3 data-cms-text="이름">편집 모드</h3><p class="fx-feat2__desc" data-cms-text="설명">관리자 편집 모드로 사진 · 문구 · 배너를 직접. 코드는 몰라도 돼요.</p></div>
+          <div class="fx-feat2__copy"><p class="fx-feat2__no">01<span data-cms-text="분류">운영 편의</span></p><h3 data-cms-text="이름">이미지 · 텍스트 쉬운 편집</h3><p class="fx-feat2__desc" data-cms-text="설명">사진은 눌러서 바꾸고, 글자는 눌러서 고쳐 쓰면 끝. 저장 한 번이면 쇼핑몰에 바로 보여요. 코드는 몰라도 돼요.</p></div>
           <div class="fx-feat2__stage" data-fx-stage-demo title="누르면 다시 재생">
-          <!-- 01 편집 모드 : [고치기] 버튼 → 문구가 새로 써진다 -->
-          <div class="fx-demo fx-demo--edit" data-fx-demo="0">
-            <div class="fx-mini"><p class="fx-mini__bar"><i></i><i></i><i></i><span>내쇼핑몰.com <b>· 편집 모드</b></span></p>
-              <div class="fx-mini__hero"><img src="/SkinImg/fixable/sq-wear.webp" alt="" width="480" height="480" loading="lazy">
-                <div><small>NEW SEASON</small><strong class="fx-type"><span class="a">매일 손이 가는 옷</span><span class="b">가을 신상 20% 할인</span></strong><p>출근길 셔츠부터 주말 원피스까지.</p><span class="fx-mini__btn">스타일 보기</span></div>
-                <span class="fx-edit-btn">✏️ 첫 화면 고치기</span>
+          <!-- 01 쉬운 편집 : ① 사진 누르기 → 새 사진 고르기 ② 글자 누르기 → 고쳐 쓰기 ③ 저장 → 바로 반영. 세 단계가 10초마다 반복된다 -->
+          <div class="fx-demo fx-demo--ed" data-fx-demo="0">
+            <ol class="fx-ed__steps"><li><b>1</b>사진 누르고 새 사진 고르기</li><li><b>2</b>글자 누르고 고쳐 쓰기</li><li><b>3</b>저장하면 쇼핑몰에 바로</li></ol>
+            <div class="fx-mini fx-ed">
+              <p class="fx-mini__bar"><i></i><i></i><i></i><span>내쇼핑몰.com</span><em class="fx-ed__save">저장</em></p>
+              <div class="fx-ed__hero">
+                <div class="fx-ed__img"><img class="a" src="/SkinImg/fixable/sq-wear.webp" alt="" width="480" height="480" loading="lazy"><img class="b" src="/SkinImg/fixable/demo-rv1.webp" alt="" width="480" height="480" loading="lazy"><span class="fx-ed__tag">📷 사진 바꾸기</span></div>
+                <div class="fx-ed__copy"><small>NEW SEASON</small><strong class="fx-ed__title"><span class="a">매일 손이 가는 옷</span><span class="b">가을 신상 20% 할인</span><span class="fx-ed__tag">✏️ 글자 고치기</span></strong><p>출근길 셔츠부터 주말 원피스까지.</p><span class="fx-mini__btn">스타일 보기</span></div>
               </div>
-              <div class="fx-edit-pop"><b>첫 화면 고치기</b><label>제목<span class="fx-edit-pop__in">가을 신상 20% 할인<i></i></span></label><span class="fx-edit-pop__save">저장하기</span></div>
-              <p class="fx-mini__toast">✓ 저장했어요 · 새로고침하면 바로 보여요</p>
+              <div class="fx-ed__pick"><b>내 사진에서 고르기</b><div><img src="/SkinImg/fixable/sq-eppum.webp" alt="" width="480" height="480" loading="lazy"><img class="is-pick" src="/SkinImg/fixable/demo-rv1.webp" alt="" width="480" height="480" loading="lazy"><img src="/SkinImg/fixable/sq-baby.webp" alt="" width="480" height="480" loading="lazy"></div></div>
+              <p class="fx-ed__toast">✓ 저장 완료 · 손님 화면에 바로 보여요</p>
+              <i class="fx-ed__cur" aria-hidden="true"></i>
             </div>
           </div>
           </div>
         </article>
         <article class="fx-feat2" data-cms-item>
-          <div class="fx-feat2__copy"><p class="fx-feat2__no">02<span data-cms-text="분류">매출 장치</span></p><h3 data-cms-text="이름">쿠폰 뽑기</h3><p class="fx-feat2__desc" data-cms-text="설명">손님이 직접 카드를 뒤집어 쿠폰을 뽑아요. 최대 50%.</p></div>
+          <div class="fx-feat2__copy"><p class="fx-feat2__no">02<span data-cms-text="분류">매출 장치</span></p><h3 data-cms-text="이름">쿠폰 이벤트</h3><p class="fx-feat2__desc" data-cms-text="설명">손님이 카드를 골라 뒤집으면 쿠폰이 나와요. 받는 재미는 크게, 할인은 최대 50%까지.</p></div>
           <div class="fx-feat2__stage" data-fx-stage-demo title="누르면 다시 재생">
-          <!-- 02 쿠폰 뽑기 : 카드 세 장 중 하나가 뒤집혀 당첨 -->
-          <div class="fx-demo fx-demo--coupon" data-fx-demo="1">
-            <p class="fx-demo__k">RANDOM COUPON · 뽑으면 무조건 당첨</p>
-            <div class="fx-cards"><span class="fx-card"><i>?</i><b>5%</b></span><span class="fx-card fx-card--win"><i>?</i><b>50%<small>OFF</small></b></span><span class="fx-card"><i>?</i><b>10%</b></span></div>
-            <p class="fx-demo__msg">🎉 50% 쿠폰이 쿠폰함에 들어갔어요</p>
+          <!-- 02 쿠폰 이벤트 : 세일 화면 쿠폰과 같은 움직임 — 세 장이 겹친 채 올라와 부채처럼 펼쳐지고, 고른 카드가 흔들린 뒤 뒤집혀 쿠폰이 나온다 -->
+          <div class="fx-demo fx-demo--cp" data-fx-demo="1">
+            <p class="fx-demo__k">COUPON EVENT · 뽑으면 무조건 당첨</p>
+            <div class="fx-cp">
+              <span class="fx-cp__card"><span class="fx-cp__shake"><span class="fx-cp__in"><span class="fx-cp__face fx-cp__front"><img src="/SkinImg/fixable/mobile-wear.webp" alt="" width="600" height="1298" loading="lazy"><b class="fx-cp__logo">fixable</b><i>A LITTLE GIFT FOR YOU</i></span><span class="fx-cp__face fx-cp__back"><b class="fx-cp__logo">FIXABLE<em>902</em></b><strong>10%</strong><small>COUPON</small></span></span></span></span>
+              <span class="fx-cp__card fx-cp__card--win"><span class="fx-cp__shake"><span class="fx-cp__in"><span class="fx-cp__face fx-cp__front"><img src="/SkinImg/fixable/mobile-eppum.webp" alt="" width="600" height="1298" loading="lazy"><b class="fx-cp__logo">fixable</b><i>A LITTLE GIFT FOR YOU</i></span><span class="fx-cp__face fx-cp__back"><b class="fx-cp__logo">FIXABLE<em>902</em></b><strong>50%</strong><small>COUPON</small></span></span></span><i class="fx-cp__tap" aria-hidden="true"></i></span>
+              <span class="fx-cp__card"><span class="fx-cp__shake"><span class="fx-cp__in"><span class="fx-cp__face fx-cp__front"><img src="/SkinImg/fixable/mobile-baby.webp" alt="" width="600" height="1298" loading="lazy"><b class="fx-cp__logo">fixable</b><i>A LITTLE GIFT FOR YOU</i></span><span class="fx-cp__face fx-cp__back"><b class="fx-cp__logo">FIXABLE<em>902</em></b><strong>5%</strong><small>COUPON</small></span></span></span></span>
+            </div>
+            <p class="fx-demo__msg">🎉 축하해요! 50% 할인 쿠폰이 발급됐어요</p>
             <span class="fx-confetti" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
           </div>
           </div>
