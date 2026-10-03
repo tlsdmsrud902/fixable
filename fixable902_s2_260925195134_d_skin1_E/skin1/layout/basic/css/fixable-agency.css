@@ -84,7 +84,7 @@ html.fx-js #lw-home.fx [data-fx-in].is-in{opacity:1;transform:none}
 #lw-home.fx .fx-panel__label b{font-size:22px;letter-spacing:-.02em;color:#fff;font-weight:500}
 #lw-home.fx .fx-chap{display:none;grid-template-columns:150px 1fr;gap:0;align-items:center}
 #lw-home.fx .fx-chap.is-on{display:grid;animation:fx-up .5s both var(--fx-e)}
-#lw-home.fx .fx-chap__img{display:block;overflow:hidden;background:#efefef;aspect-ratio:1/1;margin:16px 0 16px 16px;border-radius:10px}
+#lw-home.fx .fx-chap__img{display:block;overflow:hidden;background:#1c1c1e;aspect-ratio:1/1;margin:16px 0 16px 16px;border-radius:10px}
 #lw-home.fx .fx-chap__img img{width:100%;height:100%;object-fit:cover;transform:scale(1.04);transition:transform .8s var(--fx-e)}
 #lw-home.fx .fx-chap.is-on .fx-chap__img img{transform:none}
 #lw-home.fx .fx-chap__body{padding:16px 18px 16px}
@@ -111,22 +111,30 @@ html.fx-js #lw-home.fx [data-fx-in].is-in{opacity:1;transform:none}
 #lw-home.fx .fx-hero__meta li{padding:30px 20px 30px 0;display:flex;flex-direction:column;gap:6px}
 #lw-home.fx .fx-hero__meta li+li{padding-left:20px;border-left:1px solid var(--fx-line)}
 #lw-home.fx .fx-hero__meta b{font:500 clamp(26px,2.6vw,42px)/1 Jost,sans-serif;letter-spacing:-.03em}
-#lw-home.fx .fx-hero__meta span{font-size:14px;color:var(--fx-mute)}
+#lw-home.fx .fx-hero__meta li>span{font-size:14px;color:var(--fx-mute)}
+/* 숫자 롤링 : 숫자 한 칸마다 0~9 를 세로로 세워 두고, 화면에 들어오면 목표 숫자까지 굴려 올린다(자리마다 조금씩 늦게) */
+#lw-home.fx .fx-odo{display:inline-block;height:1em;overflow:hidden;vertical-align:top}
+#lw-home.fx .fx-odo>i{display:flex;flex-direction:column;font-style:normal;transform:translateY(0);transition:transform 1.6s cubic-bezier(.16,1,.3,1) var(--d,0s)}
+#lw-home.fx .fx-odo>i>i{display:block;height:1em;line-height:1;font-style:normal}
+#lw-home.fx [data-fx-odo].is-roll .fx-odo>i{transform:translateY(calc(var(--n) * -1em))}
 
 /* 1-3. 쇼릴 : 세라핌 필름 리빌 — 가장자리가 안쪽으로 들어가 있다가(--fi) 화면에 들어오면 펼쳐진다 */
 #lw-home.fx .fx-reel{position:relative;margin:clamp(60px,8vw,120px) auto 0;width:100%;aspect-ratio:16/8;max-width:100%;overflow:hidden;background:var(--fx-dark);clip-path:inset(var(--fi,0%) var(--fi,0%) round var(--fr,0px))}
-#lw-home.fx .fx-reel img{width:100%;height:100%;object-fit:cover;transform:translate3d(0,var(--py,0px),0) scale(1.12)}
-#lw-home.fx .fx-reel figcaption{position:absolute;left:calc(7% + clamp(16px,3vw,48px));bottom:calc(7% + clamp(12px,2vw,32px));color:#fff;display:flex;flex-direction:column;gap:10px;max-width:calc(100% - 40px)}
+/* 쇼릴 벽 : 기울어진 줄 3개가 각자 왼쪽으로 흐른다 → 화면에서는 오른쪽 위에서 왼쪽 아래로, 대각선으로 흐른다. 같은 묶음을 두 번 이어 붙여 -50% 에서 이음매 없이 반복 */
+#lw-home.fx .fx-wall{position:absolute;left:50%;top:50%;width:170%;display:flex;flex-direction:column;gap:clamp(14px,1.6vw,28px);transform:translate(-50%,-50%) rotate(-11deg)}
+#lw-home.fx .fx-wall__row{overflow:visible}
+#lw-home.fx .fx-wall__track{display:flex;width:max-content;animation:fx-wall var(--dur,80s) linear infinite}
+#lw-home.fx .fx-wall__row:nth-child(2) .fx-wall__track{margin-left:calc(clamp(260px,30vw,560px) * -.45)}
+#lw-home.fx .fx-wall__tile{flex:none;width:clamp(260px,30vw,560px);aspect-ratio:16/10;margin-right:clamp(14px,1.6vw,28px);border-radius:clamp(10px,1vw,16px);overflow:hidden;background:#1c1c1e;box-shadow:0 30px 60px -20px rgba(0,0,0,.6)}
+#lw-home.fx .fx-wall__tile img{display:block;width:100%;height:100%;object-fit:cover;object-position:top}
+#lw-home.fx .fx-reel::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(0deg,rgba(10,10,12,.82) 0%,rgba(10,10,12,.3) 45%,rgba(10,10,12,.12) 100%)}
+@keyframes fx-wall{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){#lw-home.fx .fx-wall__track{animation:none}}
+#lw-home.fx .fx-reel figcaption{position:absolute;z-index:1;left:calc(7% + clamp(16px,3vw,48px));bottom:calc(7% + clamp(12px,2vw,32px));color:#fff;display:flex;flex-direction:column;gap:10px;max-width:calc(100% - 40px)}
 #lw-home.fx .fx-reel figcaption span{font:500 13px/1 Jost,sans-serif;letter-spacing:.1em;text-transform:uppercase;opacity:.7}
 #lw-home.fx .fx-reel figcaption strong{font:500 clamp(16px,1.6vw,26px)/1.3 Jost,sans-serif;letter-spacing:-.01em}
 
 /* 2. 흐르는 글자 두 줄 : 스스로 흐르고(--auto), 스크롤에 따라 서로 반대로 밀린다(--sx) */
-#lw-home.fx .fx-marquee{margin-top:clamp(60px,8vw,120px);padding:clamp(14px,1.6vw,24px) 0;border-top:1px solid var(--fx-line);border-bottom:1px solid var(--fx-line);overflow:hidden;white-space:nowrap;display:flex;flex-direction:column;gap:clamp(4px,1vw,14px)}
-#lw-home.fx .fx-marquee__row{transform:translate3d(var(--sx,0px),0,0);will-change:transform}
-#lw-home.fx .fx-marquee__track{display:inline-flex;align-items:center;gap:clamp(24px,3vw,56px);animation:fx-flow 38s linear infinite;font:500 clamp(44px,7vw,120px)/1 Jost,sans-serif;letter-spacing:-.04em}
-#lw-home.fx .fx-marquee__row--rev .fx-marquee__track{animation-direction:reverse;animation-duration:46s}
-#lw-home.fx .fx-marquee__track span:nth-of-type(even){color:transparent;-webkit-text-stroke:1.2px var(--fx-ink)}
-#lw-home.fx .fx-marquee__track i{font-style:normal;font-size:.4em}
 @keyframes fx-flow{to{transform:translateX(-50%)}}
 
 /* 3. 소개 */
@@ -262,6 +270,8 @@ html.fx-js #lw-home.fx [data-fx-in].is-in{opacity:1;transform:none}
   #lw-home.fx .fx-hero__cta{width:100%}
   #lw-home.fx .fx-hero__cta .fx-btn{flex:1;justify-content:center;padding:0 18px}
   #lw-home.fx .fx-reel{aspect-ratio:4/5}
+  #lw-home.fx .fx-wall{width:260%}
+  #lw-home.fx .fx-wall__tile{width:62vw}
   #lw-home.fx .fx-pin{height:300svh}
   #lw-home.fx .fx-stage{min-height:0}
   #lw-home.fx .fx-stage__content{justify-content:flex-start;padding-top:calc(var(--fx-hh,98px) + 20px);gap:18px}
@@ -290,7 +300,7 @@ html.fx-js #lw-home.fx [data-fx-in].is-in{opacity:1;transform:none}
   #lw-home.fx .fx-btn{height:52px;font-size:15px}
 }
 @media (prefers-reduced-motion:reduce){
-  #lw-home.fx .fx-marquee__track,#lw-home.fx .fx-phones__track,#lw-home.fx .fx-eyebrow i,#lw-home.fx .fx-ch,#lw-home.fx .fx-stage__sub,#lw-home.fx .fx-stage .fx-hero__cta,#lw-home.fx .fx-panel,#lw-home.fx .fx-chap.is-on{animation:none}
+  #lw-home.fx .fx-phones__track,#lw-home.fx .fx-eyebrow i,#lw-home.fx .fx-ch,#lw-home.fx .fx-stage__sub,#lw-home.fx .fx-stage .fx-hero__cta,#lw-home.fx .fx-panel,#lw-home.fx .fx-chap.is-on{animation:none}
   #lw-home.fx .fx-stage__heading,#lw-home.fx .fx-panel{transform:none}
   html.fx-js #lw-home.fx [data-fx-in]{opacity:1;transform:none}
 }

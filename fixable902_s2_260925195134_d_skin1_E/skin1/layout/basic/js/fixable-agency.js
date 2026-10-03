@@ -143,6 +143,22 @@
     }
     var wordEls = words ? words.querySelectorAll('.w') : [];
 
+    // ── 숫자 띠 : 숫자 한 칸마다 0~9 기둥을 만들어 두고, 화면에 들어올 때마다 두 바퀴 굴러 목표 숫자에 멈춘다 ──
+    if (!still && !editing) Q('[data-fx-odo]').forEach(function (strip) {
+      [].forEach.call(strip.querySelectorAll('b'), function (b) {
+        var text = b.textContent, k = 0;
+        b.setAttribute('aria-label', text);
+        b.innerHTML = text.split('').map(function (ch) {
+          if (!/[0-9]/.test(ch)) return '<span aria-hidden="true">' + esc(ch) + '</span>';
+          var col = ''; for (var r = 0; r < 30; r++) col += '<i>' + (r % 10) + '</i>';
+          return '<span class="fx-odo" aria-hidden="true"><i style="--n:' + (20 + +ch) + ';--d:' + (k++ * 0.12).toFixed(2) + 's">' + col + '</i></span>';
+        }).join('');
+      });
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (es) { es.forEach(function (e) { e.target.classList.toggle('is-roll', e.isIntersecting); }); }, { threshold: 0.4 }).observe(strip);
+      } else strip.classList.add('is-roll');
+    });
+
     // ── 기능 01~08 : 시연 화면이 보이면 처음부터 재생, 화면 밖으로 나가면 멈춤(다시 들어오면 또 재생). 누르면 다시 재생 ──
     var stages = Q('[data-fx-stage-demo]');
     if (stages.length) {
@@ -203,7 +219,7 @@
     var bar = null;
     if (!still) { bar = document.getElementById('fxProgress') || document.createElement('div'); bar.id = 'fxProgress'; document.body.appendChild(bar); }
     var films = still ? [] : Q('[data-fx-film], .fx-work__media');
-    var pars = still ? [] : Q('.fx-reel, .fx-work__media').map(function (box) { return { box: box, img: box.querySelector('img') }; }).filter(function (x) { return x.img; });
+    var pars = still ? [] : Q('.fx-work__media').map(function (box) { return { box: box, img: box.querySelector('img') }; }).filter(function (x) { return x.img; });
     var marq = still ? [] : Q('[data-fx-marq]');
 
     if (finePointer && !still) {
