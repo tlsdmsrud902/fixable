@@ -159,6 +159,75 @@
     };
     if (whyLine) { whyPos(); whyPaint(); window.addEventListener('resize', function () { whyPos(); whyPaint(); }); window.addEventListener('scroll', whyPaint, { passive: true }); window.addEventListener('load', function () { whyPos(); whyPaint(); }); }
 
+    // ── 문의 「fixable.」 점 글자 : 글자를 보이지 않는 캔버스에 그려 픽셀을 일정 간격으로 훑어 점 자리를 만든다.
+    //    화면에 처음 들어오면 흩어진 점이 제자리로 모이고, 마우스 근처 점은 밀려나며 하얗게, 누르면 그 자리에서 터졌다가 다시 모인다 ──
+    var dotEm = home.querySelector('[data-fx-dots]');
+    if (dotEm && !editing && window.HTMLCanvasElement) (function () {
+      var cv = document.createElement('canvas'), g = cv.getContext('2d');
+      if (!g) return;
+      cv.className = 'fx-dots'; cv.setAttribute('aria-hidden', 'true');
+      var P = [], W = 0, H = 0, pad = 0, dpr = 1, gap = 6, rad = 2, mx = -1e4, my = -1e4, vis = false, raf = 0, born = false;
+      var area = dotEm.closest('section') || dotEm;
+      function build() {
+        var r = dotEm.getBoundingClientRect(), cs = getComputedStyle(dotEm), fs = parseFloat(cs.fontSize), text = (dotEm.textContent || '').trim();
+        if (!r.width || !fs) return;
+        pad = Math.round(fs * 0.35); W = Math.round(r.width) + pad * 2; H = Math.round(r.height) + pad * 2; dpr = Math.min(window.devicePixelRatio || 1, 2);
+        cv.width = W * dpr; cv.height = H * dpr; cv.style.width = W + 'px'; cv.style.height = H + 'px'; cv.style.left = -pad + 'px'; cv.style.top = -pad + 'px';
+        var off = document.createElement('canvas'); off.width = W; off.height = H;
+        var o = off.getContext('2d');
+        o.font = cs.fontWeight + ' ' + fs + 'px ' + cs.fontFamily;
+        if ('letterSpacing' in o) o.letterSpacing = cs.letterSpacing;
+        var m = o.measureText(text), asc = m.actualBoundingBoxAscent || fs * 0.75, desc = m.actualBoundingBoxDescent || 0;
+        o.fillText(text, pad + (m.actualBoundingBoxLeft || 0), pad + (r.height - asc - desc) / 2 + asc);
+        var px = o.getImageData(0, 0, W, H).data;
+        gap = Math.max(4, Math.round(fs / 46)); rad = gap * 0.36;
+        P = [];
+        for (var y = 0; y < H; y += gap) for (var x = 0; x < W; x += gap) {
+          if (px[(y * W + x) * 4 + 3] > 128) P.push(born || still ? { hx: x, hy: y, x: x, y: y, vx: 0, vy: 0 } : { hx: x, hy: y, x: x + (Math.random() - 0.5) * W * 0.5, y: y + H * (0.4 + Math.random()), vx: 0, vy: 0 });
+        }
+        if (!cv.parentNode) { dotEm.appendChild(cv); dotEm.classList.add('is-dots'); }
+        kick(true);
+      }
+      function draw() {
+        g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, H);
+        var R = Math.max(80, gap * 18), R2 = R * R, moving = false, hot = [], cold = [];
+        for (var i = 0; i < P.length; i++) {
+          var p = P[i], dx = p.x - mx, dy = p.y - my, d2 = dx * dx + dy * dy;
+          if (born && !still) {
+            if (d2 < R2) { var d = Math.sqrt(d2) || 1, f = (1 - d / R) * 5; p.vx += dx / d * f; p.vy += dy / d * f; }
+            p.vx = (p.vx + (p.hx - p.x) * 0.05) * 0.84; p.vy = (p.vy + (p.hy - p.y) * 0.05) * 0.84;
+            p.x += p.vx; p.y += p.vy;
+            if (Math.abs(p.vx) + Math.abs(p.vy) > 0.04 || Math.abs(p.hx - p.x) + Math.abs(p.hy - p.y) > 0.3) moving = true;
+          }
+          (d2 < R2 * 0.55 ? hot : cold).push(p);
+        }
+        [[cold, '#9a9a9a'], [hot, '#ffffff']].forEach(function (set) {
+          if (!set[0].length) return;
+          g.fillStyle = set[1]; g.beginPath();
+          set[0].forEach(function (p) { g.moveTo(p.x + rad, p.y); g.arc(p.x, p.y, rad, 0, 6.2832); });
+          g.fill();
+        });
+        return moving;
+      }
+      function loop() { raf = 0; if (draw() && vis) raf = requestAnimationFrame(loop); }
+      function kick(force) { if (!raf && (vis || force)) raf = requestAnimationFrame(loop); }
+      if (!still) {
+        area.addEventListener('pointermove', function (e) { var r = cv.getBoundingClientRect(); mx = e.clientX - r.left; my = e.clientY - r.top; kick(); }, { passive: true });
+        area.addEventListener('pointerleave', function () { mx = my = -1e4; kick(); });
+        area.addEventListener('pointerdown', function (e) {   // 누른 자리에서 점이 터진다
+          var r = cv.getBoundingClientRect(), bx = e.clientX - r.left, by = e.clientY - r.top;
+          P.forEach(function (p) { var dx = p.x - bx, dy = p.y - by, d = Math.sqrt(dx * dx + dy * dy) || 1, f = Math.max(0, 1 - d / (W * 0.7)) * 60; p.vx += dx / d * f + (Math.random() - 0.5) * 2; p.vy += dy / d * f + (Math.random() - 0.5) * 2; });
+          kick();
+        });
+      }
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (es) { vis = es[0].isIntersecting; if (vis) { if (!born) setTimeout(function () { born = true; kick(); }, 150); kick(); } }, { threshold: 0.2 }).observe(dotEm);
+      } else { vis = born = true; }
+      var rz = 0;
+      window.addEventListener('resize', function () { clearTimeout(rz); rz = setTimeout(build, 200); });
+      (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(build);
+    })();
+
     // ── 숫자 띠 : 숫자 한 칸마다 0~9 기둥을 만들어 두고, 화면에 들어올 때마다 두 바퀴 굴러 목표 숫자에 멈춘다 ──
     if (!still && !editing) Q('[data-fx-odo]').forEach(function (strip) {
       [].forEach.call(strip.querySelectorAll('b'), function (b) {

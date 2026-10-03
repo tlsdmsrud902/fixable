@@ -82,8 +82,11 @@ html.fx-js #lw-home.fx [data-fx-in].is-in{opacity:1;transform:none}
 #lw-home.fx .fx-panel__label{display:flex;align-items:baseline;gap:8px;margin-bottom:10px!important;font:500 12px/1 Jost,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5)}
 #lw-home.fx .fx-panel__label span{margin-right:auto}
 #lw-home.fx .fx-panel__label b{font-size:22px;letter-spacing:-.02em;color:#fff;font-weight:500}
-#lw-home.fx .fx-chap{display:none;grid-template-columns:150px 1fr;gap:0;align-items:center}
-#lw-home.fx .fx-chap.is-on{display:grid;animation:fx-up .5s both var(--fx-e)}
+#lw-home.fx .fx-panel__card{display:grid}
+#lw-home.fx .fx-panel__bar{grid-area:1/1}
+/* 스킨 카드 6장을 한 칸에 겹쳐 두고 투명도로 바꾼다 — display 를 껐다 켜면 바뀔 때마다 깜빡여서 */
+#lw-home.fx .fx-chap{display:grid;grid-area:2/1;grid-template-columns:150px 1fr;gap:0;align-items:center;opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .45s ease,transform .6s var(--fx-e),visibility 0s .45s}
+#lw-home.fx .fx-chap.is-on{opacity:1;visibility:visible;transform:none;transition:opacity .5s ease .08s,transform .6s var(--fx-e) .08s,visibility 0s}
 #lw-home.fx .fx-chap__img{display:block;overflow:hidden;background:#1c1c1e;aspect-ratio:1/1;margin:16px 0 16px 16px;border-radius:10px}
 #lw-home.fx .fx-chap__img img{width:100%;height:100%;object-fit:cover;transform:scale(1.04);transition:transform .8s var(--fx-e)}
 #lw-home.fx .fx-chap.is-on .fx-chap__img img{transform:none}
@@ -253,7 +256,7 @@ html.fx-js #lw-home.fx [data-fx-in].is-in{opacity:1;transform:none}
 /* 13. 문의 */
 #lw-home.fx .fx-contact{background:var(--fx-dark);color:#fff;padding:clamp(90px,11vw,180px) 0 clamp(80px,10vw,160px);overflow:hidden}
 #lw-home.fx .fx-contact__title{position:relative;z-index:1;margin:30px 0 0;font:500 clamp(40px,7vw,128px)/.9 Jost,sans-serif;letter-spacing:-.05em}
-#lw-home.fx .fx-contact__title em{display:block;margin-top:.04em;font-style:normal;font-size:clamp(100px,28vw,440px);line-height:.82;letter-spacing:-.065em;color:#9a9a9a}
+#lw-home.fx .fx-contact__title em{position:relative;display:block;margin-top:.04em;font-style:normal;font-size:clamp(100px,28vw,440px);line-height:.82;letter-spacing:-.065em;color:#9a9a9a}
 
 /* 태블릿 · 휴대폰 */
 @media (max-width:1024px){
@@ -783,3 +786,8 @@ html.fx-js #lw-home.fx [data-fx-chat].is-play .fx-bm{opacity:1;transform:none}
 @keyframes fx-lk-cur{0%,3%{left:88%;top:88%;opacity:0}6%{left:86%;top:84%;opacity:1}13%,16%{left:59.6%;top:60.4%}26%,32%{left:27%;top:68%}50%,57%{left:64.7%;top:24.6%}90%{left:64.7%;top:24.6%;opacity:1}95%,100%{left:88%;top:88%;opacity:0}}
 @keyframes fx-lk-click{0%,14%,17.5%,30%,33.5%,55.5%,59%,100%{transform:scale(0);opacity:0}14.5%,31%,56%{transform:scale(.4);opacity:1}}
 @media (max-width:767px){#lw-home.fx .fx-lk__qv{left:3%;right:3%;width:auto;grid-template-columns:64px 1fr;padding:8px;gap:10px}#lw-home.fx .fx-lk__qv .fx-lk__opt,#lw-home.fx .fx-lk__qv small{display:none}#lw-home.fx .fx-lk__btns{margin-top:4px}#lw-home.fx .fx-lk__cart{top:auto;bottom:8px;right:8px}#lw-home.fx .fx-lk__dot{width:22px;height:22px;margin:-11px 0 0 -11px}}
+
+/* 문의 「fixable.」 점 글자 : 스크립트가 글자 모양대로 점을 찍은 캔버스를 얹고, 원래 글자는 투명하게(읽기 · 검색용으로 남김) */
+#lw-home.fx [data-fx-dots].is-dots{color:transparent}
+#lw-home.fx .fx-dots{position:absolute;pointer-events:none}
+#lw-home.fx .fx-contact{cursor:default}
