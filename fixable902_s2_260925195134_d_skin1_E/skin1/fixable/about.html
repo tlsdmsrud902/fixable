@@ -122,7 +122,10 @@
    표지 : 스크롤하면 화면 폭까지 펼쳐짐 / 진행 과정 : 세로선 채움 / 문의 : 큰 글자 펼침 / 맨 위 진행 막대 */
 (function () {
   var root = document.querySelector('.fx-ab');
-  if (!root || !('IntersectionObserver' in window)) return;
+  if (!root) return;
+  // 회사 정보 : 관리자에 아직 입력하지 않은 항목은 줄째 숨긴다
+  [].forEach.call(root.querySelectorAll('.fx-ab__table > div'), function (d) { var dd = d.querySelector('dd'); if (dd && !dd.textContent.trim()) d.hidden = true; });
+  if (!('IntersectionObserver' in window)) return;
   if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   var html = document.documentElement, Q = function (s) { return [].slice.call(root.querySelectorAll(s)); };
   var clamp = function (v, a, b) { return v < a ? a : v > b ? b : v; };

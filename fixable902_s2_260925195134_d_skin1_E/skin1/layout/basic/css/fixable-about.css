@@ -73,6 +73,7 @@
 .fx-ab__info h2{margin-bottom:24px}
 .fx-ab__table{margin:0;border-top:1px solid var(--ab-ink)}
 .fx-ab__table>div{display:grid;grid-template-columns:180px 1fr;gap:16px;padding:16px 0;border-bottom:1px solid var(--ab-line);font-size:15px}
+.fx-ab__table>div[hidden]{display:none}
 .fx-ab__table dt{color:var(--ab-sub)}
 .fx-ab__table dd{margin:0}
 .fx-ab__table a{color:inherit}
