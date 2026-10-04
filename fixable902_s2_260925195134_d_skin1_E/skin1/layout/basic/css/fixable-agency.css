@@ -556,13 +556,14 @@ html.fx-js #lw-home.fx [data-fx-chat].is-play .fx-bm{opacity:1;transform:none}
 #lw-home.fx .fx-demo--count.is-on .fx-count__bar{animation:fx-in .5s .6s both}
 @media (max-width:767px){#lw-home.fx .fx-chatmini__body{min-height:0}#lw-home.fx .fx-cm--btns{display:none}#lw-home.fx .fx-demo--bot{gap:14px}}
 
-/* 6. 기능 01~08 : 한 장에 기능 하나씩, 한 줄 전체를 크게. 내리면 다음 카드가 위로 올라와 앞 카드를 덮는다(sticky 쌓기).
+/* 6. 기능 01~08 : 한 장에 기능 하나씩, 한 줄 전체를 크게. 카드는 아래로 차례로 이어진다(덮어 쌓지 않음).
    카드 = 위 머리줄(분류 · 번호) + 가운데 큰 제목 · 설명 + 아래 넓은 시연. 시연은 화면에 들어오면 .is-on 으로 재생, 누르면 다시 재생 */
 #lw-home.fx .fx-feats{display:flex;flex-direction:column;gap:clamp(20px,3vw,40px)}
-#lw-home.fx .fx-feat2{--top:calc(var(--fx-hh,80px) + 16px);position:sticky;top:var(--top);display:flex;flex-direction:column;
-  height:clamp(600px,calc(100svh - var(--top) - 24px),900px);border-radius:clamp(22px,2.4vw,36px);overflow:hidden;isolation:isolate;color:#fff;
+/* 카드는 덮어 쌓지 않고 차례로 이어진다. 높이는 화면(헤더 아래)보다 조금 작게 → 화면에 들어오면 카드 한 장이 통째로 보인다 */
+#lw-home.fx .fx-feat2{--top:calc(var(--fx-hh,80px) + 16px);position:relative;display:flex;flex-direction:column;
+  height:clamp(520px,calc(100svh - var(--top) - 48px),820px);border-radius:clamp(22px,2.4vw,36px);overflow:hidden;isolation:isolate;color:#fff;
   background:radial-gradient(90% 70% at 50% 0%,rgba(255,255,255,.07) 0%,transparent 60%),linear-gradient(180deg,#18181b 0%,#0c0c0e 100%);
-  box-shadow:inset 0 0 0 1px rgba(255,255,255,.07),0 -30px 60px -20px rgba(0,0,0,.35)}
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.07);scroll-margin-top:calc(var(--top) + 8px)}
 #lw-home.fx .fx-feat2::before{content:"";position:absolute;inset:0 0 auto;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);z-index:2;pointer-events:none}
 #lw-home.fx .fx-feat2__copy{position:relative;z-index:1;display:grid;justify-items:center;text-align:center;padding:clamp(22px,2.4vw,34px) clamp(22px,3vw,44px) 0}
 #lw-home.fx .fx-feat2__no{justify-self:stretch;display:flex;align-items:center;justify-content:space-between;font:500 13px/1 Jost,sans-serif;letter-spacing:.1em;color:rgba(255,255,255,.4)}

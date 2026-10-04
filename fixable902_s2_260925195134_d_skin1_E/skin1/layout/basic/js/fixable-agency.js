@@ -275,15 +275,17 @@
       // 다시 재생 : 페이지 전체 배치를 강제로 다시 계산(offsetWidth)하지 않고, 두 프레임에 나눠 껐다 켠다
       var play = function (st) { var d = st.querySelector('.fx-demo'); if (!d) return; d.classList.remove('is-on'); requestAnimationFrame(function () { requestAnimationFrame(function () { d.classList.add('is-on'); counters(d); }); }); };
       stages.forEach(function (st) { st.addEventListener('click', function (e) { if (e.target.closest('a,button')) return; play(st); }); });
-      // 카드는 위로 겹겹이 쌓이므로(sticky) "화면 안에 있다"만 보면 가려진 카드까지 한꺼번에 재생된다
-      // → 맨 앞에 보이는 카드 한 장만 재생하고 나머지는 멈춘다. 빠르게 지나가는 카드는 재생하지 않도록 잠깐 기다린다
+      // 화면에 가장 많이 보이는 카드 한 장만 재생하고 나머지는 멈춘다(절반 넘게 보일 때부터). 빠르게 지나가는 카드는 재생하지 않도록 잠깐 기다린다
       if (!editing) {
         var feats = stages.map(function (st) { return st.closest('.fx-feat2') || st; }), cur = -1, want = -1, ptimer = 0, praf2 = 0;
         var stop = function (st) { var d = st.querySelector('.fx-demo'); if (d) d.classList.remove('is-on'); };
         var pick = function () {
           praf2 = 0;
-          var vh = window.innerHeight, best = -1;
-          for (var i = 0; i < feats.length; i++) { var r = feats[i].getBoundingClientRect(); if (r.top < vh * 0.55 && r.bottom > vh * 0.3) best = i; }
+          var vh = window.innerHeight, best = -1, most = 0;
+          for (var i = 0; i < feats.length; i++) {
+            var r = feats[i].getBoundingClientRect(), seen = Math.min(r.bottom, vh) - Math.max(r.top, 0);
+            if (seen > most && seen > Math.min(r.height, vh) * 0.5) { most = seen; best = i; }
+          }
           if (best === want) return;
           want = best; clearTimeout(ptimer);
           if (cur >= 0 && cur !== best) { stop(stages[cur]); cur = -1; }
