@@ -35,7 +35,7 @@ fs.mkdirSync(outDir, { recursive: true });
     return;
   }
 
-  const out = path.join(outDir, `b1_${V}.mp4`);
+  const out = path.join(outDir, V === 'A' ? 'b1.mp4' : `b1_${V}.mp4`);
   const ff = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(FPS), '-c:v', 'mjpeg', '-i', '-',
     '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-preset', 'slow', '-crf', '17', '-movflags', '+faststart', '-r', String(FPS), out], { stdio: ['pipe', 'inherit', 'inherit'] });
   const total = Math.round(dur * FPS);

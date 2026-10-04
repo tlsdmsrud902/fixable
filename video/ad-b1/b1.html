@@ -4,10 +4,9 @@
 <meta charset="utf-8">
 <title>fixable 광고 b1</title>
 <!--
-  fixable 광고 1번 (b1) — 1920×1080 · 30초. 사이트(fixable.) 톤 : 흰 바탕 · 검정 글자 · 회색 선, 강조는 크기 · 굵기 · 여백.
-  고민 3개를 하나씩 「고민(Before) → fixable 의 답(After)」 으로 같은 쇼핑몰 화면에서 비교한다.
-  render(t) 한 번에 t초 화면을 그린다 (render.js 가 프레임마다 불러 녹화).
-  주소 ?v=B → 0~3.4초 훅만 B 버전(H2).  ?t=13.5 → 그 초에서 멈춘 화면 확인.
+  fixable 광고 1번 (b1) v3 — 1920×1080 · 43.6초. 사이트(fixable.) 톤 : 흰 바탕 · 검정 글자 · 회색 선.
+  손님이 그냥 나가는 다섯 가지 이유를 하나씩 「손님 속마음(Before) → fixable 의 답(After)」 으로 같은 쇼핑몰 화면에서 비교한다.
+  render(t) 한 번에 t초 화면을 그린다 (render.js 가 프레임마다 불러 녹화).  ?t=13.5 → 그 초에서 멈춘 화면 확인.
 -->
 <style>
 @font-face{font-family:Pret;font-weight:400;src:url(fonts/Pretendard-Regular.subset.woff2) format('woff2')}
@@ -34,7 +33,8 @@ body{font-family:Pret,sans-serif;color:var(--ink);-webkit-font-smoothing:antiali
 .dk .lab{color:rgba(255,255,255,.55)} .dk .lab .n{color:#fff}
 .h{font-weight:600;letter-spacing:-.045em;line-height:1.14}
 .sub{color:var(--mute);font-size:30px;font-weight:500;letter-spacing:-.03em;line-height:1.5}
-.pill{display:inline-flex;align-items:center;gap:10px;height:40px;padding:0 18px;border-radius:999px;border:1.5px solid rgba(255,255,255,.35);color:#fff;font-size:18px;font-weight:600}
+.pill{display:inline-flex;align-items:center;gap:10px;height:40px;padding:0 18px;border-radius:999px;border:1.5px solid rgba(255,255,255,.35);color:#fff;font-size:18px;font-weight:600;white-space:nowrap}
+.pill.hl{background:#fff;color:#111;border-color:#fff}
 
 /* HUD : 왼쪽 위 로고 · 아래 진행선 */
 #logoHud{position:absolute;left:56px;top:44px;width:118px;height:42px;z-index:60}
@@ -56,8 +56,9 @@ body{font-family:Pret,sans-serif;color:var(--ink);-webkit-font-smoothing:antiali
 .bag{position:relative}
 .bag b{position:absolute;right:-8px;top:-6px;width:20px;height:20px;border-radius:50%;background:var(--ink);color:#fff;font-size:12px;display:grid;place-items:center;font-weight:700;transform:scale(0)}
 .body{position:absolute;left:0;right:0;top:104px;bottom:0;overflow:hidden}
+.toast{position:absolute;left:50%;top:118px;margin-left:-130px;width:260px;height:46px;border-radius:999px;background:var(--ink);color:#fff;font-size:15px;font-weight:600;display:grid;place-items:center;z-index:9;opacity:0}
 
-/* 화면 : 큰 배너만 (Before 1) */
+/* 큰 배너 (훅) */
 .banner{position:absolute;inset:0}
 .banner img{width:100%;height:100%;object-fit:cover;object-position:42% 30%}
 .banner .ov{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 45%,rgba(0,0,0,.6))}
@@ -65,40 +66,56 @@ body{font-family:Pret,sans-serif;color:var(--ink);-webkit-font-smoothing:antiali
 .banner .tx small{font:500 14px Jost;letter-spacing:.14em}
 .banner .tx h5{font-size:46px;line-height:1.02;font-weight:700;letter-spacing:-.03em;margin:10px 0 16px}
 .banner .tx span{font-size:15px;border-bottom:1px solid #fff;padding-bottom:3px}
-/* 화면 : 첫 화면에 상품 (After 1) */
-.hero{height:292px;position:relative;overflow:hidden}
-.hero img{position:absolute;max-width:none;height:auto}
-.hero .tx{position:absolute;left:22px;bottom:20px;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.35)}
-.hero .tx small{font:500 12px Jost;letter-spacing:.16em}
-.hero .tx h5{font-family:Serif;font-weight:400;font-size:36px;line-height:1;letter-spacing:-.01em;margin-top:6px}
-.hero .tx h5 i{display:block}
-.sect{display:flex;justify-content:space-between;align-items:baseline;padding:16px 18px 10px}
-.sect b{font:600 16px Jost,Pret;letter-spacing:.06em}.sect span{font-size:13px;color:#999}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 10px;padding:0 18px}
-.it .im{position:relative;height:168px;border-radius:10px;overflow:hidden;background:#eee}
-.it img{display:block}
-.it .add{position:absolute;right:7px;bottom:7px;width:32px;height:32px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 2px 8px rgba(0,0,0,.15)}
-.it .nm{font-size:13.5px;margin-top:8px;white-space:nowrap}
-.it .pr{font-size:14px;font-weight:700;margin-top:2px}
-.it .pr em{font-style:normal;color:var(--red);margin-right:5px}
-/* 화면 : 룩북 사진 (2) */
-.look h6{font:500 14px Jost;letter-spacing:.14em;padding:22px 22px 14px}
+
+/* 1 룩북 */
+.look h6{font:500 14px Jost;letter-spacing:.14em;padding:22px 22px 14px;display:flex;justify-content:space-between}
+.look h6 span{color:#999}
 .look .phw{position:relative;height:520px;overflow:hidden}
-.look .phw img{width:100%;height:100%;object-fit:cover;object-position:52% 50%}
+.look .phw img{width:100%;height:100%;object-fit:cover;object-position:50% 40%}
 .look .cap{padding:18px 22px;font-size:19px;font-weight:600}
 .look .cap p{font-size:15px;color:#999;font-weight:400;margin-top:6px;line-height:1.5}
-.hot{position:absolute;width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 4px 14px rgba(0,0,0,.25);font-size:26px;font-weight:400;line-height:1;color:#111}
+.hot{position:absolute;width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 4px 14px rgba(0,0,0,.3);font-size:26px;font-weight:400;line-height:1;color:#111}
 .hot:before{content:"";position:absolute;inset:-10px;border-radius:50%;border:2px solid rgba(255,255,255,.85);transform:scale(var(--p,1));opacity:var(--po,0)}
-.sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:24px 24px 0 0;padding:14px 20px 24px;box-shadow:0 -10px 40px rgba(0,0,0,.18);z-index:8;transform:translateY(110%)}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:24px 24px 0 0;padding:14px 20px 24px;box-shadow:0 -10px 40px rgba(0,0,0,.2);z-index:8;transform:translateY(110%)}
 .sheet .grab{width:44px;height:5px;border-radius:3px;background:#ddd;margin:0 auto 16px}
 .sheet .row{display:flex;gap:14px;align-items:center}
-.sheet .th{width:78px;height:78px;border-radius:12px;overflow:hidden;flex:none;background:#f3f3f3}
-.sheet .th img{width:100%;height:100%;object-fit:cover;object-position:28% 20%;transform:scale(2.4);transform-origin:28% 20%}
+.sheet .th{position:relative;width:78px;height:78px;border-radius:12px;overflow:hidden;flex:none;background:#f3f3f3}
 .sheet .nm{font-size:18px;font-weight:600}.sheet .pr{font-size:20px;font-weight:700;margin-top:4px}
 .sheet .opt{font-size:13px;color:#999;margin-top:2px}
-.sheet .btn{margin-top:18px;height:56px;border-radius:14px;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:18px;font-weight:600}
-.toast{position:absolute;left:50%;top:118px;margin-left:-110px;width:220px;height:46px;border-radius:999px;background:var(--ink);color:#fff;font-size:15px;font-weight:600;display:grid;place-items:center;z-index:9;opacity:0}
-/* 화면 : 세일 (3) */
+.sheet .btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.sheet .btns div{height:56px;border-radius:14px;display:grid;place-items:center;font-size:17px;font-weight:600;border:1.5px solid #ddd}
+.sheet .btns .buy{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+/* 2 이벤트 */
+.evB{padding:26px 22px}
+.evB small{font:500 14px Jost;letter-spacing:.2em;color:#999}
+.evB .bn{margin-top:14px;height:300px;border-radius:12px;background:#ececec;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#888}
+.evB .bn b{font-size:30px;color:#555;font-weight:700;letter-spacing:-.03em}
+.evB .bn p{font-size:16px;margin-top:10px}
+.evB dl{margin-top:24px;font-size:16px;line-height:2.1;color:#666}
+.evB dl b{display:inline-block;width:90px;color:#999;font-weight:500}
+.evB .note{margin-top:22px;padding:16px;border-radius:10px;background:#f6f6f6;font-size:14px;color:#999;line-height:1.6}
+.evA{position:absolute;inset:0;background:#141416;color:#fff;text-align:center;padding-top:44px}
+.evA small{font:500 14px Jost;letter-spacing:.22em;opacity:.7}
+.evA h5{font-size:34px;font-weight:700;letter-spacing:-.04em;margin-top:12px;line-height:1.25}
+.evA .cards{display:flex;justify-content:center;gap:14px;margin-top:34px;perspective:800px}
+.cp{position:relative;width:104px;height:150px}
+.cp>div{position:absolute;inset:0;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.cp .bk{background:linear-gradient(160deg,#2c2c30,#1b1b1e);border:1.5px solid #3a3a3e}
+.cp .bk i{font-family:Serif;font-size:22px;font-style:normal;opacity:.8}
+.cp .bk b{font-size:34px;font-weight:600;margin-top:6px;opacity:.5}
+.cp .fr{background:#fff;color:#111;opacity:0}
+.cp .fr b{font-size:40px;font-weight:700;letter-spacing:-.04em;line-height:1}
+.cp .fr span{font:500 11px Jost;letter-spacing:.16em;margin-top:8px;color:#888}
+.evA .res{margin:34px 24px 0;padding:22px;border-radius:18px;background:#fff;color:#111;text-align:left;opacity:0}
+.evA .res b{font-size:24px;font-weight:700;letter-spacing:-.03em}
+.evA .res p{font-size:15px;color:#888;margin-top:6px}
+.evA .res .dd{display:flex;gap:8px;margin-top:16px}
+.evA .res .dd span{padding:8px 12px;border-radius:999px;background:#f2f2f2;font-size:13px;font-weight:600}
+.evA .res .dd span.r{background:var(--red);color:#fff}
+.evA .res .go{margin-top:16px;height:52px;border-radius:12px;background:#111;color:#fff;display:grid;place-items:center;font-size:16px;font-weight:600}
+
+/* 3 세일 */
 .sale{position:absolute;inset:0;background:#121212;color:#fff;text-align:center;padding-top:150px}
 .sale small{font:500 15px Jost;letter-spacing:.24em;opacity:.7}
 .sale .big{font-size:112px;font-weight:700;line-height:.95;letter-spacing:-.05em;margin-top:18px}
@@ -120,7 +137,59 @@ body{font-family:Pret,sans-serif;color:var(--ink);-webkit-font-smoothing:antiali
 .sale2 .lst{margin:34px 22px 0;display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .sale2 .lst div{height:160px;border-radius:12px;overflow:hidden;position:relative}
 .sale2 .lst img{display:block}
-.sale2 .lst b{position:absolute;left:8px;top:8px;padding:4px 8px;border-radius:6px;background:var(--red);font-size:12px}
+.sale2 .lst b{position:absolute;left:8px;top:8px;padding:4px 8px;border-radius:6px;background:var(--red);font-size:12px;z-index:2}
+
+/* 4 상품 목록 · 타임세일 */
+.sect{display:flex;justify-content:space-between;align-items:baseline;padding:18px 18px 12px}
+.sect b{font:600 16px Jost,Pret;letter-spacing:.06em}.sect span{font-size:13px;color:#999}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 10px;padding:0 18px}
+.it .im{position:relative;height:168px;border-radius:10px;overflow:hidden;background:#eee}
+.it img{display:block}
+.it .add{position:absolute;right:7px;bottom:7px;width:32px;height:32px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.it .nm{font-size:13.5px;margin-top:8px;white-space:nowrap}
+.it .pr{font-size:14px;font-weight:700;margin-top:2px;white-space:nowrap}
+.it .pr .now{display:none}
+.it .pr em{font-style:normal;color:var(--red);margin-right:5px}
+.it .pr s{color:#bbb;font-weight:400;margin-left:5px;font-size:12px}
+.open .it .pr .was{display:none} .open .it .pr .now{display:inline}
+.it .stk{display:none;margin-top:6px;height:4px;border-radius:2px;background:#eee;overflow:hidden}
+.it .stk i{display:block;height:100%;background:var(--red)}
+.open .it .stk{display:block}
+.tsBar{margin:14px 18px 0;border-radius:14px;background:#111;color:#fff;padding:16px 18px;display:flex;justify-content:space-between;align-items:center}
+.tsBar small{display:block;font:500 12px Jost;letter-spacing:.2em;opacity:.65}
+.tsBar b{display:block;font-size:22px;font-weight:700;letter-spacing:-.03em;margin-top:4px}
+.tsBar .st{text-align:right;font-size:13px;opacity:.8}
+.tsBar .st strong{display:block;font-size:26px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.02em;margin-top:2px;opacity:1}
+.open .tsBar{background:var(--red)}
+.plain h6{font:500 14px Jost;letter-spacing:.14em;padding:22px 18px 4px}
+
+/* 5 문의 · 챗봇 */
+.qa{padding:22px 20px}
+.qa h6{font-size:22px;font-weight:700;letter-spacing:-.03em}
+.qa .nt{margin-top:14px;padding:14px 16px;border-radius:10px;background:#f5f5f5;font-size:14px;color:#888;line-height:1.6}
+.qa .rw{display:flex;justify-content:space-between;align-items:center;padding:18px 2px;border-bottom:1px solid #eee}
+.qa .rw:first-of-type{margin-top:10px}
+.qa .rw b{font-size:16px;font-weight:600;display:block}
+.qa .rw small{font-size:13px;color:#aaa;margin-top:4px;display:block}
+.qa .rw span{padding:6px 10px;border-radius:6px;background:#fdecec;color:#c9241f;font-size:12px;font-weight:700;white-space:nowrap}
+.qa .wr{margin-top:20px;height:52px;border-radius:12px;border:1.5px solid #ddd;display:grid;place-items:center;font-size:15px;color:#999}
+.chat{position:absolute;inset:0;background:#f4f4f3}
+.chat .ch{background:#111;color:#fff;padding:18px 20px 16px}
+.chat .ch small{font:500 12px Jost;letter-spacing:.22em;opacity:.6}
+.chat .ch b{display:block;font-size:22px;font-weight:700;margin-top:4px}
+.chat .ch span{font-size:13px;opacity:.8}
+.chat .ch span i{display:inline-block;width:8px;height:8px;border-radius:50%;background:#35c46a;margin-right:6px}
+.chat .ms{padding:18px 16px;display:flex;flex-direction:column;gap:12px}
+.bub{max-width:82%;padding:14px 16px;border-radius:18px;font-size:15.5px;line-height:1.5;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.bub.me{align-self:flex-end;background:#111;color:#fff;border-bottom-right-radius:6px}
+.bub.bot{border-bottom-left-radius:6px}
+.bub small{display:block;font-size:12px;color:#aaa;margin-bottom:4px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips span{padding:10px 14px;border-radius:999px;background:#fff;border:1.5px solid #e2e2e2;font-size:14px;font-weight:600}
+.dots{display:flex;gap:5px;padding:16px 18px}
+.dots i{width:8px;height:8px;border-radius:50%;background:#bbb;display:block}
+.bub .lk{margin-top:10px;display:inline-block;padding:8px 12px;border-radius:999px;background:#f2f2f2;font-size:13px;font-weight:600}
+.chat .tm{font-size:12px;color:#aaa;text-align:center}
 
 /* 표시 */
 .tagX{position:absolute;display:inline-flex;align-items:center;gap:12px;height:56px;padding:0 24px 0 14px;border-radius:999px;background:#fff;border:1.5px solid #f1cfcd;color:#c9241f;font-size:24px;font-weight:600;white-space:nowrap;box-shadow:0 10px 24px rgba(0,0,0,.06);z-index:12;opacity:0}
@@ -128,20 +197,19 @@ body{font-family:Pret,sans-serif;color:var(--ink);-webkit-font-smoothing:antiali
 .tagX i{background:var(--red);color:#fff}
 .tagO{position:absolute;display:inline-flex;align-items:center;gap:12px;height:60px;padding:0 26px 0 14px;border-radius:999px;background:#fff;color:#111;font-size:25px;font-weight:600;white-space:nowrap;box-shadow:0 16px 36px rgba(0,0,0,.35);z-index:12;opacity:0}
 .tagO i{background:#111;color:#fff}
-.brk{position:absolute;width:22px;border:2px solid #c9c9c9;border-left:0;z-index:5;display:none}
-.brkL{position:absolute;font:500 22px Jost,Pret;letter-spacing:.04em;color:#888;white-space:nowrap;display:none}
 .touch{position:absolute;left:0;top:0;width:58px;height:58px;margin:-29px 0 0 -29px;border-radius:50%;background:rgba(17,17,17,.3);border:3px solid rgba(255,255,255,.95);box-shadow:0 6px 18px rgba(0,0,0,.25);z-index:15;opacity:0}
 .rip{position:absolute;width:110px;height:110px;margin:-55px 0 0 -55px;border-radius:50%;border:3px solid rgba(255,255,255,.95);z-index:14;opacity:0}
 .qb{position:absolute;padding:12px 20px;border-radius:22px;background:#111;color:#fff;font-size:24px;font-weight:600;z-index:13;white-space:nowrap;opacity:0}
 
-/* 고민 → 답 장면 */
+/* 손님 마음 → 답 장면 */
 .fix .dkc{position:absolute;inset:0;background:radial-gradient(120% 90% at 70% 0%,#1f1f22 0%,#0f0f10 60%);z-index:1;display:none}
 .fix .tp,.fix .ta{position:absolute;left:140px;top:262px;z-index:4}
-.fix .tp .h{font-size:92px;margin-top:40px}
-.fix .tp .sub{margin-top:30px}
-.fix .ta .h{font-size:82px;margin-top:40px;color:#fff}
-.fix .ta .sub{margin-top:30px;color:#9a9a9a}
-.fix .ta .pills{display:flex;gap:10px;margin-top:44px}
+.fix .tp .h{font-size:84px;margin-top:40px}
+.fix .tp .h .ln:first-child{color:#9a9a9a}
+.fix .tp .sub{margin-top:34px;max-width:900px}
+.fix .ta .h{font-size:76px;margin-top:40px;color:#fff}
+.fix .ta .sub{margin-top:30px;color:#9a9a9a;max-width:760px;font-size:28px}
+.fix .ta .pills{display:flex;gap:10px;margin-top:40px}
 .fix .ta .lab,.fix .ta .sub,.fix .ta .pill{opacity:0}
 .fix .pB,.fix .pA{z-index:6}
 .fix .pB{left:1180px;top:118px}
@@ -161,34 +229,27 @@ body{font-family:Pret,sans-serif;color:var(--ink);-webkit-font-smoothing:antiali
 #leave span{font:500 18px Jost,Pret;letter-spacing:.14em;color:#b5b5b5}
 
 /* 02 왜 */
-#why .lab{position:absolute;left:146px;top:170px}
-#why .h{position:absolute;left:140px;top:232px;font-size:96px}
-#why .rows{position:absolute;left:140px;right:140px;top:540px}
-#why .row{display:grid;grid-template-columns:260px 1fr 60px;align-items:center;height:128px;border-top:1.5px solid var(--line)}
+#why .lab{position:absolute;left:146px;top:150px}
+#why .h{position:absolute;left:140px;top:212px;font-size:88px}
+#why .rows{position:absolute;left:140px;right:140px;top:470px}
+#why .row{display:grid;grid-template-columns:110px 1fr 360px;align-items:center;height:96px;border-top:1.5px solid var(--line)}
 #why .row:last-child{border-bottom:1.5px solid var(--line)}
-#why .row .k{font:500 22px Jost,Pret;letter-spacing:.08em;color:var(--mute)}
-#why .row .q{font-size:52px;font-weight:600;letter-spacing:-.04em}
-#why .row .x{width:46px;height:46px;border-radius:50%;background:var(--red);color:#fff;display:grid;place-items:center;font-weight:800;font-size:22px}
+#why .row .k{font:500 24px Jost;letter-spacing:.06em;color:var(--mute)}
+#why .row .q{font-size:44px;font-weight:600;letter-spacing:-.04em}
+#why .row .r{font-size:24px;font-weight:500;color:var(--mute);text-align:right}
 
 /* 정리 */
 #recap .lab{position:absolute;left:146px;top:150px}
 #recap .h{position:absolute;left:140px;top:210px;font-size:82px}
-#recap .cards{position:absolute;left:140px;top:470px;display:flex;gap:40px}
-#recap .cd{position:relative;width:520px;height:460px;border-radius:32px;background:var(--card);color:#fff;padding:26px 28px;overflow:hidden}
-#recap .cd .tp{display:flex;justify-content:space-between;align-items:center}
-#recap .cd .tp .no{font:500 18px Jost;color:#777;letter-spacing:.06em}
-#recap .cd h4{text-align:center;font-size:44px;font-weight:600;letter-spacing:-.045em;margin-top:22px}
-#recap .cd .vis{position:absolute;left:28px;right:28px;bottom:28px;height:230px;border-radius:18px;overflow:hidden}
-#recap .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;height:100%;background:#fff;padding:12px}
-#recap .g4 div{border-radius:8px;overflow:hidden;display:flex;flex-direction:column}
-#recap .g4 .im{display:block;position:relative;height:150px;border-radius:8px;overflow:hidden}
-#recap .g4 i{display:block;height:8px;border-radius:4px;background:#e6e6e6;margin-top:10px;width:80%}
-#recap .g4 i+i{width:50%;background:#111;margin-top:6px}
-#recap .vis>img{width:100%;height:100%;object-fit:cover}
-#recap .clk{background:#111;height:100%;display:flex;align-items:center;justify-content:center;gap:8px;border:1.5px solid #2a2a2c;border-radius:18px}
-#recap .clk span{width:84px;height:100px;border-radius:12px;background:#232325;display:grid;place-items:center;font-size:52px;font-weight:600;font-variant-numeric:tabular-nums}
-#recap .clk i{color:#555;font-style:normal;font-size:34px}
-#recap .foot{position:absolute;left:146px;top:974px;font:500 21px Jost,Pret;letter-spacing:.06em;color:var(--mute)}
+#recap .cards{position:absolute;left:140px;top:480px;display:flex;gap:24px}
+#recap .cd{position:relative;width:304px;height:430px;border-radius:30px;background:var(--card);color:#fff;padding:26px 26px;overflow:hidden}
+#recap .cd .no{font:500 20px Jost;color:#777;letter-spacing:.06em}
+#recap .cd .gl{position:absolute;left:0;right:0;top:96px;text-align:center;font-size:76px;font-weight:600;letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums}
+#recap .cd .gl.s{font-size:58px}
+#recap .cd .gl i{display:inline-grid;place-items:center;width:96px;height:96px;border-radius:50%;background:#fff;color:#111;font-style:normal;font-weight:400;font-size:64px}
+#recap .cd h4{position:absolute;left:26px;right:26px;bottom:74px;font-size:31px;font-weight:600;letter-spacing:-.045em}
+#recap .cd p{position:absolute;left:26px;right:26px;bottom:32px;font-size:22px;color:#8d8d8d;font-weight:500}
+#recap .foot{position:absolute;left:146px;top:960px;font:500 21px Jost,Pret;letter-spacing:.06em;color:var(--mute)}
 
 /* 진단 요청 */
 #cta{background:var(--dark);color:#fff}
@@ -224,7 +285,7 @@ body{font-family:Pret,sans-serif;color:var(--ink);-webkit-font-smoothing:antiali
 #end .btn{display:inline-flex;align-items:center;gap:18px;height:84px;padding:0 34px 0 42px;border-radius:999px;background:var(--ink);color:#fff;font-size:30px;font-weight:600;letter-spacing:-.03em}
 #end .btn svg{width:28px;height:28px}
 #end .id{font:500 30px Jost,Pret;letter-spacing:.02em;color:#555}
-#end .chips{top:770px;gap:14px}
+#end .chips2{top:770px;gap:14px}
 #end .chip{height:62px;padding:0 26px;border-radius:999px;border:1.5px solid var(--line);font-size:25px;font-weight:600;display:flex;align-items:center;gap:12px;white-space:nowrap}
 #end .chip i{width:10px;height:10px;border-radius:50%;background:#111;display:block}
 #end .chip.ev i{background:var(--red)}
@@ -236,44 +297,34 @@ body{font-family:Pret,sans-serif;color:var(--ink);-webkit-font-smoothing:antiali
   <div id="logoHud"><img id="lgB" src="../../fixable902_s2_260925195134_d_skin1_E/skin1/SkinImg/fixable/logo-fixable.webp" alt=""><img id="lgW" src="../../fixable902_s2_260925195134_d_skin1_E/skin1/SkinImg/fixable/logo-fixable-white.webp" alt=""></div>
   <div id="prog"></div>
 
-  <!-- 01 훅 -->
+  <!-- 훅 -->
   <section class="scene" id="hook">
     <div class="lab" id="hkLab"><span class="n">01</span>for 쇼핑몰 사장님</div>
-    <div class="h" id="hkH"></div>
+    <div class="h" id="hkH"><span class="ln"><span>이 쇼핑몰,</span></span><span class="ln"><span>손님이 3초 만에</span></span><span class="ln"><span>나가요.</span></span></div>
     <div id="leave"><b>손님 이탈</b><span>3 SECONDS</span></div>
     <div id="timer"><svg viewBox="0 0 150 150"><circle cx="75" cy="75" r="66" fill="#fff" stroke="#ececec" stroke-width="8"/><circle id="tmArc" cx="75" cy="75" r="66" fill="none" stroke="#111" stroke-width="8" stroke-linecap="round" pathLength="100" stroke-dasharray="100" stroke-dashoffset="0"/></svg><div class="num"><div><span id="tmN">3</span><small>s</small></div></div></div>
-    <div class="ph" id="hkPh"><div class="scr"><div class="notch"></div><div data-scr="before1"></div></div></div>
+    <div class="ph" id="hkPh"><div class="scr"><div class="notch"></div><div data-scr="hook"></div></div></div>
   </section>
 
-  <!-- 02 왜 -->
+  <!-- 왜 -->
   <section class="scene" id="why">
-    <div class="lab"><span class="n">02</span>why</div>
-    <div class="h"><span class="ln"><span>왜일까요?</span></span><span class="ln"><span>문제가 세 군데 있어요.</span></span></div>
-    <div class="rows">
-      <div class="row"><span class="k">고민 01</span><span class="q">첫 화면에 상품이 안 보여요.</span><span class="x">✕</span></div>
-      <div class="row"><span class="k">고민 02</span><span class="q">사진을 눌러도 바로 못 담아요.</span><span class="x">✕</span></div>
-      <div class="row"><span class="k">고민 03</span><span class="q">세일인데, 언제까지인지 몰라요.</span><span class="x">✕</span></div>
-    </div>
+    <div class="lab"><span class="n">02</span>손님 마음</div>
+    <div class="h"><span class="ln"><span>손님이 그냥 나가는</span></span><span class="ln"><span>다섯 가지 이유.</span></span></div>
+    <div class="rows" id="rows"></div>
   </section>
 
-  <!-- 고민 → 답 01 · 02 · 03 (내용은 스크립트 FIX 에서 채움) -->
   <section class="scene fix" id="f1"></section>
   <section class="scene fix" id="f2"></section>
   <section class="scene fix" id="f3"></section>
+  <section class="scene fix" id="f4"></section>
+  <section class="scene fix" id="f5"></section>
 
   <!-- 정리 -->
   <section class="scene" id="recap">
     <div class="lab"><span class="n">03</span>fixable skin</div>
-    <div class="h"><span class="ln"><span>이 세 가지,</span></span><span class="ln"><span>fixable 스킨엔 기본으로 들어 있어요.</span></span></div>
-    <div class="cards">
-      <div class="cd"><div class="tp"><span class="pill">구매 전환</span><span class="no">01 / 03</span></div><h4>첫 화면 상품 진열</h4>
-        <div class="vis"><div class="g4" id="g4"></div></div></div>
-      <div class="cd"><div class="tp"><span class="pill">구매 전환</span><span class="no">02 / 03</span></div><h4>장면 속 상품</h4>
-        <div class="vis"><img src="../../fixable902_s2_260925195134_d_skin1_E/skin1/SkinImg/fixable/demo-scene.webp" alt=""><span class="hot" style="left:40%;top:34%">+</span><span class="hot" style="left:62%;top:72%">+</span></div></div>
-      <div class="cd"><div class="tp"><span class="pill">매출 장치</span><span class="no">03 / 03</span></div><h4>마감 카운트다운</h4>
-        <div class="vis"><div class="clk"><span>02</span><i>:</i><span>14</span><i>:</i><span id="rcS">59</span></div></div></div>
-    </div>
-    <div class="foot">스킨 6종 공통 기능 · 카페24 쇼핑몰</div>
+    <div class="h"><span class="ln"><span>이 다섯 가지,</span></span><span class="ln"><span>fixable 스킨엔 기본으로 들어 있어요.</span></span></div>
+    <div class="cards" id="rcards"></div>
+    <div class="foot">카페24 쇼핑몰 스킨 · 설치 후 사장님이 직접 수정</div>
   </section>
 
   <!-- 진단 요청 -->
@@ -284,7 +335,7 @@ body{font-family:Pret,sans-serif;color:var(--ink);-webkit-font-smoothing:antiali
     <div id="post">
       <div class="hd"><div class="av"><img src="../../fixable902_s2_260925195134_d_skin1_E/skin1/SkinImg/fixable/logo-fixable.webp" alt=""></div><div><b>fixable902</b><small>카페24 쇼핑몰 스킨 · 무료 진단</small></div></div>
       <div class="c"><div class="av2"></div><div><div class="who">사장님 · 방금</div><div class="say"><span id="typ"></span><span class="car" id="car"></span></div></div></div>
-      <div class="rp" id="prp"><div class="av"><img src="../../fixable902_s2_260925195134_d_skin1_E/skin1/SkinImg/fixable/logo-fixable.webp" alt=""></div><div><div class="who">fixable902 · 답글</div><p>DM으로 봐 드릴게요 ✓</p></div></div>
+      <div class="rp" id="prp"><div class="av"><img src="../../fixable902_s2_260925195134_d_skin1_E/skin1/SkinImg/fixable/logo-fixable.webp" alt=""></div><div><div class="who">fixable902 · 답글</div><p>다섯 가지, DM으로 봐 드릴게요 ✓</p></div></div>
       <div class="in"><span>댓글 달기…</span><span class="send">↑</span></div>
     </div>
   </section>
@@ -294,7 +345,7 @@ body{font-family:Pret,sans-serif;color:var(--ink);-webkit-font-smoothing:antiali
     <div class="c logo" id="e1"><img src="../../fixable902_s2_260925195134_d_skin1_E/skin1/SkinImg/fixable/logo-fixable.webp" alt="fixable."></div>
     <div class="c tl" id="e2">팔리는 쇼핑몰은 시작부터 다릅니다.</div>
     <div class="c ctaR"><div class="btn" id="e3">댓글에 ‘진단’ 남기기<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="id" id="e4">@fixable902</div></div>
-    <div class="c chips"><div class="chip" id="e5"><i></i>카페24 스킨 25만 원부터</div><div class="chip ev" id="e6"><i></i>10월 31일까지 쇼핑 도우미(챗봇) 무료 설치</div></div>
+    <div class="c chips2"><div class="chip" id="e5"><i></i>카페24 스킨 25만 원부터</div><div class="chip ev" id="e6"><i></i>10월 31일까지 쇼핑 도우미(챗봇) 무료 설치</div></div>
     <div class="c foot" id="e7">무료 쇼핑몰 진단 · 휴대폰 화면 기준 · DM으로 답변</div>
   </section>
 </div>
@@ -315,8 +366,8 @@ const E = {
 };
 function tf(el, o) {
   if (!el) return;
-  const { x = 0, y = 0, s = 1, r = 0, o: op = 1, blur = 0, gray = 0, extra = '' } = o;
-  el.style.transform = `translate(${x}px,${y}px) rotate(${r}deg) scale(${s}) ${extra}`;
+  const { x = 0, y = 0, s = 1, r = 0, o: op = 1, blur = 0, gray = 0 } = o;
+  el.style.transform = `translate(${x}px,${y}px) rotate(${r}deg) scale(${s})`;
   el.style.opacity = op;
   el.style.filter = (blur ? `blur(${blur}px) ` : '') + (gray ? `grayscale(${gray})` : '');
 }
@@ -325,14 +376,15 @@ const lineOut = (el, t, t0, d = .35) => { const x = E.in(prog(t, t0, d)); if (x 
 const fadeUp = (el, t, t0, d = .6, dy = 30) => { const x = E.out(prog(t, t0, d)); tf(el, { y: (1 - x) * dy, o: x }); };
 const popIn = (el, t, t0, d = .5, from = .7) => { const x = prog(t, t0, d); tf(el, { s: lerp(from, 1, E.back(x)), o: cl(x * 3) }); };
 const lines = (sel, root) => $$(sel + ' .ln>span', root);
+const center = el => { const r = el.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; };
 
 const IMG = '../../fixable902_s2_260925195134_d_skin1_E/skin1/SkinImg/fixable/';
-const V = new URLSearchParams(location.search).get('v') === 'B' ? 'B' : 'A';
-const DUR = 30;
+const DUR = 43.6;
 
 /* ───────── 타임라인 ───────── */
-const SC = [['hook', 0], ['why', 3.4], ['f1', 6.2], ['f2', 11.6], ['f3', 17.0], ['recap', 22.4], ['cta', 25.4], ['end', 27.8]];
-const FIX_T = { f1: [6.2, 8.5], f2: [11.6, 13.9], f3: [17.0, 19.3] };   // [고민 시작, 답 시작]
+const SC = [['hook', 0], ['why', 3.4], ['f1', 8.4], ['f2', 13.8], ['f3', 19.2], ['f4', 24.6], ['f5', 30.0], ['recap', 35.4], ['cta', 38.6], ['end', 41.0]];
+const FIX_T = { f1: [8.4, 10.6], f2: [13.8, 16.0], f3: [19.2, 21.4], f4: [24.6, 26.8], f5: [30.0, 32.2] };   // [손님 마음 시작, 답 시작]
+const nextStart = id => SC[SC.findIndex(s => s[0] === id) + 1][1];
 
 /* ───────── 쇼핑몰 화면 ───────── */
 const ICON = {
@@ -340,79 +392,104 @@ const ICON = {
   bag: '<span class="bag"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2"><path d="M5 8h14l-1 13H6L5 8z"/><path d="M9 8a3 3 0 016 0"/></svg><b>1</b></span>',
   plus: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>',
 };
-const shopTop = (serif) => `<div class="sbar"><span>9:41</span><span>●●● ▮</span></div><div class="shead">${ICON.menu}<span class="lg${serif ? ' serif' : ''}">${serif ? 'my shop' : 'MY SHOP'}</span>${ICON.bag}</div>`;
+const shopTop = (after, time = '9:41') => `<div class="sbar"><span class="clk">${time}</span><span>●●● ▮</span></div><div class="shead">${ICON.menu}<span class="lg${after ? ' serif' : ''}">${after ? 'my shop' : 'MY SHOP'}</span>${ICON.bag}</div>`;
 // 사진 일부 자르기 : 원본의 (x0, y0) 부터 가로 frac 만큼을 boxW 칸에 채움 (ar = 원본 가로/세로)
 const crop = (x0, y0, frac, boxW, ar, boxH = 0) => { const w = Math.max(boxW / frac, boxH * ar / (1 - y0)); return `position:absolute;max-width:none;width:${w}px;height:${w / ar}px;left:${-x0 * w}px;top:${-y0 * w / ar}px`; };
 const PRD = [
-  { img: 'demo-rv1.webp', c: [.12, .04, .78, 1], nm: '울 블렌드 롱코트', pr: '129,000' },
-  { img: 'work-wear.webp', c: [.38, .17, .22, 1.6], nm: '캐멀 트렌치코트', pr: '<em>30%</em>98,000' },
-  { img: 'work-wear.webp', c: [.385, .66, .17, 1.6], nm: '레더 미니 토트백', pr: '79,000' },
-  { img: 'demo-rv1.webp', c: [.2, .5, .52, 1], nm: '와이드 울 슬랙스', pr: '69,000' },
+  { img: 'demo-rv1.webp', c: [.12, .04, .78, 1], nm: '울 블렌드 롱코트', pr: 129000 },
+  { img: 'work-wear.webp', c: [.38, .17, .22, 1.6], nm: '캐멀 트렌치코트', pr: 139000 },
+  { img: 'work-wear.webp', c: [.385, .66, .17, 1.6], nm: '레더 미니 토트백', pr: 79000 },
+  { img: 'demo-rv1.webp', c: [.2, .5, .52, 1], nm: '와이드 울 슬랙스', pr: 69000 },
 ];
+const won = n => n.toLocaleString('ko-KR');
 const pimg = (p, boxW, boxH) => `<img src="${IMG}${p.img}" style="${crop(p.c[0], p.c[1], p.c[2], boxW, p.c[3], boxH)}">`;
+const grid = (sale) => `<div class="grid">${PRD.map((p, i) => `<div class="it"><div class="im">${pimg(p, 175, 168)}<span class="add">${ICON.plus}</span></div><div class="nm">${p.nm}</div>
+  <div class="pr"><span class="was">${won(p.pr)}</span>${sale ? `<span class="now"><em>40%</em>${won(Math.round(p.pr * .6 / 100) * 100)}<s>${won(p.pr)}</s></span>` : ''}</div>${sale ? `<div class="stk"><i style="width:${[72, 40, 58, 25][i]}%"></i></div>` : ''}</div>`).join('')}</div>`;
+const lookPhoto = `<div class="phw"><img src="${IMG}demo-rv1.webp"></div>`;
+
 const SCR = {
-  before1: () => `${shopTop()}<div class="body"><div class="banner"><img src="${IMG}demo-rv1.webp"><div class="ov"></div><div class="tx"><small>2026 F/W</small><h5>NEW<br>COLLECTION</h5><span>자세히 보기 →</span></div></div></div>`,
-  after1: () => `${shopTop(1)}<div class="body"><div class="hero"><img src="${IMG}work-wear.webp" style="${crop(.40, .12, .22, 396, 1.6)}"><div class="tx"><small>NEW SEASON</small><h5>Wear it softly.<i>Live it daily.</i></h5></div></div>
-    <div class="sect"><b>NEW ARRIVALS</b><span>전체 보기 →</span></div>
-    <div class="grid">
-      ${PRD.map(p => `<div class="it"><div class="im">${pimg(p, 175, 168)}<span class="add">${ICON.plus}</span></div><div class="nm">${p.nm}</div><div class="pr">${p.pr}</div></div>`).join('')}
-    </div></div>`,
-  before2: () => `${shopTop()}<div class="body"><div class="look"><h6>LOOKBOOK</h6><div class="phw"><img src="${IMG}demo-scene.webp"></div><div class="cap">우리 집 거실 스타일링<p>따뜻한 원목과 세라믹 소품으로 완성한 가을 거실</p></div></div></div>`,
-  after2: () => `${shopTop(1)}<div class="body"><div class="look"><h6>LOOKBOOK</h6><div class="phw"><img src="${IMG}demo-scene.webp"><span class="hot" style="left:31%;top:24%">+</span><span class="hot" style="left:58%;top:70%">+</span></div><div class="cap">우리 집 거실 스타일링<p>따뜻한 원목과 세라믹 소품으로 완성한 가을 거실</p></div></div>
-    <div class="sheet"><div class="grab"></div><div class="row"><div class="th"><img src="${IMG}demo-scene.webp"></div><div><div class="nm">세라믹 화병 · 아이보리</div><div class="opt">사진 속 상품</div><div class="pr">32,000원</div></div></div><div class="btn">장바구니 담기</div></div></div>
-    <div class="toast">장바구니에 담았어요 ✓</div>`,
+  hook: () => `${shopTop()}<div class="body"><div class="banner"><img src="${IMG}demo-rv1.webp"><div class="ov"></div><div class="tx"><small>2026 F/W</small><h5>NEW<br>COLLECTION</h5><span>자세히 보기 →</span></div></div></div>`,
+  // 1 룩북
+  before1: () => `${shopTop()}<div class="body"><div class="look"><h6>LOOKBOOK<span>26 F/W</span></h6>${lookPhoto}<div class="cap">밤 산책엔 롱코트<p>울 블렌드 롱코트와 와이드 슬랙스로 완성한 가을 룩</p></div></div></div>`,
+  after1: () => `${shopTop(1)}<div class="body"><div class="look"><h6>LOOKBOOK<span>26 F/W</span></h6><div class="phw"><img src="${IMG}demo-rv1.webp"><span class="hot" style="left:47%;top:44%">+</span><span class="hot" style="left:44%;top:84%">+</span></div><div class="cap">밤 산책엔 롱코트<p>울 블렌드 롱코트와 와이드 슬랙스로 완성한 가을 룩</p></div></div>
+    <div class="sheet"><div class="grab"></div><div class="row"><div class="th">${pimg(PRD[0], 78, 78)}</div><div><div class="nm">울 블렌드 롱코트</div><div class="opt">사진 속 상품 · 블랙 / M</div><div class="pr">129,000원</div></div></div><div class="btns"><div>장바구니</div><div class="buy">바로 구매</div></div></div></div>
+    <div class="toast">주문서로 이동해요 →</div>`,
+  // 2 이벤트
+  before2: () => `${shopTop()}<div class="body"><div class="evB"><small>EVENT</small><div class="bn"><b>가을 맞이 감사 이벤트</b><p>많은 관심 부탁드립니다 :)</p></div>
+    <dl><dd><b>이벤트 기간</b>상시 진행</dd><dd><b>혜택</b>추후 공지</dd><dd><b>대상</b>전 회원</dd></dl>
+    <div class="note">이벤트 내용은 사정에 따라 변경될 수 있습니다.</div></div></div>`,
+  after2: () => `${shopTop(1)}<div class="body"><div class="evA"><small>COUPON EVENT</small><h5>카드를 골라<br>뒤집어 보세요</h5>
+    <div class="cards">${[0, 1, 2].map(i => `<div class="cp" data-i="${i}"><div class="bk"><i>my shop</i><b>?</b></div><div class="fr"><b>${['10%', '15%', '5%'][i]}</b><span>COUPON</span></div></div>`).join('')}</div>
+    <div class="res"><b>15% 쿠폰 당첨!</b><p>쿠폰함에 저장했어요.</p><div class="dd"><span class="r">D-7 · 7일 안에 사용</span><span>전 상품</span></div><div class="go">쿠폰 쓰러 가기</div></div></div></div>`,
+  // 3 마감
   before3: () => `${shopTop()}<div class="body"><div class="sale"><small>SEASON OFF</small><div class="big">SALE</div><div class="pct">30%</div><p>전 품목 시즌 오프 세일</p><div class="b">보러 가기</div></div></div>`,
   after3: () => `${shopTop(1)}<div class="body"><div class="sale2"><small>AUTUMN SALE · 마감까지</small><h5>SALE 30%</h5>
     <div class="clock"><div class="u"><div class="d" data-k="h"><span>02</span></div><em>HOURS</em></div><span class="c">:</span><div class="u"><div class="d" data-k="m"><span>14</span></div><em>MIN</em></div><span class="c">:</span><div class="u"><div class="d" data-k="s"><span>59</span></div><em>SEC</em></div></div>
-    <div class="cpn">최대 30% 쿠폰<span>받으러 가기 →</span></div>
-    <div class="lst"><div>${pimg(PRD[0], 171)}<b>-30%</b></div><div>${pimg(PRD[1], 171)}<b>-30%</b></div></div></div></div>`,
+    <div class="cpn">오늘 자정 마감<span>지금 보러 가기 →</span></div>
+    <div class="lst"><div>${pimg(PRD[0], 171, 160)}<b>-30%</b></div><div>${pimg(PRD[1], 171, 160)}<b>-30%</b></div></div></div></div>`,
+  // 4 타임세일
+  before4: () => `${shopTop()}<div class="body plain"><h6>BEST ITEM</h6><div class="sect"><b>이번 주 인기</b><span>전체 보기 →</span></div>${grid(0)}</div>`,
+  after4: () => `${shopTop(1, '20:59')}<div class="body"><div class="tsBar"><div><small>TIME SALE · 매일 밤 9시</small><b class="tsT">오늘 밤 9시 오픈</b></div><div class="st"><span class="tsL">오픈까지</span><strong class="tsC">00:00:03</strong></div></div>
+    <div class="sect"><b>TIME SALE ITEM</b><span>2시간 한정</span></div>${grid(1)}</div>`,
+  // 5 문의 · 챗봇
+  before5: () => `${shopTop(0, '2:14')}<div class="body"><div class="qa"><h6>1:1 문의</h6><div class="nt">상담 시간 : 평일 10:00 – 18:00<br>점심 12:00 – 13:00 · 주말 · 공휴일 휴무</div>
+    <div class="rw"><div><b>배송 언제 오나요?</b><small>02:11 · 비밀글</small></div><span>답변 대기</span></div>
+    <div class="rw"><div><b>M 사이즈 재입고 되나요?</b><small>01:48 · 비밀글</small></div><span>답변 대기</span></div>
+    <div class="rw"><div><b>교환 가능한가요?</b><small>어제 · 비밀글</small></div><span>답변 대기</span></div>
+    <div class="wr">문의 남기기</div></div></div>`,
+  after5: () => `${shopTop(1, '2:14')}<div class="body"><div class="chat"><div class="ch"><small>CONCIERGE</small><b>쇼핑 도우미</b><span><i></i>지금 상담 가능 · 24시간</span></div>
+    <div class="ms"><div class="tm">오전 2:14</div><div class="bub bot"><small>쇼핑 도우미</small>안녕하세요! 궁금한 내용을 골라 주세요.</div>
+    <div class="chips"><span class="q1">배송은 언제 와요?</span><span>교환 · 반품</span><span>사이즈 추천</span><span>주문 조회</span></div>
+    <div class="bub me">배송은 언제 와요?</div><div class="bub bot dots"><i></i><i></i><i></i></div>
+    <div class="bub bot ans"><small>쇼핑 도우미</small>오후 2시 전 주문은 그날 출발해요.<br>보통 1~2일이면 받아 보세요.<div class="lk">내 주문 배송 조회 →</div></div></div></div></div>`,
 };
 $$('[data-scr]').forEach(el => { el.outerHTML = SCR[el.dataset.scr](); });
-$('#g4').innerHTML = PRD.map(p => `<div><span class="im">${pimg(p, 102, 150)}</span><i></i><i></i></div>`).join('');
 
-/* ───────── 고민 → 답 장면 ───────── */
+/* ───────── 다섯 가지 : 손님 속마음 → fixable 의 답 ───────── */
 const FIX = {
-  f1: { no: '01', p: ['첫 화면에', '상품이 안 보여요.'], ps: '큰 배너만 보이고, 살 물건은 한참 아래에 있어요.',
-        a: ['첫 화면에서', '바로 고르게.'], as: '들어오자마자 신상품 · 가격 · 담기까지 보여요.', tags: ['구매 전환', '첫 화면 상품 진열'],
-        x: '상품 0개', o: '첫 화면에 상품 4개' },
-  f2: { no: '02', p: ['사진을 눌러도', '바로 못 담아요.'], ps: '마음에 드는 소품을 봐도, 상품을 다시 찾아야 해요.',
-        a: ['사진 속 + 를 누르면', '바로 담겨요.'], as: '사진에서 상품 창이 바로 열려요.', tags: ['구매 전환', '장면 속 상품'],
-        x: '눌러도 반응 없음', o: '사진에서 바로 담기' },
-  f3: { no: '03', p: ['세일인데,', '언제까지인지 몰라요.'], ps: '마감이 안 보이면 ‘다음에 사지’ 하고 나가요.',
-        a: ['마감 시계가', '지금 사게 만들어요.'], as: '세일 마감까지 남은 시간을 큰 시계로 보여 줘요.', tags: ['매출 장치', '마감 카운트다운'],
-        x: '마감 표시 없음', o: '남은 시간이 보여요' },
+  f1: { p: ['“예쁜데,', '이거 어디서 사요?”'], ps: '사진만 걸린 룩북은 보기만 좋고, 사려면 상품을 다시 찾아야 해요.',
+        a: ['사진 속 + 를 누르면', '그 자리에서 구매.'], as: '보는 순간 사게 — 구경이 바로 주문이 돼요.', tags: ['구매 전환', '룩북 바로 구매'],
+        x: '눌러도 그대로', o: '사진에서 바로 구매', why: '사진만 걸린 룩북' },
+  f2: { p: ['“이벤트?', '늘 하는 거겠지.”'], ps: '받을 게 없는 형식뿐인 이벤트는 손님을 다시 부르지 못해요.',
+        a: ['뽑은 쿠폰이', '다시 오게 만들어요.'], as: '카드를 뒤집으면 쿠폰 당첨 — 7일 안에 쓰러 다시 와요.', tags: ['재방문', '쿠폰 이벤트'],
+        x: '받을 혜택 없음', o: '쿠폰 쓰러 다시 와요', why: '형식뿐인 이벤트' },
+  f3: { p: ['“세일이네…', '다음에 사도 되겠지.”'], ps: '마감 없는 세일은 늘 파는 상품과 같아요. 손님이 더 잘 알아요.',
+        a: ['끝나는 시간이 보이면', '지금 삽니다.'], as: '세일 마감까지 남은 시간을 큰 시계로 보여 줘요.', tags: ['매출 장치', '마감 카운트다운'],
+        x: '마감 표시 없음', o: '남은 시간이 보여요', why: '마감 없는 세일' },
+  f4: { p: ['“오늘 꼭', '들어올 이유가 없네.”'], ps: '언제 와도 같은 가격이면, 기다렸다 다시 올 이유도 없어요.',
+        a: ['매일 밤 9시,', '기다렸다 들어와요.'], as: '마트 타임세일처럼 — 정해진 시간이 열리면 손님이 다시 와서 삽니다.', tags: ['재방문 · 재구매', '타임세일'],
+        x: '기다릴 이유 없음', o: '그 시간에 다시 와요', why: '기다릴 게 없는 쇼핑몰' },
+  f5: { p: ['“새벽에 물어봤는데,', '답이 없네.”'], ps: '상담 시간이 끝나면, 궁금한 손님은 그대로 나가요.',
+        a: ['새벽 2시에도', '바로 답해요.'], as: '배송 · 교환 · 사이즈처럼 자주 묻는 질문은 쇼핑 도우미가 24시간 먼저 답해요.', tags: ['고객 응대', '쇼핑 도우미 챗봇', '10월 31일까지 무료'],
+        x: '답변 대기 3건', o: '24시간 바로 답변', why: '밤엔 답 없는 문의' },
 };
+let fi = 0;
 for (const id in FIX) {
-  const F = FIX[id], n = id.slice(1);
+  const F = FIX[id], n = id.slice(1), no = '0' + n; fi++;
   $('#' + id).innerHTML = `
     <div class="dkc"></div>
-    <div class="tp"><div class="lab"><span class="n">${F.no}</span>고민 ${F.no}</div>
+    <div class="tp"><div class="lab"><span class="n">${no}</span>손님 속마음</div>
       <div class="h">${F.p.map(l => `<span class="ln"><span>${l}</span></span>`).join('')}</div>
       <div class="sub">${F.ps}</div></div>
-    <div class="ta dk"><div class="lab"><span class="n">${F.no}</span>fixable 의 답</div>
+    <div class="ta dk"><div class="lab"><span class="n">${no}</span>fixable 의 답</div>
       <div class="h">${F.a.map(l => `<span class="ln"><span>${l}</span></span>`).join('')}</div>
       <div class="sub">${F.as}</div>
-      <div class="pills">${F.tags.map(x => `<span class="pill">${x}</span>`).join('')}</div></div>
+      <div class="pills">${F.tags.map((x, j) => `<span class="pill${j === 2 ? ' hl' : ''}">${x}</span>`).join('')}</div></div>
     <div class="ph pB"><div class="tagTop tB">BEFORE</div><div class="scr"><div class="notch"></div>${SCR['before' + n]()}</div></div>
     <div class="ph pA"><div class="tagTop tA">AFTER · fixable 스킨</div><div class="scr"><div class="notch"></div>${SCR['after' + n]()}</div></div>
-    <div class="brk"></div><div class="brkL">첫 화면</div>
     <div class="tagX"><i>✕</i>${F.x}</div>
     <div class="tagO"><i>✓</i>${F.o}</div>
     <div class="qb"></div>
     <div class="rip"></div><div class="touch"></div>`;
 }
-
-/* ───────── 01 훅 문구 (A / B) ───────── */
-const HOOK = V === 'A'
-  ? { lines: ['이 쇼핑몰,', '손님이 3초 만에', '나가요.'], at: [.3, .8, 1.5] }
-  : { lines: ['사장님 쇼핑몰도', '이렇게 생겼다면,', '매출 새고 있어요.'], at: [.25, .9, 1.7] };
-$('#hkH').innerHTML = HOOK.lines.map(l => `<span class="ln"><span>${l}</span></span>`).join('');
-if (V === 'B') $('#hkH').style.fontSize = '112px';
+$('#rows').innerHTML = Object.values(FIX).map((F, i) => `<div class="row"><span class="k">0${i + 1}</span><span class="q">${F.p.join(' ').replace(/,/, ',')}</span><span class="r">${F.why}</span></div>`).join('');
+const RC = [['+', '룩북 바로 구매', '보는 순간 구매'], ['15%', '쿠폰 이벤트', '다시 오게'], ['02:14', '마감 카운트다운', '지금 사게'], ['21:00', '타임세일', '기다려서 오게'], ['24h', '쇼핑 도우미 챗봇', '밤에도 답하게']];
+$('#rcards').innerHTML = RC.map(([g, h, p], i) => `<div class="cd"><div class="no">0${i + 1}</div><div class="gl${g.length > 3 ? ' s' : ''}">${g === '+' ? '<i>+</i>' : g}</div><h4>${h}</h4><p>${p}</p></div>`).join('');
 
 /* ───────── 프레임 그리기 ───────── */
 function isDark(t) {
-  for (const k in FIX_T) { const i = SC.findIndex(s => s[0] === k); if (t >= FIX_T[k][1] + .25 && t < SC[i + 1][1] + .4) return 1; }
-  return t >= 25.4 + .4 && t < 27.8 + .4 ? 1 : 0;
+  for (const k in FIX_T) if (t >= FIX_T[k][1] + .25 && t < nextStart(k) + .4) return 1;
+  return t >= 38.6 + .4 && t < 41.0 + .4 ? 1 : 0;
 }
 function render(t) {
   // 장면 쌓기 : 다음 장면이 아래에서 올라와 덮고, 앞 장면은 살짝 작아지며 어두워짐 (사이트 카드 쌓기)
@@ -434,46 +511,40 @@ function render(t) {
   $('#prog').style.background = dk ? '#fff' : '#111';
 
   if (t < 4.3) hook(t);
-  if (t >= 3.3 && t < 7.1) why(t);
-  for (const k in FIX_T) { const i = SC.findIndex(s => s[0] === k); if (t >= SC[i][1] - .1 && t < SC[i + 1][1] + .9) fix(k, t); }
-  if (t >= 22.3 && t < 26.3) recap(t);
-  if (t >= 25.3 && t < 28.7) cta(t);
-  if (t >= 27.7) end(t);
+  if (t >= 3.3 && t < 9.3) why(t);
+  for (const k in FIX_T) if (t >= FIX_T[k][0] - .1 && t < nextStart(k) + .9) fix(k, t);
+  if (t >= 35.3 && t < 39.5) recap(t);
+  if (t >= 38.5 && t < 41.9) cta(t);
+  if (t >= 40.9) end(t);
 }
 
 function hook(t) {
   fadeUp($('#hkLab'), t, .1, .6, 16);
-  lines('#hkH').forEach((el, i) => lineIn(el, t, HOOK.at[i]));
-  // 휴대폰 등장 → 3초 타이머 → 화면이 옆으로 밀려 나감(손님 이탈)
+  lines('#hkH').forEach((el, i) => lineIn(el, t, [.3, .8, 1.5][i]));
   const pin = E.outExpo(prog(t, .05, .9)), out = E.in(prog(t, 2.55, .55));
   tf($('#hkPh'), { y: (1 - pin) * 300 + out * 40, x: out * 520, r: out * 8, o: 1 - out });
   const tm = $('#timer');
   if (t <= 2.55) popIn(tm, t, .55, .5, .6);
   else tf(tm, { s: 1 - E.in(prog(t, 2.55, .3)) * .3, o: 1 - prog(t, 2.55, .3) });
-  const left = cl(3 - (t - .7) / .6, 0, 3);                 // 0.7초부터 1.8초 동안 3 → 0
+  const left = cl(3 - (t - .7) / .6, 0, 3);
   $('#tmN').textContent = Math.ceil(left - 1e-6);
   $('#tmArc').style.strokeDashoffset = (1 - left / 3) * 100;
   fadeUp($('#leave'), t, 2.85, .5, 20);
 }
 
 function why(t) {
-  lines('#why .h').forEach((el, i) => lineIn(el, t, 3.65 + i * .3));
-  $$('#why .row').forEach((r, i) => {
-    const t0 = 4.35 + i * .38;
-    fadeUp(r, t, t0, .6, 24);
-    popIn($('.x', r), t, t0 + .25, .45, .3);
-  });
+  lines('#why .h').forEach((el, i) => lineIn(el, t, 3.65 + i * .25));
+  $$('#why .row').forEach((r, i) => fadeUp(r, t, 4.35 + i * .55, .6, 24));
 }
 
 function fix(id, t) {
-  const S = $('#' + id), [tp, ta] = FIX_T[id];
-  const te = SC[SC.findIndex(s => s[0] === id) + 1][1];
+  const S = $('#' + id), [tp, ta] = FIX_T[id], te = nextStart(id);
   const pB = $('.pB', S), pA = $('.pA', S);
-  // ── 고민 (흰 바탕)
+  // ── 손님 속마음 (흰 바탕)
   const pFade = 1 - prog(t, ta - .05, .3);
   fadeUp($('.tp .lab', S), t, tp + .25, .5, 14); $('.tp .lab', S).style.opacity *= pFade;
-  lines('.tp .h', S).forEach((el, j) => { lineIn(el, t, tp + .35 + j * .16); lineOut(el, t, ta - .05 + j * .04); });
-  fadeUp($('.tp .sub', S), t, tp + .75, .6, 16); $('.tp .sub', S).style.opacity *= pFade;
+  lines('.tp .h', S).forEach((el, j) => { lineIn(el, t, tp + .35 + j * .2); lineOut(el, t, ta - .05 + j * .04); });
+  fadeUp($('.tp .sub', S), t, tp + .85, .6, 16); $('.tp .sub', S).style.opacity *= pFade;
   // ── 답 (어두운 카드가 휴대폰 자리에서 화면 가득 펼쳐짐)
   const dk = $('.dkc', S), k = E.inOut(prog(t, ta, .75));
   dk.style.display = t >= ta ? 'block' : 'none';
@@ -482,68 +553,63 @@ function fix(id, t) {
   lines('.ta .h', S).forEach((el, j) => lineIn(el, t, ta + .5 + j * .16));
   fadeUp($('.ta .sub', S), t, ta + .85, .6, 16);
   $$('.ta .pill', S).forEach((p, j) => fadeUp(p, t, ta + 1.0 + j * .08, .5, 12));
-  // Before 휴대폰 : 들어옴 → 답이 나오면 왼쪽으로 작아지며 흐려짐
   const pin = E.outExpo(prog(t, tp + .1, .9)), mv = E.inOut(prog(t, ta + .1, .8));
   tf(pB, { y: (1 - pin) * 260 + mv * 40, x: mv * -306, s: lerp(1, .74, mv), o: lerp(1, .5, mv), gray: mv * .7 });
   $('.tagTop', pB).style.opacity = cl(prog(t, tp + .6, .3));
-  // After 휴대폰 : 오른쪽에서 들어옴
   const ain = E.outExpo(prog(t, ta + .2, .9));
   tf(pA, { x: (1 - ain) * 620, o: cl(ain * 2) });
   $('.tagTop', pA).style.opacity = cl(prog(t, ta + .7, .3));
   // ── 표시 · 시연
-  const tagX = $('.tagX', S), tagO = $('.tagO', S), brk = $('.brk', S), brkL = $('.brkL', S), qb = $('.qb', S), touch = $('.touch', S), rip = $('.rip', S);
+  const tagX = $('.tagX', S), tagO = $('.tagO', S), qb = $('.qb', S), touch = $('.touch', S), rip = $('.rip', S);
   qb.style.opacity = 0; touch.style.opacity = 0; rip.style.opacity = 0;
   const xOut = 1 - prog(t, ta, .25);
-  const X = (x, y, t0) => { tagX.style.left = x + 'px'; tagX.style.top = y + 'px'; const p = prog(t, t0, .5); tf(tagX, { x: (1 - E.back(p)) * -24, o: cl(p * 3) * xOut }); };
-  const O = (x, y, t0) => { tagO.style.left = x + 'px'; tagO.style.top = y + 'px'; const p = prog(t, t0, .55); tf(tagO, { y: (1 - E.back(p)) * 24, s: lerp(.85, 1, E.back(p)), o: cl(p * 3) }); };
-  const tap = (x, y, tIn, tTap, tOut, x0, y0) => {
+  const X = t0 => { tagX.style.left = '1650px'; tagX.style.top = '434px'; const p = prog(t, t0, .5); tf(tagX, { x: (1 - E.back(p)) * -24, o: cl(p * 3) * xOut }); };
+  const O = t0 => { tagO.style.left = '1180px'; tagO.style.top = '902px'; const p = prog(t, t0, .55); tf(tagO, { y: (1 - E.back(p)) * 24, s: lerp(.85, 1, E.back(p)), o: cl(p * 3) }); };
+  const Q = (txt, x, y, t0) => { const q = prog(t, t0, .35); qb.textContent = txt; qb.style.left = x + 'px'; qb.style.top = y + 'px'; tf(qb, { s: lerp(.5, 1, E.back(q)), o: cl(q * 3) * xOut }); };
+  // 손가락 : from 에서 to 로 움직여 tTap 에 누름
+  const tap = (to, tIn, tTap, tOut, from) => {
     const m = E.inOut(prog(t, tIn, .5)), press = Math.max(0, 1 - Math.abs(t - tTap) / .09);
-    touch.style.left = lerp(x0 ?? x, x, m) + 'px'; touch.style.top = lerp(y0 ?? y + 160, y, m) + 'px';
-    tf(touch, { s: 1 - press * .18, o: (x0 == null ? m : 1) * (1 - prog(t, tOut, .25)) });
-    const r = prog(t, tTap, .5); rip.style.left = x + 'px'; rip.style.top = y + 'px';
+    const f = from || [to[0] + 40, to[1] + 180];
+    touch.style.left = lerp(f[0], to[0], m) + 'px'; touch.style.top = lerp(f[1], to[1], m) + 'px';
+    tf(touch, { s: 1 - press * .18, o: (from ? 1 : m) * (1 - prog(t, tOut, .25)) });
+    const r = prog(t, tTap, .5); rip.style.left = to[0] + 'px'; rip.style.top = to[1] + 'px';
     if (r > 0 && r < 1) tf(rip, { s: .4 + E.out(r) * .8, o: (1 - r) * .9 });
   };
+  const hotPulse = () => $$('.pA .hot', S).forEach((h, j) => { const p = (((t - ta) * 1.1 + j * .45) % 1 + 1) % 1; h.style.setProperty('--p', 1 + p * .9); h.style.setProperty('--po', (1 - p) * .9); popIn(h, t, ta + .9 + j * .1, .45, .2); });
+
   if (id === 'f1') {
-    // 첫 화면 괄호 : 휴대폰 화면 높이 전체 = 들어오자마자 보이는 곳
-    const show = t < ta + .2;
-    brk.style.display = brkL.style.display = show ? 'block' : 'none';
-    if (show) {
-      const b = E.out(prog(t, tp + 1.0, .5));
-      Object.assign(brk.style, { left: '1626px', top: '222px', height: (b * 726) + 'px', opacity: xOut });
-      Object.assign(brkL.style, { left: '1666px', top: '392px', opacity: b * xOut });
-    }
-    X(1662, 434, tp + 1.25);
-    $$('.pA .it', S).forEach((el, j) => fadeUp(el, t, ta + .9 + j * .1, .5, 26));
-    O(1180, 902, ta + 1.55);
+    // Before : 코트를 눌러도 아무 일 없음
+    if (t < ta) { const c = [1180 + 12 + 396 * .47, 118 + 12 + 104 + 53 + 520 * .44]; tap(c, tp + .9, tp + 1.4, ta - .1); Q('…?', c[0] + 34, c[1] - 104, tp + 1.6); }
+    X(tp + 1.7);
+    // After : + → 상품 창 → 바로 구매 → 주문서로
+    hotPulse();
+    const tOpen = ta + 1.55, tBuy = ta + 2.4;
+    const hot = center($('.pA .hot', S)), buy = center($('.pA .buy', S));
+    if (t < tOpen + .3) tap(hot, ta + 1.05, tOpen, 99); else tap(buy, tOpen + .3, tBuy, tBuy + .35, hot);
+    $('.pA .sheet', S).style.transform = `translateY(${(1 - E.outExpo(prog(t, tOpen + .05, .6))) * 110}%)`;
+    const tp2 = prog(t, tBuy + .05, .4); tf($('.pA .toast', S), { y: (1 - E.out(tp2)) * -20, o: cl(tp2 * 3) });
+    O(ta + 2.6);
   }
   if (id === 'f2') {
-    // Before : 소품 사진을 눌러도 아무 일 없음
-    const bx = 1180 + 12 + 396 * .5, by = 118 + 12 + 104 + 50 + 520 * .3;
-    if (t < ta) tap(bx, by, tp + .9, tp + 1.45, ta - .1);
-    const q = prog(t, tp + 1.65, .35); qb.textContent = '…?'; qb.style.left = (bx + 30) + 'px'; qb.style.top = (by - 100) + 'px';
-    tf(qb, { s: lerp(.5, 1, E.back(q)), o: cl(q * 3) * xOut });
-    X(1650, 434, tp + 1.8);
-    // After : + 맥박 → 누르면 상품 창 → 담기 → 장바구니 1
-    $$('.pA .hot', S).forEach((h, j) => { const p = (((t - ta) * 1.1 + j * .45) % 1 + 1) % 1; h.style.setProperty('--p', 1 + p * .9); h.style.setProperty('--po', (1 - p) * .9); popIn(h, t, ta + .9 + j * .1, .45, .2); });
-    const ox = 1372 + 12, oy = 118 + 12;
-    const hx = ox + 396 * .31, hy = oy + 104 + 50 + 520 * .24;     // 화병 + 위치
-    const bxx = ox + 198, byy = oy + 836 - 52;                       // 담기 버튼
-    const tapOpen = ta + 1.7, tapBuy = ta + 2.55;
-    if (t < tapOpen + .3) tap(hx, hy, ta + 1.2, tapOpen, 99);
-    else tap(bxx, byy, tapOpen + .35, tapBuy, tapBuy + .35, hx, hy);
-    const so = E.outExpo(prog(t, tapOpen + .05, .6));
-    $('.pA .sheet', S).style.transform = `translateY(${(1 - so) * 110}%)`;
-    const done = t >= tapBuy;
-    $('.pA .sheet .btn', S).textContent = done ? '담았어요 ✓' : '장바구니 담기';
-    $('.pA .bag b', S).style.transform = `scale(${done ? E.back(prog(t, tapBuy, .45), 2.5) : 0})`;
-    const tp2 = prog(t, tapBuy + .05, .4); tf($('.pA .toast', S), { y: (1 - E.out(tp2)) * -20, o: cl(tp2 * 3) });
-    O(1180, 902, ta + 2.75);
+    if (t < ta) Q('그래서 뭘 준다는 거지?', 1300, 270, tp + 1.2);
+    X(tp + 1.5);
+    // After : 가운데 카드 누르면 뒤집혀 15% 쿠폰 → 쿠폰함 저장 D-7
+    $$('.pA .cp', S).forEach((c, j) => fadeUp(c, t, ta + .8 + j * .08, .5, 30));
+    const tFlip = ta + 1.75, mid = $('.pA .cp[data-i="1"]', S);
+    if (t < tFlip + .6) tap(center(mid), ta + 1.2, tFlip, tFlip + .3);
+    $$('.pA .cp', S).forEach((c, j) => {
+      const f = prog(t, tFlip + (j === 1 ? .02 : .5 + Math.abs(j - 1) * .08), .45);
+      const sx = Math.abs(Math.cos(f * Math.PI)), front = f > .5;
+      c.firstElementChild.style.opacity = front ? 0 : 1; c.lastElementChild.style.opacity = front ? (j === 1 ? 1 : .45) : 0;
+      c.firstElementChild.style.transform = c.lastElementChild.style.transform = `scaleX(${sx})`;
+      if (j === 1 && front) c.style.transform = `translateY(${-E.out(prog(t, tFlip + .25, .4)) * 12}px) scale(${1 + E.out(prog(t, tFlip + .25, .4)) * .08})`;
+    });
+    fadeUp($('.pA .res', S), t, tFlip + .55, .6, 30);
+    O(ta + 2.5);
   }
   if (id === 'f3') {
-    const q = prog(t, tp + 1.2, .4); qb.textContent = '언제까지?'; qb.style.left = '1452px'; qb.style.top = '278px';
-    tf(qb, { s: lerp(.5, 1, E.back(q)), o: cl(q * 3) * xOut });
-    X(1650, 434, tp + 1.5);
-    // After : 시계가 1초씩 줄어듦
+    if (t < ta) Q('언제까지지?', 1452, 278, tp + 1.2);
+    X(tp + 1.5);
     const t0 = ta + .9, base = 2 * 3600 + 14 * 60 + 59, el = Math.max(0, Math.floor(t - t0));
     const sec = base - el, fr = (t - t0) - el;
     const vals = { h: Math.floor(sec / 3600), m: Math.floor(sec % 3600 / 60), s: sec % 60 };
@@ -553,21 +619,50 @@ function fix(id, t) {
     });
     fadeUp($('.pA .clock', S), t, ta + .7, .6, 20);
     fadeUp($('.pA .cpn', S), t, ta + 1.0, .6, 16);
-    O(1180, 902, ta + 1.5);
+    O(ta + 1.6);
+  }
+  if (id === 'f4') {
+    if (t < ta) Q('어제랑 똑같네.', 1452, 278, tp + 1.2);
+    X(tp + 1.5);
+    // After : 20:59 오픈까지 3초 → 21:00 타임세일 열림 (가격 40% · 남은 수량)
+    const tOpen = ta + 1.7, scr = $('.pA .scr', S), open = t >= tOpen;
+    scr.classList.toggle('open', open);
+    $('.pA .clk', S).textContent = open ? '21:00' : '20:59';
+    const left = Math.max(0, Math.ceil(tOpen - t - 1e-6));
+    $('.pA .tsT', S).textContent = open ? '지금 타임세일 중 · 40%' : '오늘 밤 9시 오픈';
+    $('.pA .tsL', S).textContent = open ? '남은 시간' : '오픈까지';
+    const rem = open ? 2 * 3600 - 1 - Math.floor(t - tOpen) : left;
+    $('.pA .tsC', S).textContent = [Math.floor(rem / 3600), Math.floor(rem % 3600 / 60), rem % 60].map(v => String(v).padStart(2, '0')).join(':');
+    const bar = $('.pA .tsBar', S); const flash = open ? E.back(prog(t, tOpen, .45), 2) : 1; bar.style.transform = `scale(${open ? lerp(.94, 1, flash) : 1})`;
+    $$('.pA .it', S).forEach((el, j) => { if (open) { const p = prog(t, tOpen + .1 + j * .08, .4); el.style.transform = `translateY(${(1 - E.back(p)) * 10}px)`; } });
+    O(ta + 2.3);
+  }
+  if (id === 'f5') {
+    if (t < ta) Q('내일까지 기다려야 돼?', 1360, 278, tp + 1.2);
+    X(tp + 1.5);
+    // After : 질문 버튼 누름 → 내 질문 → 입력 중 → 바로 답
+    const tAsk = ta + 1.5, q1 = $('.pA .q1', S);
+    if (t < tAsk + .5) tap(center(q1), ta + .95, tAsk, tAsk + .3);
+    const me = $('.pA .bub.me', S), dots = $('.pA .dots', S), ans = $('.pA .ans', S);
+    me.style.display = t >= tAsk + .1 ? 'block' : 'none'; fadeUp(me, t, tAsk + .1, .4, 14);
+    const tAns = tAsk + .85;
+    dots.style.display = t >= tAsk + .4 && t < tAns ? 'flex' : 'none';
+    $$('i', dots).forEach((d, j) => { d.style.transform = `translateY(${-Math.max(0, Math.sin((t * 8) - j * .8)) * 5}px)`; });
+    ans.style.display = t >= tAns ? 'block' : 'none'; fadeUp(ans, t, tAns, .45, 14);
+    O(ta + 2.3);
   }
 }
 
 function recap(t) {
-  const a = 22.4;
+  const a = 35.4;
   fadeUp($('#recap .lab'), t, a + .3, .5, 14);
   lines('#recap .h').forEach((el, i) => lineIn(el, t, a + .35 + i * .2));
-  $$('#recap .cd').forEach((c, i) => { const x = prog(t, a + .8 + i * .14, .8); tf(c, { y: (1 - E.outExpo(x)) * 160, o: cl(x * 3) }); });
-  $('#rcS').textContent = String(59 - Math.max(0, Math.floor(t - (a + 1.2)))).padStart(2, '0');
+  $$('#recap .cd').forEach((c, i) => { const x = prog(t, a + .75 + i * .1, .8); tf(c, { y: (1 - E.outExpo(x)) * 160, o: cl(x * 3) }); });
   fadeUp($('#recap .foot'), t, a + 1.4, .5, 10);
 }
 
 function cta(t) {
-  const a = 25.4;
+  const a = 38.6;
   fadeUp($('#cta .lab'), t, a + .3, .5, 14);
   lines('#cta .h').forEach((el, i) => lineIn(el, t, a + .35 + i * .22));
   lines('#cta .s2').forEach((el, i) => lineIn(el, t, a + .95 + i * .2));
@@ -579,7 +674,7 @@ function cta(t) {
 }
 
 function end(t) {
-  const a = 27.8;
+  const a = 41.0;
   const lp = prog(t, a + .3, .9); tf($('#e1'), { s: lerp(.9, 1, E.outExpo(lp)), o: cl(lp * 2), blur: (1 - E.outExpo(lp)) * 10 });
   fadeUp($('#e2'), t, a + .55, .6, 20);
   fadeUp($('#e3'), t, a + .8, .6, 20); fadeUp($('#e4'), t, a + .9, .6, 20);
