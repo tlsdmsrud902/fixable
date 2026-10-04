@@ -587,7 +587,7 @@ html.fx-js #lw-home.fx [data-fx-chat].is-play .fx-bm{opacity:1;transform:none}
   #lw-home.fx .fx-feat2__stage .fx-demo__in{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:inherit;flex:none;transform-origin:50% 50%}
   /* 02 쿠폰 : 위 작은 글 · 카드 · 축하 문구 사이 간격을 좁혀 그만큼 카드가 크게 보이게 */
   #lw-home.fx .fx-feat2__stage .fx-demo--cp{gap:10px}
-  #lw-home.fx .fx-feat2__stage .fx-cp{--w:250px}
+  #lw-home.fx .fx-feat2__stage .fx-cp{--w:250px;margin:26px 0 46px}
   /* 08 쇼핑 도우미 : 대화 창 옆에 이벤트 안내(D-day · 직접 써 보기)를 나란히 (원래 가로 배치) */
   #lw-home.fx .fx-feat2__stage .fx-demo--bot{flex-direction:column}
   #lw-home.fx .fx-feat2__stage .fx-demo--bot .fx-demo__in{flex-direction:row;align-items:center}
