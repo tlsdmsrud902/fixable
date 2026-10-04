@@ -1,4 +1,4 @@
-# 광고 b1 — 모션 그래픽 v3 (가로 1920×1080 · 세로 1080×1920 · 60fps · 약 73초, 음성 · 음악)
+# 광고 b1 — 모션 그래픽 v3 (가로 1920×1080 · 세로 1080×1920 · 60fps · 약 82초, 음성 · 음악)
 
 손님이 그냥 나가는 **다섯 가지 이유**를 손님 입장(속마음)에서 하나씩 보여 주고, 같은 쇼핑몰 화면으로 **Before → After(fixable 스킨)** 를 나란히 비교한다.
 
@@ -11,12 +11,12 @@
 | `b1.html` | 장면 · 움직임 전부. 브라우저로 열고 `?t=13.5` → 그 초 화면, `?o=v` → 세로 |
 | `timeline.mjs` | 음성 길이로 장면 시간표(`timeline.js`)를 만들고, `--mix` 면 음성 + 음악을 섞어 `out/mix.m4a` |
 | `render.js` | `node video/ad-b1/render.js` → `out/b1.mp4` (가로) · `… v` → `out/b1_v.mp4` (세로) · `… v --stills 1.5,9.9` |
-| `audio/` | ElevenLabs 음성 20줄(`c1~c5` 손님 속마음 · `n*` 나레이션) + `music.mp3`. `audio/trim/` 은 앞뒤 무음을 자르고 1.12배 빠르게 한 사본 |
+| `audio/` | ElevenLabs 음성 20줄(`c1~c5` 손님 속마음 · `n*` 나레이션) + `music.mp3`. `audio/trim/` 은 앞 무음을 자르고 말끝 여운 0.25초를 남겨 1.1배 빠르게 한 사본 (끝을 바짝 자르면 말끝이 「뚝」 끊김) |
 | `fonts/` | Pretendard(subset) · Jost · Instrument Serif |
 
 순서 : `node video/ad-b1/timeline.mjs --mix` → `node video/ad-b1/render.js` → `node video/ad-b1/render.js v`
 
-음성 : ElevenLabs eleven_v3 — 손님 속마음 = 「Luna」(맑고 자연스러운 젊은 여성) · 나레이션 = 「30대 한국 남성(R)」(청량하고 또렷한 남성). 「세일」은 음성 원고에 「쎄일」로 적어 발음을 맞추고, 화면 글자는 모두 영어 SALE. 음악 = ElevenLabs Music (미니멀 딥하우스 112BPM, 음성이 나올 때 자동으로 낮춤). ElevenLabs 작업 화면 : https://elevenlabs.io/app/flows/BBVsNyR2s7HFKAEC12JK
+음성 : ElevenLabs eleven_v4 — 손님 속마음 = 「Luna」(맑고 자연스러운 젊은 여성) · 나레이션 = 「30대 한국 남성(R)」(청량하고 또렷한 남성). 「세일」은 음성 원고에 「쎄일」로 적어 발음을 맞추고, 화면 글자는 모두 영어 SALE. 음악 = ElevenLabs Music (밝은 미니멀 팝 일렉트로닉 118BPM · 80초, 음성이 나올 때 자동으로 낮춤). ElevenLabs 작업 화면 : https://elevenlabs.io/app/flows/BBVsNyR2s7HFKAEC12JK
 
 필요 : Node + `playwright`(chromium) + ffmpeg. 전역 playwright 는 `NODE_PATH=$(npm root -g)`.
 

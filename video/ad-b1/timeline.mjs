@@ -7,13 +7,20 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const DIR = path.dirname(new URL(import.meta.url).pathname);
-const TEMPO = 1.12;                                   // 광고 속도로 살짝 빠르게
-// 원본 mp3 → 앞뒤 무음을 자르고 속도를 올린 wav (audio/trim/*.wav)
+const TEMPO = 1.10;                                   // 광고 속도로 아주 살짝 빠르게
+// 원본 mp3 → 앞 무음만 바짝 자르고, 끝은 말끝 여운(0.25초)을 남긴 채 부드럽게 줄인 wav (audio/trim/*.wav)
+//  ※ 끝을 -42dB 로 바짝 자르면 마지막 음절 꼬리가 잘려 「뚝」 끊겨 들린다 → 끝은 -60dB · 0.25초 남김 + 페이드
 fs.mkdirSync(path.join(DIR, 'audio', 'trim'), { recursive: true });
 const A = n => path.join(DIR, 'audio', 'trim', n + '.wav');
-const trim = 'silenceremove=start_periods=1:start_threshold=-42dB:start_silence=0.03';
-const prep = n => { if (!fs.existsSync(A(n))) execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', path.join(DIR, 'audio', n + '.mp3'),
-  '-af', `${trim},areverse,${trim},areverse,atempo=${TEMPO},aresample=48000`, A(n)]); return A(n); };
+const head = 'silenceremove=start_periods=1:start_threshold=-50dB:start_silence=0.05';
+const tail = 'silenceremove=start_periods=1:start_threshold=-60dB:start_silence=0.25';
+const prep = n => {
+  if (!fs.existsSync(A(n))) {
+    execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', path.join(DIR, 'audio', n + '.mp3'),
+      '-af', `${head},areverse,${tail},afade=t=in:d=0.12,areverse,atempo=${TEMPO},aresample=48000`, A(n)]);
+  }
+  return A(n);
+};
 const dur = n => +execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', prep(n)]).toString();
 
 const cues = [];                                      // [초, 파일]
@@ -52,14 +59,18 @@ if (process.argv.includes('--mix')) {
   });
   const m = cues.length;
   const MUS = path.join(DIR, 'audio', 'music.mp3');
-  inputs.push('-i', MUS, '-i', MUS);
-  // 음악이 영상보다 짧으면 한 번 더 이어 붙인다 (3초 겹쳐 자연스럽게)
+  // 음악이 영상보다 짧을 때만 한 번 더 이어 붙인다 (3초 겹쳐 자연스럽게)
+  const md = +execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', MUS]).toString();
+  // 조금(10% 이내) 짧으면 귀에 안 들릴 만큼 늘리고, 많이 짧으면 이어 붙인다
+  const stretch = md < DUR && md / DUR > 0.9 ? `atempo=${(md / DUR).toFixed(4)},` : '';
+  const loop = md < DUR && !stretch;
+  inputs.push('-i', MUS, ...(loop ? ['-i', MUS] : []));
   const g = [
     ...parts,
     `${cues.map((_, i) => `[v${i}]`).join('')}amix=inputs=${m}:normalize=0,apad[vo]`,
     `[vo]asplit=2[vo1][vo2]`,
-    `[${m}:a][${m + 1}:a]acrossfade=d=3[mm]`,
-    `[mm]aresample=48000,volume=0.5,atrim=0:${DUR},afade=t=in:d=0.4,afade=t=out:st=${DUR - 1.5}:d=1.5[mu]`,
+    loop ? `[${m}:a][${m + 1}:a]acrossfade=d=3[mm]` : `[${m}:a]anull[mm]`,
+    `[mm]${stretch}aresample=48000,volume=0.5,atrim=0:${DUR},afade=t=in:d=0.4,afade=t=out:st=${DUR - 1.5}:d=1.5[mu]`,
     `[mu][vo1]sidechaincompress=threshold=0.04:ratio=6:attack=15:release=350[duck]`,
     `[duck][vo2]amix=inputs=2:normalize=0,atrim=0:${DUR},loudnorm=I=-14:TP=-1.5:LRA=9,aresample=48000[out]`,
   ].join(';');
