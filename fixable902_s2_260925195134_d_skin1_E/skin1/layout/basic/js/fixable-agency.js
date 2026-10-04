@@ -277,26 +277,23 @@
       stages.forEach(function (st) { st.addEventListener('click', function (e) { if (e.target.closest('a,button')) return; play(st); }); });
       // 화면에 가장 많이 보이는 카드 한 장만 재생하고 나머지는 멈춘다(절반 넘게 보일 때부터). 빠르게 지나가는 카드는 재생하지 않도록 잠깐 기다린다
       if (!editing) {
-        var feats = stages.map(function (st) { return st.closest('.fx-feat2') || st; }), cur = -1, want = -1, ptimer = 0, praf2 = 0;
+        var feats = stages.map(function (st) { return st.closest('.fx-feat2') || st; }), live = [], praf2 = 0;
         var stop = function (st) { var d = st.querySelector('.fx-demo'); if (d) d.classList.remove('is-on'); };
+        // 카드가 화면에 조금이라도(15%) 들어오면 바로 재생, 완전히 벗어나면 멈춘다 (한 번에 걸치는 카드는 많아야 두 장)
         var pick = function () {
           praf2 = 0;
-          var vh = window.innerHeight, best = -1, most = 0;
+          var vh = window.innerHeight;
           for (var i = 0; i < feats.length; i++) {
-            var r = feats[i].getBoundingClientRect(), seen = Math.min(r.bottom, vh) - Math.max(r.top, 0);
-            if (seen > most && seen > Math.min(r.height, vh) * 0.5) { most = seen; best = i; }
+            var r = feats[i].getBoundingClientRect(), seen = Math.min(r.bottom, vh) - Math.max(r.top, 0), vis = seen > Math.min(r.height, vh) * 0.15;
+            if (vis && !live[i]) { live[i] = true; play(stages[i]); }
+            else if (!vis && live[i] && seen <= 0) { live[i] = false; stop(stages[i]); }
           }
-          if (best === want) return;
-          want = best; clearTimeout(ptimer);
-          if (cur >= 0 && cur !== best) { stop(stages[cur]); cur = -1; }
-          if (best >= 0) ptimer = setTimeout(function () { if (want === best && cur !== best) { cur = best; play(stages[best]); } }, 140);
         };
         var queue = function () { if (!praf2) praf2 = requestAnimationFrame(pick); };
         window.addEventListener('scroll', queue, { passive: true });
         window.addEventListener('resize', queue);
         // 부드러운 스크롤(Lenis) · 바로가기 이동처럼 scroll 이벤트가 안 오는 경우에도 카드가 화면에 들고 날 때 다시 고른다
-        if ('IntersectionObserver' in window) { var fio = new IntersectionObserver(queue, { threshold: [0, 0.5, 1] }); feats.forEach(function (f) { fio.observe(f); }); }
-        stages.forEach(function (st, i) { st.addEventListener('click', function () { cur = want = i; }); });
+        if ('IntersectionObserver' in window) { var fio = new IntersectionObserver(queue, { threshold: [0, 0.15, 0.5] }); feats.forEach(function (f) { fio.observe(f); }); }
         queue();
         // 시연 사진은 기능 섹션에 가까워지면 미리 받아 둔다 (지연 로딩 때문에 카드가 비어 보이지 않게)
         var featSec = home.querySelector('.fx-features');
