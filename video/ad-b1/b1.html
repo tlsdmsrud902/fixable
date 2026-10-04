@@ -228,6 +228,24 @@ body{font-family:Pret,sans-serif;color:var(--ink);-webkit-font-smoothing:antiali
 #leave b{display:block;font-size:44px;font-weight:600;letter-spacing:-.04em;color:#b5b5b5}
 #leave span{font:500 18px Jost,Pret;letter-spacing:.14em;color:#b5b5b5}
 
+/* 01 훅 B : 대시보드 */
+#hkS{position:absolute;left:146px;top:610px;font-size:38px;color:#555;opacity:0}
+#dash{position:absolute;left:1060px;top:190px;width:720px;border-radius:32px;background:#fff;border:1.5px solid var(--line);box-shadow:0 40px 80px rgba(0,0,0,.08);padding:34px 36px;z-index:3;opacity:0}
+#dash .dh{display:flex;justify-content:space-between;font:500 20px Jost,Pret;letter-spacing:.1em;color:var(--mute)}
+#dash .live{color:#111}#dash .live i{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--red);margin-right:8px;vertical-align:1px}
+#dash .tiles{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:28px}
+#dash .tl{border-radius:20px;background:var(--soft);padding:24px 26px}
+#dash .tl small{font-size:22px;color:var(--mute);font-weight:500}
+#dash .tl b{display:block;font-size:84px;font-weight:600;letter-spacing:-.04em;line-height:1.1;margin-top:8px;font-variant-numeric:tabular-nums}
+#dash .tl em{font-style:normal;font-size:19px;color:var(--mute)}
+#dash .tl.bad b,#dash .tl.bad em{color:var(--red)}
+#dash .ch{display:block;width:100%;height:330px;margin-top:40px}
+#dash .lg2{display:flex;gap:22px;margin-top:16px;font-size:19px;color:var(--mute)}
+#dash .lg2 i{display:inline-block;width:22px;height:5px;border-radius:3px;background:#111;margin-right:8px;vertical-align:4px}#dash .lg2 i.r{background:var(--red)}
+.hb #hkPh,.hb #timer,.hb #leave{display:none} #hkS,#dash{display:none} .hb #hkS,.hb #dash{display:block}
+.hb #hkH{font-size:112px}
+.v #hkS{left:86px;top:600px;font-size:34px} .v #dash{left:80px;top:740px;width:920px} .v #dash .ch{height:420px}
+
 /* 02 왜 */
 #why .lab{position:absolute;left:146px;top:150px}
 #why .h{position:absolute;left:140px;top:212px;font-size:88px}
@@ -332,6 +350,22 @@ html:has(body.v),body.v{width:1080px;height:1920px}
     <div id="leave"><b>손님 이탈</b><span>3 SECONDS</span></div>
     <div id="timer"><svg viewBox="0 0 150 150"><circle cx="75" cy="75" r="66" fill="#fff" stroke="#ececec" stroke-width="8"/><circle id="tmArc" cx="75" cy="75" r="66" fill="none" stroke="#111" stroke-width="8" stroke-linecap="round" pathLength="100" stroke-dasharray="100" stroke-dashoffset="0"/></svg><div class="num"><div><span id="tmN">3</span><small>s</small></div></div></div>
     <div class="ph" id="hkPh"><div class="scr"><div class="notch"></div><div data-scr="hook"></div></div></div>
+    <!-- B 훅 : 방문자는 오르는데 구매는 제자리인 대시보드 -->
+    <div class="sub" id="hkS">들어온 손님은 많은데, 사는 손님이 없어요.</div>
+    <div id="dash">
+      <div class="dh"><span>MY SHOP · 오늘</span><span class="live"><i></i>LIVE</span></div>
+      <div class="tiles">
+        <div class="tl"><small>방문자</small><b id="dV">0</b><em>광고로 들어온 손님 ↑</em></div>
+        <div class="tl bad"><small>구매</small><b id="dO">0</b><em id="dR">전환율 0.0%</em></div>
+      </div>
+      <svg class="ch" viewBox="0 0 640 220" preserveAspectRatio="none">
+        <line x1="0" y1="219" x2="640" y2="219" stroke="#e6e6e6" stroke-width="2"/>
+        <line x1="0" y1="146" x2="640" y2="146" stroke="#f1f1f1" stroke-width="2"/><line x1="0" y1="73" x2="640" y2="73" stroke="#f1f1f1" stroke-width="2"/>
+        <polyline id="lnV" pathLength="100" fill="none" stroke="#111" stroke-width="5" stroke-linejoin="round" stroke-linecap="round" points="0,206 64,198 128,188 192,176 256,158 320,146 384,120 448,98 512,70 576,44 640,18"/>
+        <polyline id="lnO" pathLength="100" fill="none" stroke="#e5322d" stroke-width="5" stroke-linejoin="round" stroke-linecap="round" points="0,214 64,214 128,213 192,214 256,212 320,213 384,212 448,213 512,212 576,212 640,211"/>
+      </svg>
+      <div class="lg2"><span><i></i>방문자</span><span><i class="r"></i>구매</span></div>
+    </div>
   </section>
 
   <!-- 왜 -->
@@ -378,7 +412,7 @@ html:has(body.v),body.v{width:1080px;height:1920px}
   </section>
 </div>
 
-<script src="timeline.js"></script>
+<script>document.write('<script src="timeline' + (new URLSearchParams(location.search).get('h') === 'b' ? '_B' : '') + '.js"><\/script>');</script>
 <script>
 /* ───────── 도구 ───────── */
 const $ = (s, r = document) => r.querySelector(s);
@@ -415,6 +449,8 @@ const FIX_T = TL.FIX_T;   // [손님 속마음 시작, 답 시작]
 
 /* ───────── 가로 / 세로 ───────── */
 const VERT = new URLSearchParams(location.search).get('o') === 'v';
+const HB = new URLSearchParams(location.search).get('h') === 'b';   // B 버전 : 앞부분(훅 · 이유 소개)만 다름
+if (HB) document.body.classList.add('hb');
 const W = VERT ? 1080 : 1920, H = VERT ? 1920 : 1080;
 if (VERT) document.body.classList.add('v');
 // 고민 → 답 장면의 자리 : Before 휴대폰(pB) · After 휴대폰(pA) · Before 가 옮겨 갈 곳(mvB) · 표시(tX ✕, tO ✓)
@@ -521,6 +557,7 @@ for (const id in FIX) {
 }
 $('#rows').innerHTML = Object.values(FIX).map((F, i) => `<div class="row"><span class="k">0${i + 1}</span><span class="q">${F.p.join(' ').replace(/,/, ',')}</span><span class="r">${F.why}</span></div>`).join('');
 const RC = [['+', '룩북 바로 구매', '보는 순간 구매'], ['15%', '쿠폰 이벤트', '다시 오게'], ['02:14', '마감 카운트다운', '지금 사게'], ['21:00', 'TIME SALE', '기다려서 오게'], ['24h', '쇼핑 도우미 챗봇', '밤에도 답하게']];
+if (HB) { $('#hkH').innerHTML = ['광고비는 쓰는데,', '왜 안 팔릴까요?'].map(l => `<span class="ln"><span>${l}</span></span>`).join(''); $('#why .h').innerHTML = ['손님 눈으로 보면,', '이유는 다섯 가지예요.'].map(l => `<span class="ln"><span>${l}</span></span>`).join(''); }
 if (VERT) $('#recap .h').innerHTML = ['이 다섯 가지,', 'fixable 스킨엔', '기본으로 들어 있어요.'].map(l => `<span class="ln"><span>${l}</span></span>`).join('');
 $('#rcards').innerHTML = RC.map(([g, h, p], i) => `<div class="cd"><div class="no">0${i + 1}</div><div class="gl${g.length > 3 ? ' s' : ''}">${g === '+' ? '<i>+</i>' : g}</div><h4>${h}</h4><p>${p}</p></div>`).join('');
 
@@ -557,6 +594,7 @@ function render(t) {
 }
 
 function hook(t) {
+  if (HB) return hookB(t);
   fadeUp($('#hkLab'), t, .1, .6, 16);
   lines('#hkH').forEach((el, i) => lineIn(el, t, [.3, .8, 1.5][i]));
   const pin = E.outExpo(prog(t, .05, .9)), out = E.in(prog(t, 2.55, .55));
@@ -568,6 +606,23 @@ function hook(t) {
   $('#tmN').textContent = Math.ceil(left - 1e-6);
   $('#tmArc').style.strokeDashoffset = (1 - left / 3) * 100;
   fadeUp($('#leave'), t, 2.85, .5, 20);
+}
+
+function hookB(t) {
+  const D = T0.why;                                         // 훅 길이 (음성에 맞춤)
+  fadeUp($('#hkLab'), t, .1, .6, 16);
+  lines('#hkH').forEach((el, i) => lineIn(el, t, [.3, .85][i]));
+  const dp = prog(t, .45, .9); tf($('#dash'), { y: (1 - E.outExpo(dp)) * 160, o: cl(dp * 2) });
+  // 방문자는 계속 오르고, 구매는 3에서 멈춤
+  const k = E.out(prog(t, .9, D - 1.6));
+  $('#dV').textContent = Math.round(1284 * k).toLocaleString('ko-KR');
+  const o = Math.min(3, Math.floor(k * 9));
+  $('#dO').textContent = o;
+  $('#dR').textContent = '전환율 ' + (k > .05 ? (o / Math.max(1, 1284 * k) * 100).toFixed(1) : '0.0') + '%';
+  $('#lnV').style.strokeDasharray = 100; $('#lnV').style.strokeDashoffset = 100 * (1 - E.inOut(prog(t, 1.0, D - 1.8)));
+  $('#lnO').style.strokeDasharray = 100; $('#lnO').style.strokeDashoffset = 100 * (1 - E.inOut(prog(t, 1.0, D - 1.8)));
+  fadeUp($('#hkS'), t, D * .45, .6, 16);
+  const bad = $('#dash .tl.bad'); const pulse = t > D * .5 ? 1 + Math.max(0, Math.sin((t - D * .5) * 5)) * .03 : 1; bad.style.transform = `scale(${pulse})`;
 }
 
 function why(t) {

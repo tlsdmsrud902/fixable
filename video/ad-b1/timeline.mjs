@@ -1,12 +1,16 @@
 // 나레이션 길이에 맞춰 장면 시간표를 만들고(timeline.js), 음성 + 음악을 섞는다(out/mix.m4a).
 //   node video/ad-b1/timeline.mjs          → timeline.js (b1.html 이 읽음)
 //   node video/ad-b1/timeline.mjs --mix    → out/mix.m4a (음성 + 음악, 음성 나올 때 음악을 낮춤)
+//   node video/ad-b1/timeline.mjs B --mix  → B 버전(앞부분 다른 훅) : timeline_B.js · out/mix_B.m4a
 // 음성 파일 : audio/*.mp3 (ElevenLabs), 음악 : audio/music.mp3
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 
 const DIR = path.dirname(new URL(import.meta.url).pathname);
+const B = process.argv.includes('B');                  // B 버전 : 훅 · 이유 소개만 다르고 뒤 다섯 가지는 같다
+const SUF = B ? '_B' : '';
+const MUSIC_VOL = 0.3;                                // 음악 크기 (음성이 없을 때). 음성이 나오면 더 낮아진다
 const TEMPO = 1.10;                                   // 광고 속도로 아주 살짝 빠르게
 // 원본 mp3 → 앞 무음만 바짝 자르고, 끝은 말끝 여운(0.25초)을 남긴 채 부드럽게 줄인 wav (audio/trim/*.wav)
 //  ※ 끝을 -42dB 로 바짝 자르면 마지막 음절 꼬리가 잘려 「뚝」 끊겨 들린다 → 끝은 -60dB · 0.25초 남김 + 페이드
@@ -29,8 +33,8 @@ const FIX_T = {};
 let t = 0;
 const say = (n, at) => { cues.push([+at.toFixed(3), n]); return at + dur(n); };
 
-SC.hook = t; t = Math.max(3.4, say('n_hook', t + .35) + .5);
-SC.why = t; t = Math.max(t + 4.6, say('n_why', t + .3) + .6);
+if (B) { SC.hook = t; t = Math.max(6.0, say('n_hookB', t + .35) + .6); SC.why = t; t = Math.max(t + 4.8, say('n_whyB', t + .3) + .6); }
+else { SC.hook = t; t = Math.max(3.4, say('n_hook', t + .35) + .5); SC.why = t; t = Math.max(t + 4.6, say('n_why', t + .3) + .6); }
 for (const i of [1, 2, 3, 4, 5]) {
   const id = 'f' + i, tp = t;
   SC[id] = tp;
@@ -46,12 +50,12 @@ SC.end = t; t = say('n_end', t + .6) + 1.4;
 const DUR = +t.toFixed(2);
 
 for (const k in SC) SC[k] = +SC[k].toFixed(3);
-fs.writeFileSync(path.join(DIR, 'timeline.js'),
+fs.writeFileSync(path.join(DIR, `timeline${SUF}.js`),
   `// timeline.mjs 가 나레이션 길이로 만든 장면 시간표 — 손으로 고치지 말 것\nwindow.TL = ${JSON.stringify({ DUR, SC, FIX_T, cues }, null, 1)};\n`);
 console.log('DUR', DUR, SC);
 
 if (process.argv.includes('--mix')) {
-  const out = path.join(DIR, 'out', 'mix.m4a');
+  const out = path.join(DIR, 'out', `mix${SUF}.m4a`);
   const inputs = [], parts = [];
   cues.forEach(([at, n], i) => {
     inputs.push('-i', A(n));
@@ -70,8 +74,8 @@ if (process.argv.includes('--mix')) {
     `${cues.map((_, i) => `[v${i}]`).join('')}amix=inputs=${m}:normalize=0,apad[vo]`,
     `[vo]asplit=2[vo1][vo2]`,
     loop ? `[${m}:a][${m + 1}:a]acrossfade=d=3[mm]` : `[${m}:a]anull[mm]`,
-    `[mm]${stretch}aresample=48000,volume=0.5,atrim=0:${DUR},afade=t=in:d=0.4,afade=t=out:st=${DUR - 1.5}:d=1.5[mu]`,
-    `[mu][vo1]sidechaincompress=threshold=0.04:ratio=6:attack=15:release=350[duck]`,
+    `[mm]${stretch}aresample=48000,volume=${MUSIC_VOL},atrim=0:${DUR},afade=t=in:d=0.4,afade=t=out:st=${DUR - 1.5}:d=1.5[mu]`,
+    `[mu][vo1]sidechaincompress=threshold=0.03:ratio=8:attack=15:release=400[duck]`,
     `[duck][vo2]amix=inputs=2:normalize=0,atrim=0:${DUR},loudnorm=I=-14:TP=-1.5:LRA=9,aresample=48000[out]`,
   ].join(';');
   execFileSync('ffmpeg', ['-y', '-loglevel', 'error', ...inputs, '-filter_complex', g, '-map', '[out]', '-c:a', 'aac', '-b:a', '192k', out], { stdio: 'inherit' });

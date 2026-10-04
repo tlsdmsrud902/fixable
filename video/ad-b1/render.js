@@ -2,6 +2,7 @@
 //   node video/ad-b1/render.js               → out/b1.mp4   (가로 1920×1080)
 //   node video/ad-b1/render.js v             → out/b1_v.mp4 (세로 1080×1920)
 //   node video/ad-b1/render.js v --stills 1.5,9.9   → out/still_v_1.5.png … (확인용 정지 화면)
+//   … 뒤에 b 를 붙이면 B 버전(앞부분 다른 훅) : render.js b → out/b1B.mp4 · render.js v b → out/b1B_v.mp4
 // 순서 : node video/ad-b1/timeline.mjs --mix → node video/ad-b1/render.js → … render.js v
 // 필요 : playwright(chromium), ffmpeg
 const { chromium } = require('playwright');
@@ -10,7 +11,8 @@ const path = require('path');
 const fs = require('fs');
 
 const args = process.argv.slice(2);
-const VERT = args[0] === 'v';
+const VERT = args.includes('v');
+const HB = args.includes('b');
 const stillsArg = args.indexOf('--stills');
 const stills = stillsArg >= 0 ? args[stillsArg + 1].split(',').map(Number) : null;
 const FPS = 60;
@@ -22,21 +24,21 @@ fs.mkdirSync(outDir, { recursive: true });
   const browser = await chromium.launch({ args: ['--allow-file-access-from-files', '--font-render-hinting=none'] });
   const page = await browser.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: 1 });
   page.on('pageerror', e => console.error('page error:', e.message));
-  await page.goto('file://' + path.join(__dirname, 'b1.html') + (VERT ? '?o=v' : ''));
+  await page.goto('file://' + path.join(__dirname, 'b1.html') + '?' + (VERT ? 'o=v&' : '') + (HB ? 'h=b' : ''));
   await page.evaluate(() => window.ready);
   const dur = await page.evaluate(() => window.DUR);
 
   if (stills) {
     for (const t of stills) {
       await page.evaluate(t => window.render(t), t);
-      await page.screenshot({ path: path.join(outDir, `still_${VERT ? 'v' : 'h'}_${t}.png`) });
+      await page.screenshot({ path: path.join(outDir, `still_${HB ? 'B' : ''}${VERT ? 'v' : 'h'}_${t}.png`) });
     }
     await browser.close();
     return;
   }
 
-  const out = path.join(outDir, VERT ? 'b1_v.mp4' : 'b1.mp4');
-  const mix = path.join(outDir, 'mix.m4a');
+  const out = path.join(outDir, `b1${HB ? 'B' : ''}${VERT ? '_v' : ''}.mp4`);
+  const mix = path.join(outDir, `mix${HB ? '_B' : ''}.m4a`);
   const audio = fs.existsSync(mix) ? ['-i', mix] : [];
   const ff = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(FPS), '-c:v', 'mjpeg', '-i', '-', ...audio,
     '-map', '0:v', ...(audio.length ? ['-map', '1:a', '-c:a', 'copy'] : []),
