@@ -53,3 +53,12 @@
 
 만들기 : `node video/ad-b1/timeline.mjs B --mix` → `node video/ad-b1/render.js b` (가로 `out/b1B.mp4`) · `… render.js v b` (세로 `out/b1B_v.mp4`). 브라우저 확인은 `b1.html?h=b`.
 음악 크기는 `timeline.mjs` 의 `MUSIC_VOL` (지금 0.3, 음성이 나오면 더 낮아짐).
+
+## C 버전 (앞부분만 다름 · 뒤 다섯 가지는 같음)
+
+| 장면 | 화면 | 음성 |
+|---|---|---|
+| 훅 | 사장님 쇼핑몰, / 손님 폰으로 보면 / 이래요. · 휴대폰에서 손가락이 배너 → 룩북 → SALE → 상품 목록을 휙휙 내림, 「머문 시간」이 올라가다 뒤로 가기 → 「구매 0건」 · 둘러보고, 내리고… 그냥 나가요. | 사장님 쇼핑몰, 손님 휴대폰으로 보면 이래요. 둘러보고… 그냥 나가요. |
+| 이유 | 손님이 말없이 나가는, / 다섯 가지 순간. · 속마음 5줄 | 손님이 말없이 나가는, 다섯 가지 순간이에요. |
+
+만들기 : `node video/ad-b1/timeline.mjs C --mix` → `node video/ad-b1/render.js c` (가로 `out/b1C.mp4`) · `… render.js v c` (세로 `out/b1C_v.mp4`). 브라우저 확인은 `b1.html?h=c`.

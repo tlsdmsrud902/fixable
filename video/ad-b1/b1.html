@@ -246,6 +246,18 @@ body{font-family:Pret,sans-serif;color:var(--ink);-webkit-font-smoothing:antiali
 .hb #hkH{font-size:112px}
 .v #hkS{left:86px;top:600px;font-size:34px} .v #dash{left:80px;top:740px;width:920px} .v #dash .ch{height:420px}
 
+/* 01 훅 C : 손님 폰 */
+#cPh,#cTime,#cTouch{display:none} .hc #cPh,.hc #cTime,.hc #cTouch,.hc #hkS{display:block} .hc #hkPh,.hc #timer{display:none}
+.hc #hkH{font-size:112px} .hc #hkS{top:720px}
+#cPh{left:1180px;top:118px;z-index:3}
+.feedC{position:absolute;left:0;top:0;width:396px}
+.feedC .sec{height:732px;position:relative;overflow:hidden}
+#cTime{position:absolute;left:930px;top:170px;z-index:6;padding:16px 24px;border-radius:18px;background:#111;color:#fff;text-align:left}
+#cTime small{display:block;font-size:17px;opacity:.6}
+#cTime b{font-size:40px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+#cTouch{position:absolute;left:0;top:0;width:62px;height:62px;margin:-31px 0 0 -31px;border-radius:50%;background:rgba(17,17,17,.3);border:3px solid rgba(255,255,255,.95);box-shadow:0 6px 18px rgba(0,0,0,.25);z-index:8;opacity:0}
+.v.hc #hkH{font-size:104px} .v.hc #hkS{top:700px} .v #cPh{left:330px;top:860px} .v #cTime{left:60px;top:900px}
+
 /* 02 왜 */
 #why .lab{position:absolute;left:146px;top:150px}
 #why .h{position:absolute;left:140px;top:212px;font-size:88px}
@@ -350,6 +362,10 @@ html:has(body.v),body.v{width:1080px;height:1920px}
     <div id="leave"><b>손님 이탈</b><span>3 SECONDS</span></div>
     <div id="timer"><svg viewBox="0 0 150 150"><circle cx="75" cy="75" r="66" fill="#fff" stroke="#ececec" stroke-width="8"/><circle id="tmArc" cx="75" cy="75" r="66" fill="none" stroke="#111" stroke-width="8" stroke-linecap="round" pathLength="100" stroke-dasharray="100" stroke-dashoffset="0"/></svg><div class="num"><div><span id="tmN">3</span><small>s</small></div></div></div>
     <div class="ph" id="hkPh"><div class="scr"><div class="notch"></div><div data-scr="hook"></div></div></div>
+    <!-- C 훅 : 손님 폰으로 본 쇼핑몰 — 휙휙 내리다 뒤로 가기 -->
+    <div class="ph" id="cPh"><div class="scr"><div class="notch"></div><div id="cScr"></div></div></div>
+    <div id="cTime"><small>머문 시간</small><b id="cSec">00:00</b></div>
+    <div id="cTouch"></div>
     <!-- B 훅 : 방문자는 오르는데 구매는 제자리인 대시보드 -->
     <div class="sub" id="hkS">들어온 손님은 많은데, 사는 손님이 없어요.</div>
     <div id="dash">
@@ -412,7 +428,7 @@ html:has(body.v),body.v{width:1080px;height:1920px}
   </section>
 </div>
 
-<script>document.write('<script src="timeline' + (new URLSearchParams(location.search).get('h') === 'b' ? '_B' : '') + '.js"><\/script>');</script>
+<script>document.write('<script src="timeline' + (['b', 'c'].includes(new URLSearchParams(location.search).get('h')) ? '_' + new URLSearchParams(location.search).get('h').toUpperCase() : '') + '.js"><\/script>');</script>
 <script>
 /* ───────── 도구 ───────── */
 const $ = (s, r = document) => r.querySelector(s);
@@ -449,8 +465,10 @@ const FIX_T = TL.FIX_T;   // [손님 속마음 시작, 답 시작]
 
 /* ───────── 가로 / 세로 ───────── */
 const VERT = new URLSearchParams(location.search).get('o') === 'v';
-const HB = new URLSearchParams(location.search).get('h') === 'b';   // B 버전 : 앞부분(훅 · 이유 소개)만 다름
+const HV = new URLSearchParams(location.search).get('h');            // B · C 버전 : 앞부분(훅 · 이유 소개)만 다름
+const HB = HV === 'b', HC = HV === 'c';
 if (HB) document.body.classList.add('hb');
+if (HC) document.body.classList.add('hc');
 const W = VERT ? 1080 : 1920, H = VERT ? 1920 : 1080;
 if (VERT) document.body.classList.add('v');
 // 고민 → 답 장면의 자리 : Before 휴대폰(pB) · After 휴대폰(pA) · Before 가 옮겨 갈 곳(mvB) · 표시(tX ✕, tO ✓)
@@ -557,6 +575,18 @@ for (const id in FIX) {
 }
 $('#rows').innerHTML = Object.values(FIX).map((F, i) => `<div class="row"><span class="k">0${i + 1}</span><span class="q">${F.p.join(' ').replace(/,/, ',')}</span><span class="r">${F.why}</span></div>`).join('');
 const RC = [['+', '룩북 바로 구매', '보는 순간 구매'], ['15%', '쿠폰 이벤트', '다시 오게'], ['02:14', '마감 카운트다운', '지금 사게'], ['21:00', 'TIME SALE', '기다려서 오게'], ['24h', '쇼핑 도우미 챗봇', '밤에도 답하게']];
+if (HC) {
+  $('#cScr').innerHTML = `${shopTop()}<div class="body"><div class="feedC" id="feedC">
+    <div class="sec"><div class="banner"><img src="${IMG}demo-rv1.webp"><div class="ov"></div><div class="tx"><small>2026 F/W</small><h5>NEW<br>COLLECTION</h5><span>자세히 보기 →</span></div></div></div>
+    <div class="sec look"><h6>LOOKBOOK<span>26 F/W</span></h6>${lookPhoto}<div class="cap">밤 산책엔 롱코트<p>울 블렌드 롱코트와 와이드 슬랙스로 완성한 가을 룩</p></div></div>
+    <div class="sec"><div class="sale"><small>SEASON OFF</small><div class="big">SALE</div><div class="pct">30%</div><p>전 품목 시즌 오프 SALE</p><div class="b">보러 가기</div></div></div>
+    <div class="sec plain"><h6>BEST ITEM</h6><div class="sect"><b>이번 주 인기</b><span>전체 보기 →</span></div>${grid(0)}</div>
+  </div></div>`;
+  $('#hkH').innerHTML = ['사장님 쇼핑몰,', '손님 폰으로 보면', '이래요.'].map(l => `<span class="ln"><span>${l}</span></span>`).join('');
+  $('#hkS').textContent = '둘러보고, 내리고… 그냥 나가요.';
+  $('#leave').innerHTML = '<b>구매 0건</b><span>BACK · 뒤로 가기</span>';
+  $('#why .h').innerHTML = ['손님이 말없이 나가는,', '다섯 가지 순간.'].map(l => `<span class="ln"><span>${l}</span></span>`).join('');
+}
 if (HB) { $('#hkH').innerHTML = ['광고비는 쓰는데,', '왜 안 팔릴까요?'].map(l => `<span class="ln"><span>${l}</span></span>`).join(''); $('#why .h').innerHTML = ['손님 눈으로 보면,', '이유는 다섯 가지예요.'].map(l => `<span class="ln"><span>${l}</span></span>`).join(''); }
 if (VERT) $('#recap .h').innerHTML = ['이 다섯 가지,', 'fixable 스킨엔', '기본으로 들어 있어요.'].map(l => `<span class="ln"><span>${l}</span></span>`).join('');
 $('#rcards').innerHTML = RC.map(([g, h, p], i) => `<div class="cd"><div class="no">0${i + 1}</div><div class="gl${g.length > 3 ? ' s' : ''}">${g === '+' ? '<i>+</i>' : g}</div><h4>${h}</h4><p>${p}</p></div>`).join('');
@@ -595,6 +625,7 @@ function render(t) {
 
 function hook(t) {
   if (HB) return hookB(t);
+  if (HC) return hookC(t);
   fadeUp($('#hkLab'), t, .1, .6, 16);
   lines('#hkH').forEach((el, i) => lineIn(el, t, [.3, .8, 1.5][i]));
   const pin = E.outExpo(prog(t, .05, .9)), out = E.in(prog(t, 2.55, .55));
@@ -606,6 +637,36 @@ function hook(t) {
   $('#tmN').textContent = Math.ceil(left - 1e-6);
   $('#tmArc').style.strokeDashoffset = (1 - left / 3) * 100;
   fadeUp($('#leave'), t, 2.85, .5, 20);
+}
+
+function hookC(t) {
+  const D = T0.why;                                         // 훅 길이 (음성에 맞춤)
+  fadeUp($('#hkLab'), t, .1, .6, 16);
+  lines('#hkH').forEach((el, i) => lineIn(el, t, [.3, .7, 1.1][i]));
+  fadeUp($('#hkS'), t, D * .5, .6, 16);
+  // 손가락으로 휙휙 내림 → 마지막에 뒤로 가기
+  const ph = $('#cPh'), pr = { x: parseFloat(getComputedStyle(ph).left), y: parseFloat(getComputedStyle(ph).top) };
+  const pin = E.outExpo(prog(t, .05, .9)), tOut = D - 1.35, out = E.in(prog(t, tOut, .55));
+  tf(ph, { y: (1 - pin) * 300 + out * 40, x: out * 520, r: out * 8, o: 1 - out });
+  const swipes = [1.1, 1.1 + (tOut - 1.6) / 3, 1.1 + (tOut - 1.6) * 2 / 3];
+  let y = 0, ty = 0, op = 0;
+  swipes.forEach((s0, i) => {
+    const k = E.inOut(prog(t, s0, .5)); y -= 732 * k;
+    const d = prog(t, s0 - .15, .7); if (d > 0 && d < 1) { op = Math.sin(d * Math.PI); ty = lerp(560, 150, E.inOut(cl((d - .15) / .7))); }
+  });
+  $('#feedC').style.transform = `translateY(${y}px)`;
+  const tc = $('#cTouch');
+  tc.style.left = (pr.x + 12 + 230) + 'px'; tc.style.top = (pr.y + 12 + ty) + 'px';
+  // 뒤로 가기 : 왼쪽 가장자리에서 오른쪽으로 쓸기
+  const bk = prog(t, tOut - .45, .5);
+  if (bk > 0 && bk < 1) { op = Math.sin(bk * Math.PI); tc.style.left = (pr.x + 20 + bk * 260) + 'px'; tc.style.top = (pr.y + 430) + 'px'; }
+  tc.style.opacity = op * (1 - out);
+  // 머문 시간 (빠르게 흐름)
+  const sec = Math.min(8, Math.floor(Math.max(0, t - .5) * 8 / Math.max(1, tOut - .5)));
+  $('#cSec').textContent = '00:0' + sec;
+  popIn($('#cTime'), t, .5, .5, .6);
+  if (t > tOut) tf($('#cTime'), { s: 1 - E.in(prog(t, tOut, .3)) * .3, o: 1 - prog(t, tOut, .3) });
+  fadeUp($('#leave'), t, tOut + .3, .5, 20);
 }
 
 function hookB(t) {

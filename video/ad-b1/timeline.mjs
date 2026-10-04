@@ -1,15 +1,16 @@
 // 나레이션 길이에 맞춰 장면 시간표를 만들고(timeline.js), 음성 + 음악을 섞는다(out/mix.m4a).
 //   node video/ad-b1/timeline.mjs          → timeline.js (b1.html 이 읽음)
 //   node video/ad-b1/timeline.mjs --mix    → out/mix.m4a (음성 + 음악, 음성 나올 때 음악을 낮춤)
-//   node video/ad-b1/timeline.mjs B --mix  → B 버전(앞부분 다른 훅) : timeline_B.js · out/mix_B.m4a
+//   node video/ad-b1/timeline.mjs B --mix  → B 버전(앞부분 다른 훅) : timeline_B.js · out/mix_B.m4a  (C 도 같은 방식)
 // 음성 파일 : audio/*.mp3 (ElevenLabs), 음악 : audio/music.mp3
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 
 const DIR = path.dirname(new URL(import.meta.url).pathname);
-const B = process.argv.includes('B');                  // B 버전 : 훅 · 이유 소개만 다르고 뒤 다섯 가지는 같다
-const SUF = B ? '_B' : '';
+// B · C 버전 : 훅 · 이유 소개만 다르고(음성 n_hookB · n_whyB …) 뒤 다섯 가지는 같다
+const VER = ['B', 'C'].find(v => process.argv.includes(v)) || '';
+const SUF = VER ? '_' + VER : '';
 const MUSIC_VOL = 0.3;                                // 음악 크기 (음성이 없을 때). 음성이 나오면 더 낮아진다
 const TEMPO = 1.10;                                   // 광고 속도로 아주 살짝 빠르게
 // 원본 mp3 → 앞 무음만 바짝 자르고, 끝은 말끝 여운(0.25초)을 남긴 채 부드럽게 줄인 wav (audio/trim/*.wav)
@@ -33,7 +34,7 @@ const FIX_T = {};
 let t = 0;
 const say = (n, at) => { cues.push([+at.toFixed(3), n]); return at + dur(n); };
 
-if (B) { SC.hook = t; t = Math.max(6.0, say('n_hookB', t + .35) + .6); SC.why = t; t = Math.max(t + 4.8, say('n_whyB', t + .3) + .6); }
+if (VER) { SC.hook = t; t = Math.max(6.0, say('n_hook' + VER, t + .35) + .6); SC.why = t; t = Math.max(t + 4.8, say('n_why' + VER, t + .3) + .6); }
 else { SC.hook = t; t = Math.max(3.4, say('n_hook', t + .35) + .5); SC.why = t; t = Math.max(t + 4.6, say('n_why', t + .3) + .6); }
 for (const i of [1, 2, 3, 4, 5]) {
   const id = 'f' + i, tp = t;
