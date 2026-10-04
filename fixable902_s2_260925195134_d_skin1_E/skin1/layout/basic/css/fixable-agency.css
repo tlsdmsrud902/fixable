@@ -574,8 +574,9 @@ html.fx-js #lw-home.fx [data-fx-chat].is-play .fx-bm{opacity:1;transform:none}
 #lw-home.fx .fx-feat2__stage{position:relative;flex:1;min-height:0;cursor:pointer;contain:layout paint}
 /* 07 반응형 : 카드가 넓어도 휴대폰(세로 9:19)이 제목을 덮지 않게 화면 폭을 묶는다 */
 #lw-home.fx .fx-feat2 .fx-resp{width:min(100%,600px)}
-@media (min-width:1280px){#lw-home.fx .fx-feat2__stage .fx-demo{zoom:1.22}}
-@media (min-width:1600px){#lw-home.fx .fx-feat2__stage .fx-demo{zoom:1.35}}
+/* 넓고 높은 화면에서만 시연을 키운다 (높이가 모자라면 카드 아래가 잘리므로) */
+@media (min-width:1280px) and (min-height:1000px){#lw-home.fx .fx-feat2__stage .fx-demo{zoom:1.22}}
+@media (min-width:1600px) and (min-height:1150px){#lw-home.fx .fx-feat2__stage .fx-demo{zoom:1.35}}
 /* 재생 중이 아닌 시연(가려진 카드 · 화면 밖 카드)의 반복 움직임은 멈춘다. 화면 밖 쇼릴 벽 · 휴대폰 줄도 (.is-off) */
 #lw-home.fx .fx-demo:not(.is-on),#lw-home.fx .fx-demo:not(.is-on) *,#lw-home.fx .fx-demo:not(.is-on) *::before,#lw-home.fx .fx-demo:not(.is-on) *::after{animation-play-state:paused!important}
 #lw-home.fx .fx-wall.is-off .fx-wall__track,#lw-home.fx .fx-phones.is-off .fx-phones__track{animation-play-state:paused}
@@ -652,7 +653,7 @@ html.fx-js #lw-home.fx [data-fx-chat].is-play .fx-bm{opacity:1;transform:none}
 /* 6-2. 기능 02 쿠폰 이벤트 : 세일 화면 쿠폰과 같은 움직임 — 세 장이 겹친 채 아래에서 올라와(1) 부채처럼 펼쳐지고(2),
    가운데 카드를 누르면 흔들리다(3) 뒤집혀 쿠폰이 나온다(4). 나머지 두 장은 흐려진다 */
 #lw-home.fx .fx-demo--cp{gap:clamp(22px,3.6vh,44px)}
-#lw-home.fx .fx-cp{--w:clamp(110px,15.5vw,250px);--ov:calc(var(--w) * -.3);display:flex;padding:0 calc(var(--w) * .1);perspective:1800px}
+#lw-home.fx .fx-cp{--w:min(clamp(110px,15.5vw,250px),19svh);--ov:calc(var(--w) * -.3);display:flex;padding:0 calc(var(--w) * .1);perspective:1800px}
 #lw-home.fx .fx-cp__card+.fx-cp__card{margin-left:var(--ov)}
 #lw-home.fx .fx-cp__card{position:relative;flex:none;width:var(--w);aspect-ratio:3/4.1}
 #lw-home.fx .fx-cp__card:nth-child(1){--sx:calc(100% + var(--ov));--rt:-11deg;--oy:18px;--d:.1s}
