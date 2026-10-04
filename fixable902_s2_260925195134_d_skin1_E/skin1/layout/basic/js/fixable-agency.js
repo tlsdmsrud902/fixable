@@ -18,6 +18,22 @@
     var finePointer = window.matchMedia && matchMedia('(hover: hover) and (pointer: fine)').matches;
     var Q = function (s) { return Array.prototype.slice.call(home.querySelectorAll(s)); };
 
+    // ── 메뉴 「작업물 · 가격」(/#fx-works 등)으로 들어오면 처음부터 그 자리에서 보이게 ──
+    // layout.html 이 메인을 숨겨 두고(html.fx-hashjump), 여기서 그 자리로 옮긴 뒤 보여 준다.
+    // 부드러운 스크롤(Lenis)이 늦게 켜지며 맨 위로 되돌리는 경우가 있어 불러오기가 끝난 뒤에도 한 번 더 맞춘다
+    (function () {
+      var id = /^#fx-[\w-]+$/.test(location.hash) ? location.hash.slice(1) : '', t = id && document.getElementById(id);
+      var html = document.documentElement;
+      if (!t) { html.classList.remove('fx-hashjump'); return; }
+      var jump = function () {
+        var hh = parseFloat(getComputedStyle(home).getPropertyValue('--fx-hh')) || 0, y = Math.max(0, t.getBoundingClientRect().top + window.pageYOffset - hh);
+        if (window.stLenis && window.stLenis.scrollTo) window.stLenis.scrollTo(y, { immediate: true, force: true }); else window.scrollTo(0, y);
+      };
+      var show = function () { jump(); requestAnimationFrame(function () { html.classList.remove('fx-hashjump'); }); };
+      jump(); requestAnimationFrame(jump);
+      if (document.readyState === 'complete') setTimeout(show, 120); else window.addEventListener('load', function () { setTimeout(show, 120); });
+    })();
+
     // 헤더(띠배너 + 메뉴) 높이 → 히어로 글자가 헤더 밑에서 시작하게
     function headerH() {
       var h = document.getElementById('header'), b = h ? h.getBoundingClientRect().bottom : 98;
@@ -57,8 +73,8 @@
     }
     setChapter(0);
     function heroProgress() {
-      var r = pin.getBoundingClientRect(), dist = pin.offsetHeight - stage.offsetHeight;
-      return dist > 0 ? clamp(-r.top / dist, 0, 1) : 0;
+      var r = pin.getBoundingClientRect(), dist = pin.offsetHeight - stage.offsetHeight, top = parseFloat(getComputedStyle(stage).top) || 0;   // 휴대폰은 헤더 아래(top = 헤더 높이)에 붙는다
+      return dist > 0 ? clamp((top - r.top) / dist, 0, 1) : 0;
     }
     var scrub = null, videoReady = false, visualTime = 0, lastT = 0, chase = 0;
     if (video && !editing) {
@@ -104,21 +120,8 @@
       else lastT = 0;
     }
     function kick() { if (!chase) chase = requestAnimationFrame(chaseVideo); }
-    // 휴대폰 : 스크롤을 시작하면 문구 · 스킨 카드 묶음을 왼쪽 아래로 내려 영상(얼굴)이 보이게. 맨 위로 오면 제자리
-    var heroMob = window.matchMedia ? matchMedia('(max-width: 767px)') : { matches: false };
-    var heroBox = stage && stage.querySelector('.fx-stage__content'), heroLast = stage && stage.querySelector('.fx-panel'), heroDown = null;
-    function heroDrop() {
-      if (!heroBox || !heroLast) return;
-      var down = heroMob.matches && heroDown;
-      stage.classList.toggle('is-down', !!down);
-      if (!down) { heroBox.style.removeProperty('--drop'); return; }
-      var gap = parseFloat(getComputedStyle(heroBox).paddingBottom) || 0;
-      heroBox.style.setProperty('--drop', Math.max(0, heroBox.clientHeight - gap - (heroLast.offsetTop + heroLast.offsetHeight)) + 'px');
-    }
-    if (heroBox) window.addEventListener('resize', heroDrop);
     function paintHero(p) {
       stage.style.setProperty('--p', p.toFixed(4));
-      var d = p > 0.015; if (d !== heroDown) { heroDown = d; heroDrop(); }
       setChapter(Math.min(tabs.length - 1, Math.floor(p * tabs.length * 0.9999)));
       kick();
     }

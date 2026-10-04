@@ -17,6 +17,9 @@
     <script>try{(function(){function fix(){var p=document.title.split(' - '),o=[];p.forEach(function(s){if(o[o.length-1]!==s)o.push(s)});if(o.length<p.length)document.title=o.join(' - ')}fix();document.addEventListener('DOMContentLoaded',fix)})()}catch(e){}</script>
     <!-- 최상단 띠배너 : 오늘 닫았으면 그리기 전에 숨긴다 (닫기 처리는 본문 맨 아래 스크립트, 숨김 규칙은 fixable-cozy-global.css) -->
     <script>try{if(Number(localStorage.getItem('fixable-topbanner-hide'))>Date.now())document.documentElement.classList.add('fixable-topbanner-off')}catch(e){}</script>
+    <script>/* 메뉴 「작업물 · 가격」(/#fx-works 등)으로 메인에 오면 맨 위가 먼저 보였다 내려가지 않게, 그 자리로 옮길 때까지 메인을 잠깐 숨긴다 (fixable-agency.js 가 풀고, 1.5초 뒤엔 무조건 풀림) */
+    try{if(/^#fx-[\w-]+$/.test(location.hash)&&/^\/(index\.html)?$/.test(location.pathname)){var d=document.documentElement;d.classList.add('fx-hashjump');if('scrollRestoration' in history)history.scrollRestoration='manual';setTimeout(function(){d.classList.remove('fx-hashjump')},1500)}}catch(e){}</script>
+    <style>html.fx-hashjump #lw-home{visibility:hidden}</style>
     <!-- 상품 카드 가격 정리 : ① 최적할인가 줄 숨김 (세일 뽑기 쿠폰까지 넣어 계산돼 반값으로 보였다)
          ② 소비자가가 판매가보다 높지 않으면 취소선 소비자가 숨김 (같은 가격이 두 번 보였다). 카드가 그려지는 즉시 처리해 번쩍이지 않게 한다 -->
     <script>try{(function(){function n(v){return +(String(v||'').replace(/[^\d]/g,''))||0}function tidy(){[].forEach.call(document.querySelectorAll('ul.prdList .description[ec-data-price] .spec>li:not([data-pt])'),function(li){var t=li.querySelector('.title');if(!t||!li.querySelector('.title~span'))return;li.setAttribute('data-pt','');var d=li.closest('.description'),x=t.textContent;if(/최적할인가/.test(x)||(/소비자가/.test(x)&&n(d.getAttribute('ec-data-custom'))<=n(d.getAttribute('ec-data-price'))))li.style.display='none'})}if(window.MutationObserver)new MutationObserver(tidy).observe(document.documentElement,{childList:true,subtree:true});document.addEventListener('DOMContentLoaded',tidy)})()}catch(e){}</script>
