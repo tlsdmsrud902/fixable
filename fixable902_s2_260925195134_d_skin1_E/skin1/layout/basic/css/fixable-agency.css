@@ -585,6 +585,12 @@ html.fx-js #lw-home.fx [data-fx-chat].is-play .fx-bm{opacity:1;transform:none}
   #lw-home.fx .fx-feat2__stage .fx-demo{justify-content:flex-end;padding:clamp(10px,1.6vh,18px) clamp(20px,3vw,40px) clamp(16px,2.4vh,26px)}
   #lw-home.fx .fx-feat2__stage .fx-demo__fit{display:grid;place-items:center;flex:1;min-height:0;width:100%;gap:inherit}
   #lw-home.fx .fx-feat2__stage .fx-demo__in{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:inherit;flex:none;transform-origin:50% 50%}
+  /* 02 쿠폰 : 위 작은 글 · 카드 · 축하 문구 사이 간격을 좁혀 그만큼 카드가 크게 보이게 */
+  #lw-home.fx .fx-feat2__stage .fx-demo--cp{gap:10px}
+  #lw-home.fx .fx-feat2__stage .fx-cp{--w:250px}
+  /* 08 쇼핑 도우미 : 대화 창 옆에 이벤트 안내(D-day · 직접 써 보기)를 나란히 (원래 가로 배치) */
+  #lw-home.fx .fx-feat2__stage .fx-demo--bot{flex-direction:column}
+  #lw-home.fx .fx-feat2__stage .fx-demo--bot .fx-demo__in{flex-direction:row;align-items:center}
 }
 /* 재생 중이 아닌 시연(가려진 카드 · 화면 밖 카드)의 반복 움직임은 멈춘다. 화면 밖 쇼릴 벽 · 휴대폰 줄도 (.is-off) */
 #lw-home.fx .fx-demo:not(.is-on),#lw-home.fx .fx-demo:not(.is-on) *,#lw-home.fx .fx-demo:not(.is-on) *::before,#lw-home.fx .fx-demo:not(.is-on) *::after{animation-play-state:paused!important}
@@ -662,7 +668,7 @@ html.fx-js #lw-home.fx [data-fx-chat].is-play .fx-bm{opacity:1;transform:none}
 /* 6-2. 기능 02 쿠폰 이벤트 : 세일 화면 쿠폰과 같은 움직임 — 세 장이 겹친 채 아래에서 올라와(1) 부채처럼 펼쳐지고(2),
    가운데 카드를 누르면 흔들리다(3) 뒤집혀 쿠폰이 나온다(4). 나머지 두 장은 흐려진다 */
 #lw-home.fx .fx-demo--cp{gap:clamp(22px,3.6vh,44px)}
-#lw-home.fx .fx-cp{--w:min(clamp(110px,15.5vw,250px),19svh);--ov:calc(var(--w) * -.3);display:flex;padding:0 calc(var(--w) * .1);perspective:1800px}
+#lw-home.fx .fx-cp{--w:clamp(110px,15.5vw,250px);--ov:calc(var(--w) * -.3);display:flex;padding:0 calc(var(--w) * .1);perspective:1800px}
 #lw-home.fx .fx-cp__card+.fx-cp__card{margin-left:var(--ov)}
 #lw-home.fx .fx-cp__card{position:relative;flex:none;width:var(--w);aspect-ratio:3/4.1}
 #lw-home.fx .fx-cp__card:nth-child(1){--sx:calc(100% + var(--ov));--rt:-11deg;--oy:18px;--d:.1s}
