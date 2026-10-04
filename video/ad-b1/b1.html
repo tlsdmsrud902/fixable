@@ -290,6 +290,34 @@ body{font-family:Pret,sans-serif;color:var(--ink);-webkit-font-smoothing:antiali
 #end .chip i{width:10px;height:10px;border-radius:50%;background:#111;display:block}
 #end .chip.ev i{background:var(--red)}
 #end .foot{top:968px;font:500 20px Jost,Pret;letter-spacing:.06em;color:#9a9a9a}
+
+/* ───────── 세로 (1080×1920) ───────── */
+html:has(body.v),body.v{width:1080px;height:1920px}
+.v #stage{width:1080px;height:1920px}
+.v #hkLab{left:86px;top:250px} .v #hkH{left:80px;top:320px;font-size:118px}
+.v #hkPh{left:330px;top:900px} .v #timer{left:150px;top:930px} .v #leave{left:390px;top:1250px}
+.v #why .lab{left:86px;top:220px} .v #why .h{left:80px;top:282px;font-size:84px}
+.v #why .rows{left:80px;right:80px;top:600px}
+.v #why .row{grid-template-columns:80px 1fr;height:auto;padding:30px 0}
+.v #why .row .q{font-size:40px} .v #why .row .r{grid-column:2;text-align:left;margin-top:10px;font-size:24px}
+.v .fix .tp,.v .fix .ta{left:80px;top:220px}
+.v .fix .tp .h{font-size:76px} .v .fix .ta .h{font-size:68px}
+.v .fix .tp .sub,.v .fix .ta .sub{font-size:28px;max-width:920px}
+.v .fix .ta .pills{margin-top:30px}
+.v #recap .lab{left:86px;top:220px} .v #recap .h{left:80px;top:282px;font-size:76px}
+.v #recap .cards{left:80px;top:690px;flex-direction:column;gap:18px}
+.v #recap .cd{width:920px;height:160px}
+.v #recap .cd .no{position:absolute;left:28px;top:22px}
+.v #recap .cd .gl{left:80px;right:auto;top:50%;margin-top:-34px;text-align:left;width:260px;font-size:64px}
+.v #recap .cd .gl.s{font-size:58px}
+.v #recap .cd .gl i{width:72px;height:72px;font-size:50px;margin-top:-2px}
+.v #recap .cd h4{left:380px;top:38px;bottom:auto;font-size:36px}
+.v #recap .cd p{left:380px;top:92px;bottom:auto;font-size:24px}
+.v #recap .foot{left:86px;top:1640px}
+.v #cta .lab{left:86px;top:230px} .v #cta .h{left:80px;top:292px;font-size:128px} .v #cta .s2{left:86px;top:640px;font-size:50px}
+.v #post{left:90px;top:900px;width:900px}
+.v #end .logo{top:560px} .v #end .tl{top:850px;font-size:44px} .v #end .ctaR{top:960px}
+.v #end .chips2{top:1110px;flex-direction:column} .v #end .foot{top:1700px}
 </style>
 </head>
 <body>
@@ -350,6 +378,7 @@ body{font-family:Pret,sans-serif;color:var(--ink);-webkit-font-smoothing:antiali
   </section>
 </div>
 
+<script src="timeline.js"></script>
 <script>
 /* ───────── 도구 ───────── */
 const $ = (s, r = document) => r.querySelector(s);
@@ -379,11 +408,19 @@ const lines = (sel, root) => $$(sel + ' .ln>span', root);
 const center = el => { const r = el.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; };
 
 const IMG = '../../fixable902_s2_260925195134_d_skin1_E/skin1/SkinImg/fixable/';
-const DUR = 43.6;
+/* ───────── 타임라인 (timeline.js : 나레이션 길이로 만든 시간표) ───────── */
+const DUR = TL.DUR, T0 = TL.SC;
+const SC = Object.entries(T0);
+const FIX_T = TL.FIX_T;   // [손님 속마음 시작, 답 시작]
 
-/* ───────── 타임라인 ───────── */
-const SC = [['hook', 0], ['why', 3.4], ['f1', 8.4], ['f2', 13.8], ['f3', 19.2], ['f4', 24.6], ['f5', 30.0], ['recap', 35.4], ['cta', 38.6], ['end', 41.0]];
-const FIX_T = { f1: [8.4, 10.6], f2: [13.8, 16.0], f3: [19.2, 21.4], f4: [24.6, 26.8], f5: [30.0, 32.2] };   // [손님 마음 시작, 답 시작]
+/* ───────── 가로 / 세로 ───────── */
+const VERT = new URLSearchParams(location.search).get('o') === 'v';
+const W = VERT ? 1080 : 1920, H = VERT ? 1920 : 1080;
+if (VERT) document.body.classList.add('v');
+// 고민 → 답 장면의 자리 : Before 휴대폰(pB) · After 휴대폰(pA) · Before 가 옮겨 갈 곳(mvB) · 표시(tX ✕, tO ✓)
+const L = VERT
+  ? { pB: [330, 820], pA: [600, 820], mvB: [-268, 70, .74], aIn: [0, 900], tX: [348, 1716], tO: [572, 1716] }
+  : { pB: [1180, 118], pA: [1372, 118], mvB: [-306, 40, .74], aIn: [620, 0], tX: [1650, 434], tO: [1180, 902] };
 const nextStart = id => SC[SC.findIndex(s => s[0] === id) + 1][1];
 
 /* ───────── 쇼핑몰 화면 ───────── */
@@ -484,12 +521,13 @@ for (const id in FIX) {
 }
 $('#rows').innerHTML = Object.values(FIX).map((F, i) => `<div class="row"><span class="k">0${i + 1}</span><span class="q">${F.p.join(' ').replace(/,/, ',')}</span><span class="r">${F.why}</span></div>`).join('');
 const RC = [['+', '룩북 바로 구매', '보는 순간 구매'], ['15%', '쿠폰 이벤트', '다시 오게'], ['02:14', '마감 카운트다운', '지금 사게'], ['21:00', '타임세일', '기다려서 오게'], ['24h', '쇼핑 도우미 챗봇', '밤에도 답하게']];
+if (VERT) $('#recap .h').innerHTML = ['이 다섯 가지,', 'fixable 스킨엔', '기본으로 들어 있어요.'].map(l => `<span class="ln"><span>${l}</span></span>`).join('');
 $('#rcards').innerHTML = RC.map(([g, h, p], i) => `<div class="cd"><div class="no">0${i + 1}</div><div class="gl${g.length > 3 ? ' s' : ''}">${g === '+' ? '<i>+</i>' : g}</div><h4>${h}</h4><p>${p}</p></div>`).join('');
 
 /* ───────── 프레임 그리기 ───────── */
 function isDark(t) {
   for (const k in FIX_T) if (t >= FIX_T[k][1] + .25 && t < nextStart(k) + .4) return 1;
-  return t >= 38.6 + .4 && t < 41.0 + .4 ? 1 : 0;
+  return t >= T0.cta + .4 && t < T0.end + .4 ? 1 : 0;
 }
 function render(t) {
   // 장면 쌓기 : 다음 장면이 아래에서 올라와 덮고, 앞 장면은 살짝 작아지며 어두워짐 (사이트 카드 쌓기)
@@ -501,7 +539,7 @@ function render(t) {
     const inNext = next ? prog(t, next[1], .8) : 0;
     const enter = i === 0 ? 1 : E.outExpo(prog(t, a, .8));
     el.style.zIndex = i + 1;
-    el.style.transform = `translateY(${(1 - enter) * 1080}px) scale(${1 - E.out(inNext) * .06})`;
+    el.style.transform = `translateY(${(1 - enter) * H}px) scale(${1 - E.out(inNext) * .06})`;
     el.style.borderRadius = (1 - enter) * 48 + 'px';
     el.style.filter = inNext > 0 ? `brightness(${1 - inNext * .35})` : '';
   });
@@ -510,12 +548,12 @@ function render(t) {
   $('#lgW').style.opacity = dk; $('#lgB').style.opacity = 1 - dk;
   $('#prog').style.background = dk ? '#fff' : '#111';
 
-  if (t < 4.3) hook(t);
-  if (t >= 3.3 && t < 9.3) why(t);
+  if (t < T0.why + .9) hook(t);
+  if (t >= T0.why - .1 && t < T0.f1 + .9) why(t);
   for (const k in FIX_T) if (t >= FIX_T[k][0] - .1 && t < nextStart(k) + .9) fix(k, t);
-  if (t >= 35.3 && t < 39.5) recap(t);
-  if (t >= 38.5 && t < 41.9) cta(t);
-  if (t >= 40.9) end(t);
+  if (t >= T0.recap - .1 && t < T0.cta + .9) recap(t);
+  if (t >= T0.cta - .1 && t < T0.end + .9) cta(t);
+  if (t >= T0.end - .1) end(t);
 }
 
 function hook(t) {
@@ -533,13 +571,16 @@ function hook(t) {
 }
 
 function why(t) {
-  lines('#why .h').forEach((el, i) => lineIn(el, t, 3.65 + i * .25));
-  $$('#why .row').forEach((r, i) => fadeUp(r, t, 4.35 + i * .55, .6, 24));
+  const a = T0.why;
+  lines('#why .h').forEach((el, i) => lineIn(el, t, a + .25 + i * .25));
+  $$('#why .row').forEach((r, i) => fadeUp(r, t, a + .9 + i * .5, .6, 24));
 }
 
 function fix(id, t) {
   const S = $('#' + id), [tp, ta] = FIX_T[id], te = nextStart(id);
   const pB = $('.pB', S), pA = $('.pA', S);
+  const [bx, by] = L.pB;
+  pB.style.left = bx + 'px'; pB.style.top = by + 'px'; pA.style.left = L.pA[0] + 'px'; pA.style.top = L.pA[1] + 'px';
   // ── 손님 속마음 (흰 바탕)
   const pFade = 1 - prog(t, ta - .05, .3);
   fadeUp($('.tp .lab', S), t, tp + .25, .5, 14); $('.tp .lab', S).style.opacity *= pFade;
@@ -548,23 +589,23 @@ function fix(id, t) {
   // ── 답 (어두운 카드가 휴대폰 자리에서 화면 가득 펼쳐짐)
   const dk = $('.dkc', S), k = E.inOut(prog(t, ta, .75));
   dk.style.display = t >= ta ? 'block' : 'none';
-  dk.style.clipPath = `inset(${lerp(118, 24, k)}px ${lerp(320, 24, k)}px ${lerp(102, 24, k)}px ${lerp(1180, 24, k)}px round ${lerp(66, 44, k)}px)`;
+  dk.style.clipPath = `inset(${lerp(by, 24, k)}px ${lerp(W - bx - 420, 24, k)}px ${lerp(H - by - 860, 24, k)}px ${lerp(bx, 24, k)}px round ${lerp(66, 44, k)}px)`;
   fadeUp($('.ta .lab', S), t, ta + .45, .5, 14);
   lines('.ta .h', S).forEach((el, j) => lineIn(el, t, ta + .5 + j * .16));
   fadeUp($('.ta .sub', S), t, ta + .85, .6, 16);
   $$('.ta .pill', S).forEach((p, j) => fadeUp(p, t, ta + 1.0 + j * .08, .5, 12));
   const pin = E.outExpo(prog(t, tp + .1, .9)), mv = E.inOut(prog(t, ta + .1, .8));
-  tf(pB, { y: (1 - pin) * 260 + mv * 40, x: mv * -306, s: lerp(1, .74, mv), o: lerp(1, .5, mv), gray: mv * .7 });
+  tf(pB, { y: (1 - pin) * 260 + mv * L.mvB[1], x: mv * L.mvB[0], s: lerp(1, L.mvB[2], mv), o: lerp(1, .5, mv), gray: mv * .7 });
   $('.tagTop', pB).style.opacity = cl(prog(t, tp + .6, .3));
   const ain = E.outExpo(prog(t, ta + .2, .9));
-  tf(pA, { x: (1 - ain) * 620, o: cl(ain * 2) });
+  tf(pA, { x: (1 - ain) * L.aIn[0], y: (1 - ain) * L.aIn[1], o: cl(ain * 2) });
   $('.tagTop', pA).style.opacity = cl(prog(t, ta + .7, .3));
   // ── 표시 · 시연
   const tagX = $('.tagX', S), tagO = $('.tagO', S), qb = $('.qb', S), touch = $('.touch', S), rip = $('.rip', S);
   qb.style.opacity = 0; touch.style.opacity = 0; rip.style.opacity = 0;
   const xOut = 1 - prog(t, ta, .25);
-  const X = t0 => { tagX.style.left = '1650px'; tagX.style.top = '434px'; const p = prog(t, t0, .5); tf(tagX, { x: (1 - E.back(p)) * -24, o: cl(p * 3) * xOut }); };
-  const O = t0 => { tagO.style.left = '1180px'; tagO.style.top = '902px'; const p = prog(t, t0, .55); tf(tagO, { y: (1 - E.back(p)) * 24, s: lerp(.85, 1, E.back(p)), o: cl(p * 3) }); };
+  const X = t0 => { tagX.style.left = L.tX[0] + 'px'; tagX.style.top = L.tX[1] + 'px'; const p = prog(t, t0, .5); tf(tagX, { x: (1 - E.back(p)) * -24, o: cl(p * 3) * xOut }); };
+  const O = t0 => { tagO.style.left = L.tO[0] + 'px'; tagO.style.top = L.tO[1] + 'px'; const p = prog(t, t0, .55); tf(tagO, { y: (1 - E.back(p)) * 24, s: lerp(.85, 1, E.back(p)), o: cl(p * 3) }); };
   const Q = (txt, x, y, t0) => { const q = prog(t, t0, .35); qb.textContent = txt; qb.style.left = x + 'px'; qb.style.top = y + 'px'; tf(qb, { s: lerp(.5, 1, E.back(q)), o: cl(q * 3) * xOut }); };
   // 손가락 : from 에서 to 로 움직여 tTap 에 누름
   const tap = (to, tIn, tTap, tOut, from) => {
@@ -579,7 +620,7 @@ function fix(id, t) {
 
   if (id === 'f1') {
     // Before : 코트를 눌러도 아무 일 없음
-    if (t < ta) { const c = [1180 + 12 + 396 * .47, 118 + 12 + 104 + 53 + 520 * .44]; tap(c, tp + .9, tp + 1.4, ta - .1); Q('…?', c[0] + 34, c[1] - 104, tp + 1.6); }
+    if (t < ta) { const c = [bx + 12 + 396 * .47, by + 12 + 104 + 53 + 520 * .44]; tap(c, tp + .9, tp + 1.4, ta - .1); Q('…?', c[0] + 34, c[1] - 104, tp + 1.6); }
     X(tp + 1.7);
     // After : + → 상품 창 → 바로 구매 → 주문서로
     hotPulse();
@@ -591,7 +632,7 @@ function fix(id, t) {
     O(ta + 2.6);
   }
   if (id === 'f2') {
-    if (t < ta) Q('그래서 뭘 준다는 거지?', 1300, 270, tp + 1.2);
+    if (t < ta) Q('그래서 뭘 준다는 거지?', bx + (VERT ? 60 : 120), by + 152, tp + 1.2);
     X(tp + 1.5);
     // After : 가운데 카드 누르면 뒤집혀 15% 쿠폰 → 쿠폰함 저장 D-7
     $$('.pA .cp', S).forEach((c, j) => fadeUp(c, t, ta + .8 + j * .08, .5, 30));
@@ -608,7 +649,7 @@ function fix(id, t) {
     O(ta + 2.5);
   }
   if (id === 'f3') {
-    if (t < ta) Q('언제까지지?', 1452, 278, tp + 1.2);
+    if (t < ta) Q('언제까지지?', bx + 272, by + 160, tp + 1.2);
     X(tp + 1.5);
     const t0 = ta + .9, base = 2 * 3600 + 14 * 60 + 59, el = Math.max(0, Math.floor(t - t0));
     const sec = base - el, fr = (t - t0) - el;
@@ -622,7 +663,7 @@ function fix(id, t) {
     O(ta + 1.6);
   }
   if (id === 'f4') {
-    if (t < ta) Q('어제랑 똑같네.', 1452, 278, tp + 1.2);
+    if (t < ta) Q('어제랑 똑같네.', bx + 272, by + 160, tp + 1.2);
     X(tp + 1.5);
     // After : 20:59 오픈까지 3초 → 21:00 타임세일 열림 (가격 40% · 남은 수량)
     const tOpen = ta + 1.7, scr = $('.pA .scr', S), open = t >= tOpen;
@@ -638,7 +679,7 @@ function fix(id, t) {
     O(ta + 2.3);
   }
   if (id === 'f5') {
-    if (t < ta) Q('내일까지 기다려야 돼?', 1360, 278, tp + 1.2);
+    if (t < ta) Q('내일까지 기다려야 돼?', bx + (VERT ? 150 : 180), by + 160, tp + 1.2);
     X(tp + 1.5);
     // After : 질문 버튼 누름 → 내 질문 → 입력 중 → 바로 답
     const tAsk = ta + 1.5, q1 = $('.pA .q1', S);
@@ -654,7 +695,7 @@ function fix(id, t) {
 }
 
 function recap(t) {
-  const a = 35.4;
+  const a = T0.recap;
   fadeUp($('#recap .lab'), t, a + .3, .5, 14);
   lines('#recap .h').forEach((el, i) => lineIn(el, t, a + .35 + i * .2));
   $$('#recap .cd').forEach((c, i) => { const x = prog(t, a + .75 + i * .1, .8); tf(c, { y: (1 - E.outExpo(x)) * 160, o: cl(x * 3) }); });
@@ -662,7 +703,7 @@ function recap(t) {
 }
 
 function cta(t) {
-  const a = 38.6;
+  const a = T0.cta;
   fadeUp($('#cta .lab'), t, a + .3, .5, 14);
   lines('#cta .h').forEach((el, i) => lineIn(el, t, a + .35 + i * .22));
   lines('#cta .s2').forEach((el, i) => lineIn(el, t, a + .95 + i * .2));
@@ -674,7 +715,7 @@ function cta(t) {
 }
 
 function end(t) {
-  const a = 41.0;
+  const a = T0.end;
   const lp = prog(t, a + .3, .9); tf($('#e1'), { s: lerp(.9, 1, E.outExpo(lp)), o: cl(lp * 2), blur: (1 - E.outExpo(lp)) * 10 });
   fadeUp($('#e2'), t, a + .55, .6, 20);
   fadeUp($('#e3'), t, a + .8, .6, 20); fadeUp($('#e4'), t, a + .9, .6, 20);

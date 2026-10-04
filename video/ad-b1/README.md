@@ -1,4 +1,4 @@
-# 광고 b1 — 모션 그래픽 v3 (1920×1080 · 60fps · 43.6초)
+# 광고 b1 — 모션 그래픽 v3 (가로 1920×1080 · 세로 1080×1920 · 60fps · 약 65초, 음성 · 음악)
 
 손님이 그냥 나가는 **다섯 가지 이유**를 손님 입장(속마음)에서 하나씩 보여 주고, 같은 쇼핑몰 화면으로 **Before → After(fixable 스킨)** 를 나란히 비교한다.
 
@@ -8,15 +8,21 @@
 
 | 파일 | 내용 |
 |---|---|
-| `b1.html` | 장면 · 움직임 전부. 브라우저로 열고 `?t=13.5` → 그 초 화면 |
-| `render.js` | `node video/ad-b1/render.js` → `out/b1.mp4` · `… A --stills 1.5,9.9` (정지 화면) |
+| `b1.html` | 장면 · 움직임 전부. 브라우저로 열고 `?t=13.5` → 그 초 화면, `?o=v` → 세로 |
+| `timeline.mjs` | 음성 길이로 장면 시간표(`timeline.js`)를 만들고, `--mix` 면 음성 + 음악을 섞어 `out/mix.m4a` |
+| `render.js` | `node video/ad-b1/render.js` → `out/b1.mp4` (가로) · `… v` → `out/b1_v.mp4` (세로) · `… v --stills 1.5,9.9` |
+| `audio/` | ElevenLabs 음성 20줄(`c1~c5` 손님 속마음 · `n*` 나레이션) + `music.mp3`. `audio/trim/` 은 앞뒤 무음을 자르고 1.12배 빠르게 한 사본 |
 | `fonts/` | Pretendard(subset) · Jost · Instrument Serif |
+
+순서 : `node video/ad-b1/timeline.mjs --mix` → `node video/ad-b1/render.js` → `node video/ad-b1/render.js v`
+
+음성 : 손님 속마음 = ElevenLabs 「Han - Conversational」(젊은 여성, 편한 말투) · 나레이션 = 「김프」(차분한 남성). 음악 = ElevenLabs Music (미니멀 딥하우스 112BPM, 음성이 나올 때 자동으로 낮춤). ElevenLabs 작업 화면 : https://elevenlabs.io/app/flows/BBVsNyR2s7HFKAEC12JK
 
 필요 : Node + `playwright`(chromium) + ffmpeg. 전역 playwright 는 `NODE_PATH=$(npm root -g)`.
 
-## 스크립트 v3
+## 스크립트 v3 (장면 시간은 `timeline.js` — 음성 길이에 맞춰 늘어남)
 
-| 초 | 장면 | 화면 | 나레이션 (안) |
+| 초(처음 안) | 장면 | 화면 | 음성 (손님 = 「」, 나레이션 = 그 밖) |
 |---|---|---|---|
 | 0.0–3.4 | 훅 | 이 쇼핑몰, / 손님이 3초 만에 / 나가요. · 3초 타이머 → 화면이 밀려 나감 「손님 이탈」 | 이 쇼핑몰, 손님이 3초 만에 나가요. |
 | 3.4–8.4 | 이유 | 손님이 그냥 나가는 / 다섯 가지 이유. · 속마음 5줄 (오른쪽 회색 : 사진만 걸린 룩북 · 형식뿐인 이벤트 · 마감 없는 세일 · 기다릴 게 없는 쇼핑몰 · 밤엔 답 없는 문의) | 손님이 그냥 나가는 데는 다섯 가지 이유가 있어요. |
