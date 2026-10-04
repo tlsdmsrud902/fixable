@@ -294,6 +294,8 @@
         var queue = function () { if (!praf2) praf2 = requestAnimationFrame(pick); };
         window.addEventListener('scroll', queue, { passive: true });
         window.addEventListener('resize', queue);
+        // 부드러운 스크롤(Lenis) · 바로가기 이동처럼 scroll 이벤트가 안 오는 경우에도 카드가 화면에 들고 날 때 다시 고른다
+        if ('IntersectionObserver' in window) { var fio = new IntersectionObserver(queue, { threshold: [0, 0.5, 1] }); feats.forEach(function (f) { fio.observe(f); }); }
         stages.forEach(function (st, i) { st.addEventListener('click', function () { cur = want = i; }); });
         queue();
         // 시연 사진은 기능 섹션에 가까워지면 미리 받아 둔다 (지연 로딩 때문에 카드가 비어 보이지 않게)
