@@ -459,7 +459,7 @@ const SCR = {
     <div class="cards">${[0, 1, 2].map(i => `<div class="cp" data-i="${i}"><div class="bk"><i>my shop</i><b>?</b></div><div class="fr"><b>${['10%', '15%', '5%'][i]}</b><span>COUPON</span></div></div>`).join('')}</div>
     <div class="res"><b>15% 쿠폰 당첨!</b><p>쿠폰함에 저장했어요.</p><div class="dd"><span class="r">D-7 · 7일 안에 사용</span><span>전 상품</span></div><div class="go">쿠폰 쓰러 가기</div></div></div></div>`,
   // 3 마감
-  before3: () => `${shopTop()}<div class="body"><div class="sale"><small>SEASON OFF</small><div class="big">SALE</div><div class="pct">30%</div><p>전 품목 시즌 오프 세일</p><div class="b">보러 가기</div></div></div>`,
+  before3: () => `${shopTop()}<div class="body"><div class="sale"><small>SEASON OFF</small><div class="big">SALE</div><div class="pct">30%</div><p>전 품목 시즌 오프 SALE</p><div class="b">보러 가기</div></div></div>`,
   after3: () => `${shopTop(1)}<div class="body"><div class="sale2"><small>AUTUMN SALE · 마감까지</small><h5>SALE 30%</h5>
     <div class="clock"><div class="u"><div class="d" data-k="h"><span>02</span></div><em>HOURS</em></div><span class="c">:</span><div class="u"><div class="d" data-k="m"><span>14</span></div><em>MIN</em></div><span class="c">:</span><div class="u"><div class="d" data-k="s"><span>59</span></div><em>SEC</em></div></div>
     <div class="cpn">오늘 자정 마감<span>지금 보러 가기 →</span></div>
@@ -490,11 +490,11 @@ const FIX = {
   f2: { p: ['“이벤트?', '늘 하는 거겠지.”'], ps: '받을 게 없는 형식뿐인 이벤트는 손님을 다시 부르지 못해요.',
         a: ['뽑은 쿠폰이', '다시 오게 만들어요.'], as: '카드를 뒤집으면 쿠폰 당첨 — 7일 안에 쓰러 다시 와요.', tags: ['재방문', '쿠폰 이벤트'],
         x: '받을 혜택 없음', o: '쿠폰 쓰러 다시 와요', why: '형식뿐인 이벤트' },
-  f3: { p: ['“세일이네…', '다음에 사도 되겠지.”'], ps: '마감 없는 세일은 늘 파는 상품과 같아요. 손님이 더 잘 알아요.',
-        a: ['끝나는 시간이 보이면', '지금 삽니다.'], as: '세일 마감까지 남은 시간을 큰 시계로 보여 줘요.', tags: ['매출 장치', '마감 카운트다운'],
-        x: '마감 표시 없음', o: '남은 시간이 보여요', why: '마감 없는 세일' },
+  f3: { p: ['“SALE이네…', '다음에 사도 되겠지.”'], ps: '마감 없는 SALE은 늘 파는 상품과 같아요. 손님이 더 잘 알아요.',
+        a: ['끝나는 시간이 보이면', '지금 삽니다.'], as: 'SALE 마감까지 남은 시간을 큰 시계로 보여 줘요.', tags: ['매출 장치', '마감 카운트다운'],
+        x: '마감 표시 없음', o: '남은 시간이 보여요', why: '마감 없는 SALE' },
   f4: { p: ['“오늘 꼭', '들어올 이유가 없네.”'], ps: '언제 와도 같은 가격이면, 기다렸다 다시 올 이유도 없어요.',
-        a: ['매일 밤 9시,', '기다렸다 들어와요.'], as: '마트 타임세일처럼 — 정해진 시간이 열리면 손님이 다시 와서 삽니다.', tags: ['재방문 · 재구매', '타임세일'],
+        a: ['매일 밤 9시,', '기다렸다 들어와요.'], as: '마트 TIME SALE처럼 — 정해진 시간이 열리면 손님이 다시 와서 삽니다.', tags: ['재방문 · 재구매', 'TIME SALE'],
         x: '기다릴 이유 없음', o: '그 시간에 다시 와요', why: '기다릴 게 없는 쇼핑몰' },
   f5: { p: ['“새벽에 물어봤는데,', '답이 없네.”'], ps: '상담 시간이 끝나면, 궁금한 손님은 그대로 나가요.',
         a: ['새벽 2시에도', '바로 답해요.'], as: '배송 · 교환 · 사이즈처럼 자주 묻는 질문은 쇼핑 도우미가 24시간 먼저 답해요.', tags: ['고객 응대', '쇼핑 도우미 챗봇', '10월 31일까지 무료'],
@@ -520,7 +520,7 @@ for (const id in FIX) {
     <div class="rip"></div><div class="touch"></div>`;
 }
 $('#rows').innerHTML = Object.values(FIX).map((F, i) => `<div class="row"><span class="k">0${i + 1}</span><span class="q">${F.p.join(' ').replace(/,/, ',')}</span><span class="r">${F.why}</span></div>`).join('');
-const RC = [['+', '룩북 바로 구매', '보는 순간 구매'], ['15%', '쿠폰 이벤트', '다시 오게'], ['02:14', '마감 카운트다운', '지금 사게'], ['21:00', '타임세일', '기다려서 오게'], ['24h', '쇼핑 도우미 챗봇', '밤에도 답하게']];
+const RC = [['+', '룩북 바로 구매', '보는 순간 구매'], ['15%', '쿠폰 이벤트', '다시 오게'], ['02:14', '마감 카운트다운', '지금 사게'], ['21:00', 'TIME SALE', '기다려서 오게'], ['24h', '쇼핑 도우미 챗봇', '밤에도 답하게']];
 if (VERT) $('#recap .h').innerHTML = ['이 다섯 가지,', 'fixable 스킨엔', '기본으로 들어 있어요.'].map(l => `<span class="ln"><span>${l}</span></span>`).join('');
 $('#rcards').innerHTML = RC.map(([g, h, p], i) => `<div class="cd"><div class="no">0${i + 1}</div><div class="gl${g.length > 3 ? ' s' : ''}">${g === '+' ? '<i>+</i>' : g}</div><h4>${h}</h4><p>${p}</p></div>`).join('');
 
@@ -670,7 +670,7 @@ function fix(id, t) {
     scr.classList.toggle('open', open);
     $('.pA .clk', S).textContent = open ? '21:00' : '20:59';
     const left = Math.max(0, Math.ceil(tOpen - t - 1e-6));
-    $('.pA .tsT', S).textContent = open ? '지금 타임세일 중 · 40%' : '오늘 밤 9시 오픈';
+    $('.pA .tsT', S).textContent = open ? '지금 진행 중 · 40%' : '오늘 밤 9시 오픈';
     $('.pA .tsL', S).textContent = open ? '남은 시간' : '오픈까지';
     const rem = open ? 2 * 3600 - 1 - Math.floor(t - tOpen) : left;
     $('.pA .tsC', S).textContent = [Math.floor(rem / 3600), Math.floor(rem % 3600 / 60), rem % 60].map(v => String(v).padStart(2, '0')).join(':');

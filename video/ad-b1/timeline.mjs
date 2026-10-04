@@ -52,15 +52,14 @@ if (process.argv.includes('--mix')) {
   });
   const m = cues.length;
   const MUS = path.join(DIR, 'audio', 'music.mp3');
-  inputs.push('-i', MUS);
-  // 음악이 영상보다 짧으면 살짝 느리게 늘려 끝(마무리 음)을 영상 끝에 맞춘다
-  const md = +execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', MUS]).toString();
-  const stretch = md < DUR ? `atempo=${(md / DUR).toFixed(4)},` : '';
+  inputs.push('-i', MUS, '-i', MUS);
+  // 음악이 영상보다 짧으면 한 번 더 이어 붙인다 (3초 겹쳐 자연스럽게)
   const g = [
     ...parts,
     `${cues.map((_, i) => `[v${i}]`).join('')}amix=inputs=${m}:normalize=0,apad[vo]`,
     `[vo]asplit=2[vo1][vo2]`,
-    `[${m}:a]${stretch}aresample=48000,volume=0.5,atrim=0:${DUR},afade=t=in:d=0.4,afade=t=out:st=${DUR - 1.5}:d=1.5[mu]`,
+    `[${m}:a][${m + 1}:a]acrossfade=d=3[mm]`,
+    `[mm]aresample=48000,volume=0.5,atrim=0:${DUR},afade=t=in:d=0.4,afade=t=out:st=${DUR - 1.5}:d=1.5[mu]`,
     `[mu][vo1]sidechaincompress=threshold=0.04:ratio=6:attack=15:release=350[duck]`,
     `[duck][vo2]amix=inputs=2:normalize=0,atrim=0:${DUR},loudnorm=I=-14:TP=-1.5:LRA=9,aresample=48000[out]`,
   ].join(';');
