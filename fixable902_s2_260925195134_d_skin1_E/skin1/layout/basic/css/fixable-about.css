@@ -1,0 +1,103 @@
+/* 회사소개 (/fixable/about.html) — 메인(fixable-agency.css)과 같은 글꼴 · 색 */
+.fx-ab{--ab-ink:#111;--ab-sub:#6b6b70;--ab-line:#e6e6e8;--ab-paper:#f5f5f3;--ab-gap:clamp(20px,4vw,48px);color:var(--ab-ink);font-family:'Pretendard Variable',Pretendard,sans-serif;word-break:keep-all}
+.fx-ab *{box-sizing:border-box}
+.fx-ab img{display:block;width:100%;height:100%;object-fit:cover}
+.fx-ab__wrap{width:min(1280px,100% - 2*var(--ab-gap));margin:0 auto}
+.fx-ab__sec{padding:clamp(72px,10vw,140px) 0}
+.fx-ab__sec+.fx-ab__sec:not(.fx-ab__dark){border-top:1px solid var(--ab-line)}
+.fx-ab h1,.fx-ab h2,.fx-ab h3{margin:0;color:inherit!important;font-weight:700;letter-spacing:-.04em}
+.fx-ab h2{font-size:clamp(28px,3.6vw,52px);line-height:1.18}
+.fx-ab p{margin:0}
+.fx-ab__label{display:flex;align-items:center;gap:10px;font:500 13px/1 Jost,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--ab-sub)}
+.fx-ab__label span{display:inline-grid;place-items:center;min-width:34px;height:24px;padding:0 8px;border:1px solid currentColor;border-radius:999px;letter-spacing:0}
+.fx-ab__head{display:grid;gap:22px;margin-bottom:clamp(36px,5vw,64px)}
+
+/* 첫 화면 */
+.fx-ab__hero{padding:clamp(56px,8vw,110px) 0 0}
+.fx-ab__eyebrow{font:500 13px/1 Jost,sans-serif;letter-spacing:.2em;color:var(--ab-sub)}
+.fx-ab__hero h1{margin:22px 0 26px;font:500 clamp(54px,10vw,148px)/.95 Jost,sans-serif;letter-spacing:-.045em}
+.fx-ab__lead{max-width:640px;font-size:clamp(16px,1.4vw,20px);line-height:1.75;color:#333}
+.fx-ab__cover{margin:clamp(40px,6vw,80px) auto 0;width:min(1440px,100% - 2*var(--ab-gap));aspect-ratio:21/9;border-radius:clamp(18px,2vw,28px);overflow:hidden;background:var(--ab-paper)}
+.fx-ab__cover img{object-position:center 40%}
+
+/* 이야기 · 회사 정보 : 왼쪽 라벨 + 오른쪽 본문 */
+.fx-ab__split{display:grid;grid-template-columns:minmax(160px,1fr) 2.4fr;gap:var(--ab-gap)}
+.fx-ab__story h2{margin-bottom:28px}
+.fx-ab__story p+p{margin-top:18px}
+.fx-ab__story p{font-size:clamp(15px,1.15vw,18px);line-height:1.9;color:#333}
+.fx-ab__story b{color:var(--ab-ink)}
+
+/* 숫자 */
+.fx-ab__nums{padding:clamp(40px,5vw,64px) 0;background:var(--ab-paper)}
+.fx-ab__nums ul{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:0 auto;padding:0;list-style:none}
+.fx-ab__nums li{display:grid;gap:10px;padding-left:18px;border-left:1px solid var(--ab-line)}
+.fx-ab__nums b{font:500 clamp(44px,5vw,72px)/1 Jost,sans-serif;letter-spacing:-.04em}
+.fx-ab__nums small{font-size:.38em;margin-left:4px;font-family:'Pretendard Variable',Pretendard,sans-serif;font-weight:600}
+.fx-ab__nums span{font-size:14px;color:var(--ab-sub)}
+
+/* 가치 */
+.fx-ab__values{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:0;padding:0;list-style:none}
+.fx-ab__values li{display:grid;align-content:start;gap:14px;min-height:260px;padding:28px 24px;border:1px solid var(--ab-line);border-radius:20px;background:#fff;transition:transform .35s ease,box-shadow .35s ease}
+.fx-ab__values li:hover{transform:translateY(-4px);box-shadow:0 18px 40px -24px rgba(0,0,0,.25)}
+.fx-ab__values em{font:500 13px/1 Jost,sans-serif;font-style:normal;color:var(--ab-sub)}
+.fx-ab__values h3{font-size:22px}
+.fx-ab__values p{font-size:15px;line-height:1.75;color:#444}
+
+/* 사진 + 글 */
+.fx-ab__dark{background:#111;color:#fff}
+.fx-ab__dark .fx-ab__label{color:rgba(255,255,255,.55)}
+.fx-ab__media{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(32px,5vw,80px);align-items:center}
+.fx-ab__media--rev figure{order:2}
+.fx-ab__media figure{margin:0;aspect-ratio:4/3;border-radius:22px;overflow:hidden}
+.fx-ab__media h2{margin:22px 0 30px}
+.fx-ab__svc{display:grid;gap:0;margin:0}
+.fx-ab__svc>div{padding:20px 0;border-top:1px solid rgba(255,255,255,.14)}
+.fx-ab__svc dt{font:600 17px/1.4 'Pretendard Variable',Pretendard,sans-serif;margin-bottom:8px}
+.fx-ab__svc dd{margin:0;font-size:15px;line-height:1.75;color:rgba(255,255,255,.66)}
+.fx-ab__svc b{display:block;margin-top:6px;color:#fff;font:500 18px/1.3 Jost,'Pretendard Variable',sans-serif}
+.fx-ab__note{margin-top:14px!important;font-size:12px;color:rgba(255,255,255,.45)}
+.fx-ab__steps{counter-reset:s;display:grid;gap:0;margin:0;padding:0;list-style:none}
+.fx-ab__steps li{counter-increment:s;position:relative;padding:18px 0 18px 54px;border-top:1px solid var(--ab-line);font-size:15px;line-height:1.7;color:#444}
+.fx-ab__steps li::before{content:counter(s,decimal-leading-zero);position:absolute;left:0;top:20px;font:500 14px/1 Jost,sans-serif;color:var(--ab-sub)}
+.fx-ab__steps b{display:block;margin-bottom:4px;font-size:17px;color:var(--ab-ink)}
+
+/* 하루 */
+.fx-ab__gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.fx-ab__gallery figure{position:relative;margin:0;aspect-ratio:4/3;border-radius:20px;overflow:hidden;background:var(--ab-paper)}
+.fx-ab__gallery figure.is-wide{grid-column:span 2;aspect-ratio:auto}
+.fx-ab__gallery img{transition:transform .8s ease}
+.fx-ab__gallery figure:hover img{transform:scale(1.04)}
+.fx-ab__gallery figcaption{position:absolute;left:16px;bottom:16px;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.92);font-size:13px;font-weight:600}
+
+/* 회사 정보 */
+.fx-ab__info h2{margin-bottom:24px}
+.fx-ab__table{margin:0;border-top:1px solid var(--ab-ink)}
+.fx-ab__table>div{display:grid;grid-template-columns:180px 1fr;gap:16px;padding:16px 0;border-bottom:1px solid var(--ab-line);font-size:15px}
+.fx-ab__table dt{color:var(--ab-sub)}
+.fx-ab__table dd{margin:0}
+.fx-ab__table a{color:inherit}
+
+/* 문의 */
+.fx-ab__cta{padding:clamp(80px,10vw,140px) 0;background:#111;color:#fff;text-align:center}
+.fx-ab__cta h2{font:500 clamp(40px,7vw,104px)/1 Jost,sans-serif;letter-spacing:-.045em}
+.fx-ab__cta p{max-width:520px;margin:24px auto 0;font-size:16px;line-height:1.75;color:rgba(255,255,255,.65)}
+.fx-ab__btns{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:36px}
+.fx-ab__btns a{display:inline-flex;align-items:center;height:52px;padding:0 26px;border:1px solid rgba(255,255,255,.4);border-radius:999px;color:#fff!important;font-weight:600;text-decoration:none!important;transition:background .25s,color .25s}
+.fx-ab__btns a:hover{background:#fff;color:#111!important}
+.fx-ab__btns a.is-solid{background:#fff;color:#111!important;border-color:#fff}
+
+@media (max-width:1023px){
+  .fx-ab__values{grid-template-columns:repeat(2,1fr)}
+  .fx-ab__media{grid-template-columns:1fr}
+  .fx-ab__media--rev figure{order:0}
+}
+@media (max-width:767px){
+  .fx-ab__split{grid-template-columns:1fr;gap:20px}
+  .fx-ab__cover{aspect-ratio:4/3}
+  .fx-ab__nums ul{grid-template-columns:repeat(2,1fr);row-gap:28px}
+  .fx-ab__values{grid-template-columns:1fr}
+  .fx-ab__values li{min-height:0}
+  .fx-ab__gallery{grid-template-columns:1fr}
+  .fx-ab__gallery figure.is-wide{grid-column:auto;aspect-ratio:4/3}
+  .fx-ab__table>div{grid-template-columns:110px 1fr;font-size:14px}
+}
