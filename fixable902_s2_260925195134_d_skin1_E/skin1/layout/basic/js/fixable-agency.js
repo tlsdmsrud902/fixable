@@ -275,6 +275,33 @@
       // 다시 재생 : 페이지 전체 배치를 강제로 다시 계산(offsetWidth)하지 않고, 두 프레임에 나눠 껐다 켠다
       var play = function (st) { var d = st.querySelector('.fx-demo'); if (!d) return; d.classList.remove('is-on'); requestAnimationFrame(function () { requestAnimationFrame(function () { d.classList.add('is-on'); counters(d); }); }); };
       stages.forEach(function (st) { st.addEventListener('click', function (e) { if (e.target.closest('a,button')) return; play(st); }); });
+      // 시연 크기 맞춤 (PC · 태블릿) : 아래 안내 문구(.fx-demo__code)를 뺀 나머지를 .fx-demo__fit > .fx-demo__in 으로 감싸고,
+      // 칸(.fx-demo__fit)의 너비 · 높이에 꽉 차게 키운다. 휴대폰은 감싼 상자가 display:contents 라 예전 그대로
+      var fitDesk = window.matchMedia ? matchMedia('(min-width: 768px)') : { matches: true };
+      var fits = stages.map(function (st) {
+        var d = st.querySelector('.fx-demo'); if (!d) return null;
+        var fit = document.createElement('div'), inner = document.createElement('div');
+        fit.className = 'fx-demo__fit'; inner.className = 'fx-demo__in';
+        [].slice.call(d.children).forEach(function (k) { if (!k.classList.contains('fx-demo__code')) inner.appendChild(k); });
+        fit.appendChild(inner); d.insertBefore(fit, d.firstChild);
+        return { fit: fit, inner: inner, grow: d.classList.contains('fx-demo--resp') ? 1.12 : 1 };   // 반응형은 재생 중 휴대폰 화면으로 바뀌며 조금 높아진다
+      });
+      var fitAll = function () {
+        fits.forEach(function (f) {
+          if (!f) return;
+          f.inner.style.transform = ''; f.inner.style.width = '';
+          if (!fitDesk.matches) return;
+          var W = f.fit.clientWidth, H = f.fit.clientHeight; if (!W || !H) return;
+          f.inner.style.width = Math.min(W, 760) + 'px';                     // 시연을 그리는 기준 너비
+          var w = f.inner.offsetWidth, h = f.inner.offsetHeight * f.grow;
+          var s = Math.min(W * 0.96 / w, H * 0.95 / h, 2);
+          f.inner.style.transform = 'scale(' + s.toFixed(3) + ')';
+        });
+      };
+      fitAll();
+      var fitT = 0; window.addEventListener('resize', function () { clearTimeout(fitT); fitT = setTimeout(fitAll, 120); });
+      window.addEventListener('load', fitAll);                                // 사진 · 글꼴이 늦게 와서 높이가 바뀌는 경우
+      fits.forEach(function (f) { if (f) [].forEach.call(f.inner.querySelectorAll('img'), function (im) { if (!im.complete) im.addEventListener('load', function () { clearTimeout(fitT); fitT = setTimeout(fitAll, 80); }); }); });
       // 화면에 가장 많이 보이는 카드 한 장만 재생하고 나머지는 멈춘다(절반 넘게 보일 때부터). 빠르게 지나가는 카드는 재생하지 않도록 잠깐 기다린다
       if (!editing) {
         var feats = stages.map(function (st) { return st.closest('.fx-feat2') || st; }), live = [], praf2 = 0;
