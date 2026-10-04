@@ -574,6 +574,17 @@ html.fx-js #lw-home.fx [data-fx-chat].is-play .fx-bm{opacity:1;transform:none}
 #lw-home.fx .fx-feat2__stage{position:relative;flex:1;min-height:0;cursor:pointer;contain:layout paint}
 /* 07 반응형 : 카드가 넓어도 휴대폰(세로 9:19)이 제목을 덮지 않게 화면 폭을 묶는다 */
 #lw-home.fx .fx-feat2 .fx-resp{width:min(100%,600px)}
+/* 낮은 화면(노트북 등) : 제목 · 시연 크기를 화면 높이에도 맞춰 카드 안에 다 들어오게 */
+#lw-home.fx .fx-feat2 h3{font-size:clamp(30px,min(4.6vw,7.5svh),76px)}
+#lw-home.fx .fx-feat2 .fx-rv{width:min(100%,100svh)}
+#lw-home.fx .fx-feat2 .fx-ed{width:min(100%,620px,72svh)}
+/* 02 쿠폰 : 카드 크기를 시연 칸의 실제 높이에 맞춰 최대한 크게 (위 작은 글 · 아래 축하 문구 자리만 남김). 칸 크기 기준이라 확대(zoom)는 쓰지 않는다 */
+@media (min-width:768px){
+  #lw-home.fx .fx-feat2__stage{container-type:size}
+  #lw-home.fx .fx-feat2 .fx-cp{--w:min(28cqw,calc((100cqh - 135px) / 1.42),400px)}
+  #lw-home.fx .fx-feat2 .fx-demo--cp{gap:16px;padding-top:24px;padding-bottom:24px}
+  #lw-home.fx .fx-feat2__stage .fx-demo--cp{zoom:1!important}
+}
 /* 넓고 높은 화면에서만 시연을 키운다 (높이가 모자라면 카드 아래가 잘리므로) */
 @media (min-width:1280px) and (min-height:1000px){#lw-home.fx .fx-feat2__stage .fx-demo{zoom:1.22}}
 @media (min-width:1600px) and (min-height:1150px){#lw-home.fx .fx-feat2__stage .fx-demo{zoom:1.35}}
