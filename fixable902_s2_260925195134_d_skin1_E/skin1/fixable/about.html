@@ -7,10 +7,10 @@
   <header class="fx-ab__hero">
     <div class="fx-ab__wrap">
       <p class="fx-ab__eyebrow">ABOUT fixable</p>
-      <h1>The World<br>I Create.</h1>
+      <h1 data-ab-lines><span>The World</span><span>I Create.</span></h1>
       <p class="fx-ab__lead">사장님의 쇼핑몰을, 팔리는 세계로 고칩니다.<br>fixable 은 카페24 쇼핑몰 디자인을 만드는 작은 스튜디오예요.</p>
     </div>
-    <figure class="fx-ab__cover"><img src="/SkinImg/fixable/about-team.webp" alt="FIX-ABLE 로고 벽 앞에 선 fixable 팀" width="1176" height="896" fetchpriority="high"></figure>
+    <figure class="fx-ab__cover" data-ab-cover><img src="/SkinImg/fixable/about-team.webp" alt="FIX-ABLE 로고 벽 앞에 선 fixable 팀" width="1176" height="896" fetchpriority="high"></figure>
   </header>
 
   <section class="fx-ab__sec fx-ab__story">
@@ -116,3 +116,86 @@
   </section>
 
 </main>
+<script>
+/* 회사소개 스크롤 효과 (외부 라이브러리 없음) — 모션 줄이기 설정이면 모두 끈다
+   등장 : [data-ab-in] → .is-in / 단어 진해짐 : .fx-ab__story p / 숫자 : .fx-ab__nums b / 사진 : 가장자리부터 열림 + 시차
+   표지 : 스크롤하면 화면 폭까지 펼쳐짐 / 진행 과정 : 세로선 채움 / 문의 : 큰 글자 펼침 / 맨 위 진행 막대 */
+(function () {
+  var root = document.querySelector('.fx-ab');
+  if (!root || !('IntersectionObserver' in window)) return;
+  if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var html = document.documentElement, Q = function (s) { return [].slice.call(root.querySelectorAll(s)); };
+  var clamp = function (v, a, b) { return v < a ? a : v > b ? b : v; };
+  html.classList.add('fx-ab-js');
+
+  // 1) 등장 : 같은 묶음 안에서 순서대로 조금씩 늦게
+  [['.fx-ab__label'], ['.fx-ab__head h2, .fx-ab__story h2, .fx-ab__media h2, .fx-ab__info h2'], ['.fx-ab__lead'],
+   ['.fx-ab__values li', 1], ['.fx-ab__svc > div', 1], ['.fx-ab__steps li', 1], ['.fx-ab__gallery figure', 1], ['.fx-ab__table > div', 1], ['.fx-ab__nums li', 1], ['.fx-ab__cta p, .fx-ab__btns']
+  ].forEach(function (g) {
+    Q(g[0]).forEach(function (el, i) { el.setAttribute('data-ab-in', ''); if (g[1]) el.style.setProperty('--d', (i % 4) * 0.09 + 's'); });
+  });
+  Q('.fx-ab__media figure').forEach(function (f) { f.setAttribute('data-ab-in', ''); f.setAttribute('data-ab-clip', ''); });
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); if (e.target.__onIn) e.target.__onIn(); } });
+  }, { rootMargin: '0px 0px -10% 0px' });
+
+  // 2) 숫자 : 화면에 들어오면 0 부터 올라간다
+  Q('.fx-ab__nums b').forEach(function (b) {
+    var t = b.firstChild; if (!t || t.nodeType !== 3) return;
+    var to = parseInt(t.nodeValue, 10); if (isNaN(to)) return;
+    t.nodeValue = '0';
+    var li = b.closest('li');
+    li.__onIn = function () { var t0 = performance.now(); (function step(n) { var k = Math.min(1, (n - t0) / 1400); k = 1 - Math.pow(1 - k, 3); t.nodeValue = String(Math.round(to * k)); if (k < 1) requestAnimationFrame(step); })(t0); };
+  });
+  Q('[data-ab-in]').forEach(function (el) { io.observe(el); });
+
+  // 3) 이야기 문단 : 단어마다 감싸서 스크롤에 따라 진해짐
+  var words = [];
+  Q('.fx-ab__story p:not(.fx-ab__label)').forEach(function (p) {
+    var walk = document.createTreeWalker(p, NodeFilter.SHOW_TEXT, null), nodes = [], n;
+    while ((n = walk.nextNode())) nodes.push(n);
+    nodes.forEach(function (tn) {
+      var frag = document.createDocumentFragment();
+      tn.nodeValue.split(/(\s+)/).forEach(function (w) {
+        if (!w) return;
+        if (/^\s+$/.test(w)) { frag.appendChild(document.createTextNode(w)); return; }
+        var s = document.createElement('span'); s.className = 'w'; s.textContent = w; frag.appendChild(s); words.push(s);
+      });
+      tn.parentNode.replaceChild(frag, tn);
+    });
+  });
+  var story = root.querySelector('.fx-ab__story');
+
+  // 4) 시차 사진 · 표지 · 진행 과정 · 문의 · 진행 막대
+  var pars = Q('.fx-ab__media figure img, .fx-ab__gallery figure img');
+  var cover = root.querySelector('[data-ab-cover]'), steps = root.querySelector('.fx-ab__steps'), cta = root.querySelector('.fx-ab__cta h2');
+  var bar = document.createElement('i'); bar.className = 'fx-ab__bar'; bar.setAttribute('aria-hidden', 'true'); document.body.appendChild(bar);
+  var vh = window.innerHeight, ticking = false, lastW = -1;
+  function vis(r) { return r.bottom > -100 && r.top < vh + 100; }
+  function frame() {
+    ticking = false;
+    var sy = window.pageYOffset, docH = document.documentElement.scrollHeight - vh;
+    bar.style.transform = 'scaleX(' + (docH > 0 ? clamp(sy / docH, 0, 1) : 0).toFixed(4) + ')';
+    if (cover) { var cr = cover.getBoundingClientRect(); if (vis(cr)) { var cp = clamp((vh - cr.top) / (vh * 0.9), 0, 1); cover.style.setProperty('--cp', cp.toFixed(4)); } }
+    pars.forEach(function (im) {
+      var r = im.parentNode.getBoundingClientRect(); if (!vis(r)) return;
+      var c = clamp((r.top + r.height / 2 - vh / 2) / vh, -1, 1);
+      im.style.setProperty('--py', (-c * r.height * 0.08).toFixed(1) + 'px');
+    });
+    if (story && words.length) {
+      var sr = story.getBoundingClientRect();
+      if (vis(sr)) {
+        var q = clamp((vh * 0.8 - sr.top) / (sr.height * 0.75), 0, 1), w = Math.round(q * words.length);
+        if (w !== lastW) { for (var i = 0; i < words.length; i++) words[i].classList.toggle('on', i < w); lastW = w; }
+      }
+    }
+    if (steps) { var tr = steps.getBoundingClientRect(); if (vis(tr)) steps.style.setProperty('--p', clamp((vh * 0.65 - tr.top) / tr.height, 0, 1).toFixed(4)); }
+    if (cta) { var ar = cta.getBoundingClientRect(); if (vis(ar)) cta.style.setProperty('--cp', clamp((vh - ar.top) / (vh * 0.7), 0, 1).toFixed(4)); }
+  }
+  function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(frame); } }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', function () { vh = window.innerHeight; onScroll(); });
+  frame();
+  requestAnimationFrame(function () { root.querySelector('[data-ab-lines]').classList.add('is-in'); });
+})();
+</script>
