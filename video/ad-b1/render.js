@@ -12,7 +12,7 @@ const fs = require('fs');
 
 const args = process.argv.slice(2);
 const VERT = args.includes('v');
-const VER = args.includes('b') ? 'B' : args.includes('c') ? 'C' : '';
+const VER = args.includes('b') ? 'B' : args.includes('c') ? 'C' : args.includes('d') ? 'D' : '';
 const stillsArg = args.indexOf('--stills');
 const stills = stillsArg >= 0 ? args[stillsArg + 1].split(',').map(Number) : null;
 const FPS = 60;

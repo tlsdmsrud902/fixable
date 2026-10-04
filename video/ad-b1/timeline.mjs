@@ -9,7 +9,7 @@ import path from 'node:path';
 
 const DIR = path.dirname(new URL(import.meta.url).pathname);
 // B · C 버전 : 훅 · 이유 소개만 다르고(음성 n_hookB · n_whyB …) 뒤 다섯 가지는 같다
-const VER = ['B', 'C'].find(v => process.argv.includes(v)) || '';
+const VER = ['B', 'C', 'D'].find(v => process.argv.includes(v)) || '';
 const SUF = VER ? '_' + VER : '';
 const MUSIC_VOL = 0.3;                                // 음악 크기 (음성이 없을 때). 음성이 나오면 더 낮아진다
 const TEMPO = 1.10;                                   // 광고 속도로 아주 살짝 빠르게

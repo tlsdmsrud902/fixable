@@ -246,6 +246,26 @@ body{font-family:Pret,sans-serif;color:var(--ink);-webkit-font-smoothing:antiali
 .hb #hkH{font-size:112px}
 .v #hkS{left:86px;top:600px;font-size:34px} .v #dash{left:80px;top:740px;width:920px} .v #dash .ch{height:420px}
 
+/* 01 훅 D : 뉴스 속보 패러디 */
+#dLive,#dPh,#dCap,#dTick,#dTouch{display:none} .hd #dLive,.hd #dPh,.hd #dCap,.hd #dTick,.hd #hkS{display:block} .hd #dTouch{display:block}
+.hd #hkPh,.hd #timer,.hd #leave,.hd #hkLab{display:none} .hd #hkH{font-size:108px} .hd #hkS{top:620px}
+#dLive{position:absolute;left:146px;top:222px;height:48px;padding:0 20px;border-radius:999px;background:var(--red);color:#fff;font:600 22px/48px Pret;letter-spacing:.02em}
+#dLive i{display:inline-block;width:10px;height:10px;border-radius:50%;background:#fff;margin-right:10px;vertical-align:2px}
+#dPh{left:1180px;top:110px;z-index:3}
+#dPh .rec{position:absolute;left:18px;top:116px;z-index:12;padding:6px 12px;border-radius:6px;background:rgba(0,0,0,.72);color:#fff;font:500 13px Jost,Pret;letter-spacing:.12em}
+#dPh .rec i{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--red);margin-right:6px;vertical-align:1px}
+#dPh .glitch{position:absolute;inset:0;z-index:11;opacity:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.18) 0 2px,rgba(0,0,0,.25) 2px 4px)}
+#dPh .lost{position:absolute;inset:0;z-index:13;background:#16161a;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;opacity:0}
+#dPh .lost b{font-size:34px;font-weight:700;letter-spacing:-.03em} #dPh .lost span{font-size:16px;color:#999}
+#dCap{position:absolute;left:146px;top:720px;z-index:6;padding:12px 20px;border-radius:999px;background:#111;color:#fff;font-size:22px;font-weight:600;opacity:0}
+#dTick{position:absolute;left:0;right:0;bottom:4px;height:72px;background:#111;color:#fff;z-index:20;overflow:hidden}
+#dTick b{position:absolute;left:0;top:0;bottom:0;width:150px;background:var(--red);display:grid;place-items:center;font-size:28px;font-weight:700;z-index:2}
+#dTick .tk{position:absolute;left:170px;right:0;top:0;bottom:0;overflow:hidden}
+#dTick span{position:absolute;top:18px;white-space:nowrap;font-size:28px;font-weight:500}
+.hd #why .row{grid-template-columns:200px 1fr 360px} .hd #why .row .k{color:var(--red)}
+.v #dLive{left:86px;top:240px} .v.hd #hkH{font-size:100px} .v.hd #hkS{top:560px} .v #dPh{left:330px;top:720px} .v #dCap{left:340px;top:1610px}
+.v.hd #why .row{grid-template-columns:170px 1fr}
+
 /* 01 훅 C : 손님 폰 */
 #cPh,#cTime,#cTouch{display:none} .hc #cPh,.hc #cTime,.hc #cTouch,.hc #hkS{display:block} .hc #hkPh,.hc #timer{display:none}
 .hc #hkH{font-size:112px} .hc #hkS{top:720px}
@@ -362,6 +382,14 @@ html:has(body.v),body.v{width:1080px;height:1920px}
     <div id="leave"><b>손님 이탈</b><span>3 SECONDS</span></div>
     <div id="timer"><svg viewBox="0 0 150 150"><circle cx="75" cy="75" r="66" fill="#fff" stroke="#ececec" stroke-width="8"/><circle id="tmArc" cx="75" cy="75" r="66" fill="none" stroke="#111" stroke-width="8" stroke-linecap="round" pathLength="100" stroke-dasharray="100" stroke-dashoffset="0"/></svg><div class="num"><div><span id="tmN">3</span><small>s</small></div></div></div>
     <div class="ph" id="hkPh"><div class="scr"><div class="notch"></div><div data-scr="hook"></div></div></div>
+    <!-- D 훅 : 뉴스 속보 패러디 — CCTV 속 손님이 장바구니 앞에서 사라짐 -->
+    <div id="dLive"><i></i>LIVE · 속보</div>
+    <div class="ph" id="dPh"><div class="scr"><div class="notch"></div><div id="dScr"></div>
+      <div class="rec"><i></i>REC · CCTV 03</div><div class="glitch" id="dGl"></div>
+      <div class="lost" id="dLost"><b>손님 접속 종료</b><span>장바구니 1개 · 결제 0건</span></div></div></div>
+    <div id="dCap">📍 마지막 목격 : 장바구니 앞</div>
+    <div id="dTick"><b>속보</b><div class="tk"><span id="dTk"></span></div></div>
+    <div class="touch" id="dTouch"></div>
     <!-- C 훅 : 손님 폰으로 본 쇼핑몰 — 휙휙 내리다 뒤로 가기 -->
     <div class="ph" id="cPh"><div class="scr"><div class="notch"></div><div id="cScr"></div></div></div>
     <div id="cTime"><small>머문 시간</small><b id="cSec">00:00</b></div>
@@ -428,7 +456,7 @@ html:has(body.v),body.v{width:1080px;height:1920px}
   </section>
 </div>
 
-<script>document.write('<script src="timeline' + (['b', 'c'].includes(new URLSearchParams(location.search).get('h')) ? '_' + new URLSearchParams(location.search).get('h').toUpperCase() : '') + '.js"><\/script>');</script>
+<script>document.write('<script src="timeline' + (['b', 'c', 'd'].includes(new URLSearchParams(location.search).get('h')) ? '_' + new URLSearchParams(location.search).get('h').toUpperCase() : '') + '.js"><\/script>');</script>
 <script>
 /* ───────── 도구 ───────── */
 const $ = (s, r = document) => r.querySelector(s);
@@ -466,7 +494,8 @@ const FIX_T = TL.FIX_T;   // [손님 속마음 시작, 답 시작]
 /* ───────── 가로 / 세로 ───────── */
 const VERT = new URLSearchParams(location.search).get('o') === 'v';
 const HV = new URLSearchParams(location.search).get('h');            // B · C 버전 : 앞부분(훅 · 이유 소개)만 다름
-const HB = HV === 'b', HC = HV === 'c';
+const HB = HV === 'b', HC = HV === 'c', HD = HV === 'd';
+if (HD) document.body.classList.add('hd');
 if (HB) document.body.classList.add('hb');
 if (HC) document.body.classList.add('hc');
 const W = VERT ? 1080 : 1920, H = VERT ? 1920 : 1080;
@@ -575,6 +604,15 @@ for (const id in FIX) {
 }
 $('#rows').innerHTML = Object.values(FIX).map((F, i) => `<div class="row"><span class="k">0${i + 1}</span><span class="q">${F.p.join(' ').replace(/,/, ',')}</span><span class="r">${F.why}</span></div>`).join('');
 const RC = [['+', '룩북 바로 구매', '보는 순간 구매'], ['15%', '쿠폰 이벤트', '다시 오게'], ['02:14', '마감 카운트다운', '지금 사게'], ['21:00', 'TIME SALE', '기다려서 오게'], ['24h', '쇼핑 도우미 챗봇', '밤에도 답하게']];
+if (HD) {
+  $('#dScr').innerHTML = `${shopTop()}<div class="body plain"><h6>BEST ITEM</h6><div class="sect"><b>이번 주 인기</b><span>전체 보기 →</span></div>${grid(0)}</div>`;
+  $('#hkH').innerHTML = ['[속보] 쇼핑몰 손님,', '또 사라졌다.'].map(l => `<span class="ln"><span>${l}</span></span>`).join('');
+  $('#hkS').textContent = '마지막 목격 장소는… 장바구니 앞.';
+  $('#dTk').textContent = ('쇼핑몰 손님, 담기만 하고 3초 만에 실종 · 장바구니만 남기고 사라져 · 사장님 "어제도 그랬어요…" · 경찰 "용의자는 쇼핑몰 안에 있다" · ').repeat(3);
+  $('#why .lab').innerHTML = '<span class="n">02</span>용의자 명단';
+  $('#why .h').innerHTML = ['수사 결과,', '용의자는 다섯.'].map(l => `<span class="ln"><span>${l}</span></span>`).join('');
+  $$('#why .row .k').forEach((k, i) => { k.textContent = '용의자 0' + (i + 1); });
+}
 if (HC) {
   $('#cScr').innerHTML = `${shopTop()}<div class="body"><div class="feedC" id="feedC">
     <div class="sec"><div class="banner"><img src="${IMG}demo-rv1.webp"><div class="ov"></div><div class="tx"><small>2026 F/W</small><h5>NEW<br>COLLECTION</h5><span>자세히 보기 →</span></div></div></div>
@@ -626,6 +664,7 @@ function render(t) {
 function hook(t) {
   if (HB) return hookB(t);
   if (HC) return hookC(t);
+  if (HD) return hookD(t);
   fadeUp($('#hkLab'), t, .1, .6, 16);
   lines('#hkH').forEach((el, i) => lineIn(el, t, [.3, .8, 1.5][i]));
   const pin = E.outExpo(prog(t, .05, .9)), out = E.in(prog(t, 2.55, .55));
@@ -637,6 +676,35 @@ function hook(t) {
   $('#tmN').textContent = Math.ceil(left - 1e-6);
   $('#tmArc').style.strokeDashoffset = (1 - left / 3) * 100;
   fadeUp($('#leave'), t, 2.85, .5, 20);
+}
+
+function hookD(t) {
+  const D = T0.why;                                         // 훅 길이 (음성에 맞춤)
+  popIn($('#dLive'), t, .05, .45, .6);
+  $('#dLive i').style.opacity = ((t * 2.2) | 0) % 2 ? .25 : 1;
+  lines('#hkH').forEach((el, i) => lineIn(el, t, [.3, .75][i]));
+  fadeUp($('#hkS'), t, D * .55, .6, 16);
+  // 아래 뉴스 자막 흐름
+  const tk = $('#dTk'); tk.style.transform = `translateX(${-((t * 150) % (tk.scrollWidth / 3))}px)`;
+  const tb = prog(t, .2, .5); $('#dTick').style.transform = `translateY(${(1 - E.outExpo(tb)) * 90}px)`;
+  // CCTV : 손님이 담기 → 장바구니 1 → 결제 직전 지지직 → 접속 종료
+  const ph = $('#dPh'), px = parseFloat(getComputedStyle(ph).left), py = parseFloat(getComputedStyle(ph).top);
+  tf(ph, { y: (1 - E.outExpo(prog(t, .1, .9))) * 300 });
+  $('#dPh .rec i').style.opacity = ((t * 2) | 0) % 2 ? .2 : 1;
+  const tAdd = D * .32, tGone = D * .55;
+  const it = $$('#dPh .it')[1], add = it ? center($('.add', it)) : [0, 0];
+  const tc = $('#dTouch');
+  const m = E.inOut(prog(t, tAdd - .6, .5)), press = Math.max(0, 1 - Math.abs(t - tAdd) / .09);
+  tc.style.left = lerp(px + 300, add[0], m) + 'px'; tc.style.top = lerp(py + 760, add[1], m) + 'px';
+  tf(tc, { s: 1 - press * .18, o: m * (1 - prog(t, tGone - .3, .2)) });
+  const bg = $('#dPh .bag b'); bg.style.transform = `scale(${t >= tAdd ? E.back(prog(t, tAdd, .4), 2.5) : 0})`;
+  // 지지직
+  const gl = prog(t, tGone, .55), on = gl > 0 && gl < 1;
+  $('#dGl').style.opacity = on ? .6 + .4 * Math.sin(t * 80) : 0;
+  $('#dScr').style.transform = on ? `translate(${Math.sin(t * 97) * 14}px, ${Math.cos(t * 61) * 6}px)` : '';
+  $('#dScr').style.filter = on ? `contrast(1.6) hue-rotate(${Math.sin(t * 40) * 40}deg)` : '';
+  $('#dLost').style.opacity = cl((t - tGone - .4) / .25);
+  popIn($('#dCap'), t, tGone + .7, .5, .7);
 }
 
 function hookC(t) {
