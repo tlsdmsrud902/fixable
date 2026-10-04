@@ -570,11 +570,14 @@ html.fx-js #lw-home.fx [data-fx-chat].is-play .fx-bm{opacity:1;transform:none}
 #lw-home.fx .fx-feat2__no span{order:-1;margin-right:auto;padding:7px 13px;border-radius:999px;border:1px solid rgba(255,255,255,.16);color:rgba(255,255,255,.82);font:500 12px/1 'Pretendard Variable',Pretendard,sans-serif;letter-spacing:0}
 #lw-home.fx .fx-feat2 h3{margin:clamp(14px,2vh,28px) 0 10px!important;color:#fff;font-size:clamp(34px,4.6vw,76px);font-weight:700;letter-spacing:-.055em;line-height:1.05}
 #lw-home.fx .fx-feat2__desc{max-width:620px;font-size:clamp(15px,1.15vw,18px);line-height:1.7;color:rgba(255,255,255,.58)}
-#lw-home.fx .fx-feat2__stage{position:relative;flex:1;min-height:0;cursor:pointer}
+#lw-home.fx .fx-feat2__stage{position:relative;flex:1;min-height:0;cursor:pointer;contain:layout paint}
 /* 07 반응형 : 카드가 넓어도 휴대폰(세로 9:19)이 제목을 덮지 않게 화면 폭을 묶는다 */
 #lw-home.fx .fx-feat2 .fx-resp{width:min(100%,600px)}
 @media (min-width:1280px){#lw-home.fx .fx-feat2__stage .fx-demo{zoom:1.22}}
 @media (min-width:1600px){#lw-home.fx .fx-feat2__stage .fx-demo{zoom:1.35}}
+/* 재생 중이 아닌 시연(가려진 카드 · 화면 밖 카드)의 반복 움직임은 멈춘다. 화면 밖 쇼릴 벽 · 휴대폰 줄도 (.is-off) */
+#lw-home.fx .fx-demo:not(.is-on),#lw-home.fx .fx-demo:not(.is-on) *,#lw-home.fx .fx-demo:not(.is-on) *::before,#lw-home.fx .fx-demo:not(.is-on) *::after{animation-play-state:paused!important}
+#lw-home.fx .fx-wall.is-off .fx-wall__track,#lw-home.fx .fx-phones.is-off .fx-phones__track{animation-play-state:paused}
 /* 08 이벤트 특전 : 따뜻한 빛 + 흰 칩 */
 #lw-home.fx .fx-feat2--event{background:radial-gradient(70% 60% at 50% 0%,rgba(255,120,60,.22) 0%,transparent 60%),radial-gradient(60% 60% at 0% 100%,rgba(255,90,31,.12) 0%,transparent 60%),linear-gradient(180deg,#1c1714 0%,#0d0c0b 100%)}
 #lw-home.fx .fx-feat2--event .fx-feat2__no span{background:#fff;color:var(--fx-ink);border-color:#fff;font-weight:600}

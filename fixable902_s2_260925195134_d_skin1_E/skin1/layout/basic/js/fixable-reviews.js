@@ -6,8 +6,8 @@
    한 번 읽은 결과는 10분 동안 sessionStorage 에 저장해 페이지마다 다시 요청하지 않는다. */
 (function () {
   'use strict';
-  var BOARD = 4, PAGES = 4, MAX_DETAIL = 40, POOL = 3, CACHE_KEY = 'fixable-reviews-v3', TTL = 30 * 60 * 1000;
-  var NOTE = /※\s*fixable가 만든[^\n]*교체됩니다\.?/;
+  var BOARD = 4, PAGES = 4, MAX_DETAIL = 40, POOL = 3, CACHE_KEY = 'fixable-reviews-v4', TTL = 30 * 60 * 1000;
+  var NOTE = /※\s*fixable\s*[이가]?\s*만든[^\n]*교체됩니다\.?/;
 
   function trim(s) { return String(s == null ? '' : s).replace(/\s+/g, ' ').trim(); }
   function el(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
@@ -93,7 +93,7 @@
       var workers = []; for (var w = 0; w < POOL; w++) workers.push(worker());
       return Promise.all(workers).then(function () {
         items = items.filter(function (it) { return !it.secret; });
-        if (!failed) writeCache(items); // 일부라도 못 읽었으면 저장하지 않고 다음 페이지에서 다시 읽는다
+        if (!failed && items.length) writeCache(items); // 일부라도 못 읽었거나 후기가 없으면 저장하지 않는다 (첫 후기가 바로 보이게)
         return items;
       });
     });
