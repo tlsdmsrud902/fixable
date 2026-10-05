@@ -1,0 +1,131 @@
+/* ==========================================================================
+   떠 있는 영상 배너 소리 켜기 버튼 (fixable-video-sound.js)
+   --------------------------------------------------------------------------
+   왼쪽 아래에 떠 있는 영상 배너(카페24 앱 · 유튜브 플레이어 등, 스킨 밖에서
+   붙는 것)는 브라우저 규칙 때문에 소리 없이 자동 재생된다. 손님이 직접
+   누르면 소리를 낼 수 있으므로, 배너 왼쪽 위(닫기 X 반대편)에 [소리 켜기]
+   버튼을 단다.
+
+   - 찾는 대상 : 화면에 고정(position:fixed)된 상자 안의 유튜브 iframe 또는
+     <video>. 화면 폭 절반이 넘는 상자(첫 화면 배경 영상 등)는 건드리지 않는다.
+   - 배너가 페이지가 다 그려진 뒤에 붙어도 MutationObserver 로 찾아낸다.
+   - 유튜브 : 처음 누를 때 주소를 소리 켠 상태(mute=0 · enablejsapi=1)로
+     다시 불러오고, 그다음부터는 postMessage 로 소리만 켜고 끈다.
+   - 빼려면 layout.html 의 이 스크립트 한 줄을 지운다.
+   ========================================================================== */
+(function () {
+	'use strict';
+	var doc = document, MARK = 'fxSound';
+	var YT = /^https?:\/\/(www\.)?(youtube\.com|youtube-nocookie\.com)\/(embed|shorts)\//i;
+	var ICON_OFF = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M16 9.5l5 5M21 9.5l-5 5"/></svg>';
+	var ICON_ON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18.3 6.5a7.5 7.5 0 0 1 0 11"/></svg>';
+
+	function css() {
+		if (doc.getElementById('fx-sound-css')) { return; }
+		var s = doc.createElement('style'); s.id = 'fx-sound-css';
+		s.textContent = [
+			'.fx-sound{position:absolute;left:10px;top:10px;z-index:2147483000;display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px 0 10px;border:0;border-radius:999px;background:rgba(17,17,17,.88);color:#fff;font:600 12px/1 "Pretendard Variable",Pretendard,system-ui,sans-serif;letter-spacing:-.01em;cursor:pointer;box-shadow:0 8px 20px -8px rgba(0,0,0,.55);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);transition:background .2s,transform .2s}',
+			'.fx-sound:hover,.fx-sound:focus-visible{background:#000;transform:translateY(-1px);outline:0}',
+			'.fx-sound svg{flex:none}',
+			'.fx-sound.is-on{width:32px;padding:0;justify-content:center}.fx-sound.is-on .fx-sound__t{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}',
+			'.fx-sound:not(.is-on)::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:0 0 0 0 rgba(17,17,17,.5);animation:fx-sound-ring 2.2s ease-out infinite}',
+			'@keyframes fx-sound-ring{0%{box-shadow:0 0 0 0 rgba(17,17,17,.45)}80%,100%{box-shadow:0 0 0 10px rgba(17,17,17,0)}}',
+			'@media (prefers-reduced-motion:reduce){.fx-sound::after{animation:none!important}}'
+		].join('');
+		doc.head.appendChild(s);
+	}
+
+	// 화면에 고정된 가장 가까운 상자 (없으면 null)
+	function fixedBox(el) {
+		for (var n = el; n && n !== doc.body && n.nodeType === 1; n = n.parentElement) {
+			if (getComputedStyle(n).position === 'fixed') { return n; }
+		}
+		return null;
+	}
+
+	function render(btn, on) {
+		btn.classList.toggle('is-on', on);
+		btn.setAttribute('aria-pressed', String(on));
+		btn.setAttribute('aria-label', on ? '영상 소리 끄기' : '영상 소리 켜기');
+		btn.innerHTML = (on ? ICON_ON : ICON_OFF) + '<span class="fx-sound__t">' + (on ? '소리 끄기' : '소리 켜기') + '</span>';
+	}
+
+	function ytCommand(frame, func, args) {
+		try { frame.contentWindow.postMessage(JSON.stringify({ event: 'command', func: func, args: args || [] }), '*'); } catch (e) {}
+	}
+
+	function ytSound(frame, on) {
+		var url;
+		try { url = new URL(frame.src, location.href); } catch (e) { return; }
+		if (on && url.searchParams.get('enablejsapi') !== '1') {
+			// 처음 한 번 : 소리 켠 주소로 다시 불러온다 (누른 직후라 브라우저가 소리 재생을 허락한다)
+			url.searchParams.set('enablejsapi', '1');
+			url.searchParams.set('mute', '0');
+			url.searchParams.set('autoplay', '1');
+			url.searchParams.set('playsinline', '1');
+			url.searchParams.set('origin', location.origin);
+			var allow = frame.getAttribute('allow') || '';
+			if (!/autoplay/.test(allow)) { frame.setAttribute('allow', (allow ? allow.replace(/;?\s*$/, '; ') : '') + 'autoplay; encrypted-media'); }
+			frame.src = url.toString();
+			frame.addEventListener('load', function once() {
+				frame.removeEventListener('load', once);
+				ytCommand(frame, 'unMute'); ytCommand(frame, 'setVolume', [100]); ytCommand(frame, 'playVideo');
+			});
+			return;
+		}
+		if (on) { ytCommand(frame, 'unMute'); ytCommand(frame, 'setVolume', [100]); ytCommand(frame, 'playVideo'); }
+		else { ytCommand(frame, 'mute'); }
+	}
+
+	function attach(media) {
+		if (media.dataset[MARK]) { return; }
+		if (media.closest('#lw-home .fx-stage, .wh, .fx-sound')) { return; }
+		var box = fixedBox(media);
+		if (!box) { return; }
+		var rect = box.getBoundingClientRect();
+		if (rect.width > window.innerWidth * 0.5 || rect.width < 80 || rect.height < 80) { return; }
+		if (box.querySelector(':scope > .fx-sound')) { media.dataset[MARK] = '1'; return; }
+		media.dataset[MARK] = '1';
+		css();
+
+		var isVideo = media.tagName === 'VIDEO';
+		var on = isVideo ? !media.muted && media.volume > 0 : /[?&]mute=0(&|$)/.test(media.src);
+		var btn = doc.createElement('button');
+		btn.type = 'button'; btn.className = 'fx-sound';
+		render(btn, on);
+		btn.addEventListener('click', function (e) {
+			e.preventDefault(); e.stopPropagation();   // 배너를 누른 것으로 보고 상품으로 넘어가지 않게
+			on = !on;
+			if (isVideo) {
+				media.muted = !on;
+				if (on) { if (!media.volume) { media.volume = 1; } var p = media.play(); if (p && p.catch) { p.catch(function () {}); } }
+			} else {
+				ytSound(media, on);
+			}
+			render(btn, on);
+		});
+		if (isVideo) { media.addEventListener('volumechange', function () { var now = !media.muted && media.volume > 0; if (now !== on) { on = now; render(btn, on); } }); }
+		if (getComputedStyle(box).position === 'static') { box.style.position = 'relative'; }
+		box.appendChild(btn);
+	}
+
+	var queued = false;
+	function scan() {
+		queued = false;
+		Array.prototype.forEach.call(doc.querySelectorAll('iframe[src], video'), function (m) {
+			if (m.tagName === 'IFRAME' && !YT.test(m.src)) { return; }
+			attach(m);
+		});
+	}
+	function schedule() { if (!queued) { queued = true; setTimeout(scan, 300); } }
+
+	function init() {
+		scan();
+		if ('MutationObserver' in window) {
+			new MutationObserver(schedule).observe(doc.body, { childList: true, subtree: true });
+		}
+		// 배너가 늦게 고정되거나 크기가 바뀌는 경우를 위해 몇 번 더 본다
+		[1500, 4000, 8000].forEach(function (t) { setTimeout(scan, t); });
+	}
+	if (doc.readyState === 'loading') { doc.addEventListener('DOMContentLoaded', init); } else { init(); }
+}());
