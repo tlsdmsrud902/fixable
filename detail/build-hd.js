@@ -12,7 +12,7 @@ const video =
 const LIST = [  // 상품번호, 폴더, 이름, 라이브 데모
   [11, 'wear', 'WEAR902', 'https://wear902.cafe24.com/'],
   [12, 'eppum', 'EPPUM', 'https://eppum902.cafe24.com/'],
-  [13, 'baby', 'BABYYANG', 'https://babyyang902.cafe24.com/'],
+  [13, 'baby', 'BABYANG', 'https://babyyang902.cafe24.com/'],
   [14, 'food', 'FOOD902', 'https://food902.cafe24.com/'],
   [15, 'inter', 'INTER', 'https://inter902.cafe24.com/'],
   [16, 'petpia', 'PETPIA', 'https://petpia902.cafe24.com/'],
