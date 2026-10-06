@@ -9,7 +9,7 @@ const SRC = {
   baby: R + '1.baby/_deploy/dc/detail.html',
   food: R + '4. food902/_deploy/dc/detail.html',
   inter: R + '3.inter/inter902_s2_260925195134_d_skin1_E/skin1/inter-designcenter-detail.html',
-  petpia: path.join(__dirname, '../../_deploy/detail-hd/pet/adia902222_s2_260925195134_d_skin1_E/skin1/petpia-designcenter-detail.html'),
+  petpia: path.join(R, '6. fixable/_deploy/detail-hd/pet/adia902222_s2_260925195134_d_skin1_E/skin1/petpia-designcenter-detail.html'),
 };
 const W = 922, MAX = 1500, DSF = 2;
 const only = process.argv.slice(2);
@@ -28,6 +28,8 @@ const only = process.argv.slice(2);
       await Promise.all([...document.images].map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; })));
       scrollTo(0, 0);
     });
+    // 맨 아래 「실제 · 샘플 사이트 둘러보기」 버튼은 빼고 찍는다 (상세에서는 누를 수 없는 그림이라)
+    await pg.evaluate(() => { document.querySelectorAll('.closing a').forEach(a => a.remove()); document.querySelectorAll('.closing p').forEach(p => p.style.wordBreak = 'keep-all'); });
     // 원본에 남은 작은 오류 : inter 동그라미 로고가 펫의 P, 마지막 큰 제목이 한 글자만 셋째 줄로 넘어감
     await pg.evaluate(name => {
       const bm = document.querySelector('.intro .brandmark');
